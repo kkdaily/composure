@@ -1,0 +1,87 @@
+/* ===========================
+   CodeBlock
+   =========================== */
+
+.codeBlock {
+  background-color: var(--color-bg-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+/* --- Header --- */
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border-bottom: 1px solid var(--color-border);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+}
+
+/* --- Content --- */
+
+.pre {
+  margin: 0;
+  padding: var(--space-3) var(--space-4);
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  line-height: var(--leading-relaxed);
+  color: var(--color-text-primary);
+  background: transparent;
+}
+
+.pre:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: -2px;
+  border-radius: var(--radius-sm);
+}
+
+.code {
+  display: block;
+  white-space: pre;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  color: inherit;
+}
+
+/* --- Line numbers --- */
+
+.withLineNumbers .code {
+  display: table;
+  width: 100%;
+}
+
+.line {
+  display: table-row;
+}
+
+.lineNumber {
+  display: table-cell;
+  width: 1%;
+  min-width: var(--space-7);
+  padding-right: var(--space-3);
+  text-align: right;
+  color: var(--color-text-muted);
+  user-select: none;
+  white-space: nowrap;
+}
+
+.lineContent {
+  display: table-cell;
+  white-space: pre;
+}
+
+/* --- Reduced motion --- */
+
+@media (prefers-reduced-motion: reduce) {
+  .codeBlock {
+    transition: none;
+  }
+}
