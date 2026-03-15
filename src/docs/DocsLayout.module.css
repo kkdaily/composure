@@ -1,0 +1,16 @@
+.layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.main {
+  flex: 1;
+  margin-left: 240px;
+  min-height: 100vh;
+}
+
+.content {
+  max-width: 768px;
+  margin: 0 auto;
+  padding: var(--space-10) var(--space-8);
+}

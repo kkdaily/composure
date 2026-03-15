@@ -1,0 +1,184 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.title {
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-bold);
+  color: var(--color-text-primary);
+  letter-spacing: -0.03em;
+}
+
+.subtitle {
+  font-size: var(--text-base);
+  color: var(--color-text-secondary);
+  line-height: var(--leading-relaxed);
+  margin-top: calc(-1 * var(--space-6));
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.heading {
+  font-size: var(--text-lg);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-primary);
+}
+
+/* Colors */
+.colorGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--space-3);
+}
+
+.colorItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.colorSwatch {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  flex-shrink: 0;
+}
+
+.colorInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.colorLabel {
+  font-size: var(--text-sm);
+  color: var(--color-text-primary);
+  font-weight: var(--weight-medium);
+}
+
+.colorVar {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+/* Spacing */
+.spacingList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.spacingItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.spacingVar {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  width: 100px;
+  flex-shrink: 0;
+}
+
+.spacingBar {
+  height: 12px;
+  background-color: var(--color-accent);
+  border-radius: var(--radius-sm);
+}
+
+.spacingValue {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  flex-shrink: 0;
+}
+
+/* Typography */
+.typeList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.typeItem {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-4);
+}
+
+.typeSample {
+  color: var(--color-text-primary);
+  min-width: 140px;
+}
+
+.typeVar {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+.typeValue {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+/* Border Radius */
+.radiusGrid {
+  display: flex;
+  gap: var(--space-6);
+  flex-wrap: wrap;
+}
+
+.radiusItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.radiusSample {
+  width: 48px;
+  height: 48px;
+  background-color: var(--color-accent);
+}
+
+.radiusVar {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+.radiusValue {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+/* Animation */
+.animList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.animItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.animVar {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  min-width: 140px;
+}
+
+.animValue {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}
