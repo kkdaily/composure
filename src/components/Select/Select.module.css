@@ -1,0 +1,91 @@
+/* ===========================
+   Select
+   =========================== */
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.label {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--color-text-primary);
+}
+
+.selectWrapper {
+  position: relative;
+  display: inline-flex;
+}
+
+/* --- Select element --- */
+
+.select {
+  appearance: none;
+  width: 100%;
+  background-color: var(--color-bg-1);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-family: var(--font-sans);
+  font-weight: var(--weight-normal);
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    background-color var(--speed-fast) var(--ease-out),
+    border-color var(--speed-fast) var(--ease-out);
+}
+
+.select:hover:not(:disabled) {
+  border-color: var(--color-text-muted);
+}
+
+.select:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.select:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* --- Sizes --- */
+
+.sm {
+  font-size: var(--text-xs);
+  padding: var(--space-1) var(--space-7) var(--space-1) var(--space-3);
+}
+
+.md {
+  font-size: var(--text-sm);
+  padding: var(--space-2) var(--space-8) var(--space-2) var(--space-4);
+}
+
+.lg {
+  font-size: var(--text-base);
+  padding: var(--space-3) var(--space-9) var(--space-3) var(--space-5);
+}
+
+/* --- Chevron --- */
+
+.chevron {
+  position: absolute;
+  right: var(--space-3);
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
+/* --- Reduced motion --- */
+
+@media (prefers-reduced-motion: reduce) {
+  .select {
+    transition: none;
+  }
+}

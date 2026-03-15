@@ -7,10 +7,13 @@ import { TokensPage } from './docs/pages/TokensPage'
 import { ButtonPage } from './docs/pages/ButtonPage'
 import { IconButtonPage } from './docs/pages/IconButtonPage'
 import { ComposerPage } from './docs/pages/ComposerPage'
+import { ChatMessagePage } from './docs/pages/ChatMessagePage'
+import { StreamingTextPage } from './docs/pages/StreamingTextPage'
+import { SelectPage } from './docs/pages/SelectPage'
 import { ComponentPlaceholder } from './docs/pages/ComponentPlaceholder'
 
 const componentNames: Record<string, string> = {
-  'chat-bubble': 'ChatBubble',
+  'chat-message': 'ChatMessage',
   'message-list': 'MessageList',
   composer: 'Composer',
   'streaming-text': 'StreamingText',
@@ -36,6 +39,12 @@ function App() {
         return <IconButtonPage />
       case 'composer':
         return <ComposerPage />
+      case 'chat-message':
+        return <ChatMessagePage />
+      case 'streaming-text':
+        return <StreamingTextPage />
+      case 'select':
+        return <SelectPage />
       default:
         return (
           <ComponentPlaceholder

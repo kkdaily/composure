@@ -4,7 +4,7 @@ export type PageId =
   | 'overview'
   | 'tokens'
   | 'button'
-  | 'chat-bubble'
+  | 'chat-message'
   | 'message-list'
   | 'composer'
   | 'streaming-text'
@@ -12,6 +12,7 @@ export type PageId =
   | 'copy-button'
   | 'avatar'
   | 'icon-button'
+  | 'select'
   | 'tooltip'
   | 'loading-dots'
 
@@ -32,7 +33,7 @@ const sections: { heading: string; items: SidebarItem[] }[] = [
     heading: 'Components',
     items: [
       { id: 'button', label: 'Button' },
-      { id: 'chat-bubble', label: 'ChatBubble' },
+      { id: 'chat-message', label: 'ChatMessage' },
       { id: 'message-list', label: 'MessageList' },
       { id: 'composer', label: 'Composer' },
       { id: 'streaming-text', label: 'StreamingText' },
@@ -40,6 +41,7 @@ const sections: { heading: string; items: SidebarItem[] }[] = [
       { id: 'copy-button', label: 'CopyButton' },
       { id: 'avatar', label: 'Avatar' },
       { id: 'icon-button', label: 'IconButton' },
+      { id: 'select', label: 'Select' },
       { id: 'tooltip', label: 'Tooltip' },
       { id: 'loading-dots', label: 'LoadingDots' },
     ],
