@@ -30,14 +30,14 @@ const sections: { heading: string; items: SidebarItem[] }[] = [
   {
     heading: 'Components',
     items: [
-      { id: 'avatar', label: 'Avatar', path: '/avatar' },
-      { id: 'button', label: 'Button', path: '/button' },
-      { id: 'chat-message', label: 'ChatMessage', path: '/chat-message' },
-      { id: 'code-block', label: 'CodeBlock', path: '/code-block' },
-      { id: 'composer', label: 'Composer', path: '/composer' },
-      { id: 'icon-button', label: 'IconButton', path: '/icon-button' },
-      { id: 'select', label: 'Select', path: '/select' },
-      { id: 'streaming-text', label: 'StreamingText', path: '/streaming-text' },
+      { id: 'avatar', label: 'Avatar', path: '/components/avatar' },
+      { id: 'button', label: 'Button', path: '/components/button' },
+      { id: 'chat-message', label: 'ChatMessage', path: '/components/chat-message' },
+      { id: 'code-block', label: 'CodeBlock', path: '/components/code-block' },
+      { id: 'composer', label: 'Composer', path: '/components/composer' },
+      { id: 'icon-button', label: 'IconButton', path: '/components/icon-button' },
+      { id: 'select', label: 'Select', path: '/components/select' },
+      { id: 'streaming-text', label: 'StreamingText', path: '/components/streaming-text' },
     ],
   },
 ]
