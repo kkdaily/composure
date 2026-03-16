@@ -1,6 +1,5 @@
-import { useState } from 'react'
+import { Routes, Route, Navigate } from 'react-router-dom'
 import { Sidebar } from './docs/Sidebar'
-import type { PageId } from './docs/Sidebar'
 import { DocsLayout } from './docs/DocsLayout'
 import { OverviewPage } from './docs/pages/OverviewPage'
 import { TokensPage } from './docs/pages/TokensPage'
@@ -12,61 +11,23 @@ import { StreamingTextPage } from './docs/pages/StreamingTextPage'
 import { SelectPage } from './docs/pages/SelectPage'
 import { CodeBlockPage } from './docs/pages/CodeBlockPage'
 import { AvatarPage } from './docs/pages/AvatarPage'
-import { ComponentPlaceholder } from './docs/pages/ComponentPlaceholder'
-
-const componentNames: Record<string, string> = {
-  'chat-message': 'ChatMessage',
-  'message-list': 'MessageList',
-  composer: 'Composer',
-  'streaming-text': 'StreamingText',
-  'code-block': 'CodeBlock',
-  'copy-button': 'CopyButton',
-  avatar: 'Avatar',
-  tooltip: 'Tooltip',
-  'loading-dots': 'LoadingDots',
-}
 
 function App() {
-  const [activePage, setActivePage] = useState<PageId>('overview')
-
-  function renderPage() {
-    switch (activePage) {
-      case 'overview':
-        return <OverviewPage />
-      case 'tokens':
-        return <TokensPage />
-      case 'button':
-        return <ButtonPage />
-      case 'icon-button':
-        return <IconButtonPage />
-      case 'composer':
-        return <ComposerPage />
-      case 'chat-message':
-        return <ChatMessagePage />
-      case 'streaming-text':
-        return <StreamingTextPage />
-      case 'select':
-        return <SelectPage />
-      case 'code-block':
-        return <CodeBlockPage />
-      case 'avatar':
-        return <AvatarPage />
-      default:
-        return (
-          <ComponentPlaceholder
-            name={componentNames[activePage] ?? activePage}
-          />
-        )
-    }
-  }
-
   return (
-    <DocsLayout
-      sidebar={
-        <Sidebar activePage={activePage} onNavigate={setActivePage} />
-      }
-    >
-      {renderPage()}
+    <DocsLayout sidebar={<Sidebar />}>
+      <Routes>
+        <Route path="/" element={<OverviewPage />} />
+        <Route path="/tokens" element={<TokensPage />} />
+        <Route path="/avatar" element={<AvatarPage />} />
+        <Route path="/button" element={<ButtonPage />} />
+        <Route path="/chat-message" element={<ChatMessagePage />} />
+        <Route path="/code-block" element={<CodeBlockPage />} />
+        <Route path="/composer" element={<ComposerPage />} />
+        <Route path="/icon-button" element={<IconButtonPage />} />
+        <Route path="/select" element={<SelectPage />} />
+        <Route path="/streaming-text" element={<StreamingTextPage />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
     </DocsLayout>
   )
 }

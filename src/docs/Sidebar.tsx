@@ -1,65 +1,59 @@
+import { NavLink } from 'react-router-dom'
 import styles from './Sidebar.module.css'
 
 export type PageId =
   | 'overview'
   | 'tokens'
+  | 'avatar'
   | 'button'
   | 'chat-message'
-  | 'message-list'
-  | 'composer'
-  | 'streaming-text'
   | 'code-block'
-  | 'copy-button'
-  | 'avatar'
+  | 'composer'
   | 'icon-button'
   | 'select'
-  | 'tooltip'
-  | 'loading-dots'
+  | 'streaming-text'
 
 interface SidebarItem {
   id: PageId
   label: string
+  path: string
 }
 
 const sections: { heading: string; items: SidebarItem[] }[] = [
   {
     heading: 'Getting Started',
     items: [
-      { id: 'overview', label: 'Overview' },
-      { id: 'tokens', label: 'Tokens' },
+      { id: 'overview', label: 'Overview', path: '/' },
+      { id: 'tokens', label: 'Tokens', path: '/tokens' },
     ],
   },
   {
     heading: 'Components',
     items: [
-      { id: 'button', label: 'Button' },
-      { id: 'chat-message', label: 'ChatMessage' },
-      { id: 'message-list', label: 'MessageList' },
-      { id: 'composer', label: 'Composer' },
-      { id: 'streaming-text', label: 'StreamingText' },
-      { id: 'code-block', label: 'CodeBlock' },
-      { id: 'copy-button', label: 'CopyButton' },
-      { id: 'avatar', label: 'Avatar' },
-      { id: 'icon-button', label: 'IconButton' },
-      { id: 'select', label: 'Select' },
-      { id: 'tooltip', label: 'Tooltip' },
-      { id: 'loading-dots', label: 'LoadingDots' },
+      { id: 'avatar', label: 'Avatar', path: '/avatar' },
+      { id: 'button', label: 'Button', path: '/button' },
+      { id: 'chat-message', label: 'ChatMessage', path: '/chat-message' },
+      { id: 'code-block', label: 'CodeBlock', path: '/code-block' },
+      { id: 'composer', label: 'Composer', path: '/composer' },
+      { id: 'icon-button', label: 'IconButton', path: '/icon-button' },
+      { id: 'select', label: 'Select', path: '/select' },
+      { id: 'streaming-text', label: 'StreamingText', path: '/streaming-text' },
     ],
   },
 ]
 
 export interface SidebarProps {
-  activePage: PageId
-  onNavigate: (page: PageId) => void
   className?: string
 }
 
-export function Sidebar({ activePage, onNavigate, className }: SidebarProps) {
+export function Sidebar({ className }: SidebarProps) {
   return (
     <nav className={`${styles.sidebar} ${className ?? ''}`}>
       <div className={styles.logo}>
-        <span className={styles.logoText}>Composure</span>
-        <span className={styles.tagline}>UI for AI</span>
+        <NavLink to="/" className={styles.logoLink}>
+          <span className={styles.logoText}>Composure</span>
+          <span className={styles.tagline}>UI for AI</span>
+        </NavLink>
       </div>
       {sections.map((section) => (
         <div key={section.heading} className={styles.section}>
@@ -67,12 +61,15 @@ export function Sidebar({ activePage, onNavigate, className }: SidebarProps) {
           <ul className={styles.list}>
             {section.items.map((item) => (
               <li key={item.id}>
-                <button
-                  className={`${styles.item} ${activePage === item.id ? styles.active : ''}`}
-                  onClick={() => onNavigate(item.id)}
+                <NavLink
+                  to={item.path}
+                  end
+                  className={({ isActive }) =>
+                    `${styles.item} ${isActive ? styles.active : ''}`
+                  }
                 >
                   {item.label}
-                </button>
+                </NavLink>
               </li>
             ))}
           </ul>

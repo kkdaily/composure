@@ -106,11 +106,11 @@ One folder per component, no exceptions. Each folder is self-contained.
 
 The aesthetic should feel like shadcn's documentation site — minimal, clean typography, subtle sidebar. No gradients, no decorative elements.
 
-- Fixed left sidebar (240px) listing all pages: Overview, Tokens, then one entry per component
+- Fixed left sidebar (240px) listing all pages: Overview, Tokens, then one entry per component in alphabetical order
 - Top header with library name and tagline
 - Main content area renders the active page
-- Navigation is `useState`-driven — no routing library
-- Active sidebar item has a clear but subtle highlight state
+- Navigation uses React Router (`react-router-dom`) with clean URLs — each page has a direct URL (e.g. `/avatar`, `/code-block`). The sidebar uses `NavLink` for automatic active state. Routes are defined in `App.tsx`, the `BrowserRouter` wraps the app in `main.tsx`
+- Active sidebar item has a clear but subtle highlight state (handled automatically by `NavLink`)
 
 ### Tokens page
 Visually renders the full token set — color swatches with variable names, spacing scale as sized rectangles, typography scale showing each size, animation speeds labeled clearly.

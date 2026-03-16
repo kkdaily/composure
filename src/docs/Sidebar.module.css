@@ -16,6 +16,10 @@
 
 .logo {
   padding: 0 var(--space-6);
+}
+
+.logoLink {
+  text-decoration: none;
   display: flex;
   flex-direction: column;
   gap: var(--space-1);
@@ -66,6 +70,7 @@
   font-family: var(--font-sans);
   font-size: var(--text-sm);
   color: var(--color-text-secondary);
+  text-decoration: none;
   cursor: pointer;
   text-align: left;
   transition: color var(--speed-fast) var(--ease-out),
