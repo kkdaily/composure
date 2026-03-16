@@ -12,20 +12,33 @@ import { SelectPage } from './docs/pages/SelectPage'
 import { CodeBlockPage } from './docs/pages/CodeBlockPage'
 import { AvatarPage } from './docs/pages/AvatarPage'
 
+/**
+ * Render the documentation application layout with its sidebar and route configuration.
+ *
+ * @returns The root React element: a DocsLayout containing the app routes and redirects.
+ */
 function App() {
   return (
     <DocsLayout sidebar={<Sidebar />}>
       <Routes>
         <Route path="/" element={<OverviewPage />} />
         <Route path="/tokens" element={<TokensPage />} />
-        <Route path="/avatar" element={<AvatarPage />} />
-        <Route path="/button" element={<ButtonPage />} />
-        <Route path="/chat-message" element={<ChatMessagePage />} />
-        <Route path="/code-block" element={<CodeBlockPage />} />
-        <Route path="/composer" element={<ComposerPage />} />
-        <Route path="/icon-button" element={<IconButtonPage />} />
-        <Route path="/select" element={<SelectPage />} />
-        <Route path="/streaming-text" element={<StreamingTextPage />} />
+        <Route path="/components/avatar" element={<AvatarPage />} />
+        <Route path="/components/button" element={<ButtonPage />} />
+        <Route path="/components/chat-message" element={<ChatMessagePage />} />
+        <Route path="/components/code-block" element={<CodeBlockPage />} />
+        <Route path="/components/composer" element={<ComposerPage />} />
+        <Route path="/components/icon-button" element={<IconButtonPage />} />
+        <Route path="/components/select" element={<SelectPage />} />
+        <Route path="/components/streaming-text" element={<StreamingTextPage />} />
+        <Route path="/avatar" element={<Navigate to="/components/avatar" replace />} />
+        <Route path="/button" element={<Navigate to="/components/button" replace />} />
+        <Route path="/chat-message" element={<Navigate to="/components/chat-message" replace />} />
+        <Route path="/code-block" element={<Navigate to="/components/code-block" replace />} />
+        <Route path="/composer" element={<Navigate to="/components/composer" replace />} />
+        <Route path="/icon-button" element={<Navigate to="/components/icon-button" replace />} />
+        <Route path="/select" element={<Navigate to="/components/select" replace />} />
+        <Route path="/streaming-text" element={<Navigate to="/components/streaming-text" replace />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </DocsLayout>
