@@ -18,14 +18,14 @@ function App() {
       <Routes>
         <Route path="/" element={<OverviewPage />} />
         <Route path="/tokens" element={<TokensPage />} />
-        <Route path="/avatar" element={<AvatarPage />} />
-        <Route path="/button" element={<ButtonPage />} />
-        <Route path="/chat-message" element={<ChatMessagePage />} />
-        <Route path="/code-block" element={<CodeBlockPage />} />
-        <Route path="/composer" element={<ComposerPage />} />
-        <Route path="/icon-button" element={<IconButtonPage />} />
-        <Route path="/select" element={<SelectPage />} />
-        <Route path="/streaming-text" element={<StreamingTextPage />} />
+        <Route path="/components/avatar" element={<AvatarPage />} />
+        <Route path="/components/button" element={<ButtonPage />} />
+        <Route path="/components/chat-message" element={<ChatMessagePage />} />
+        <Route path="/components/code-block" element={<CodeBlockPage />} />
+        <Route path="/components/composer" element={<ComposerPage />} />
+        <Route path="/components/icon-button" element={<IconButtonPage />} />
+        <Route path="/components/select" element={<SelectPage />} />
+        <Route path="/components/streaming-text" element={<StreamingTextPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </DocsLayout>
