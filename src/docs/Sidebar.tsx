@@ -10,8 +10,8 @@ export type PageId =
   | 'code-block'
   | 'composer'
   | 'icon-button'
+  | 'scroll-area'
   | 'select'
-  | 'streaming-text'
 
 interface SidebarItem {
   id: PageId
@@ -36,8 +36,8 @@ const sections: { heading: string; items: SidebarItem[] }[] = [
       { id: 'code-block', label: 'CodeBlock', path: '/components/code-block' },
       { id: 'composer', label: 'Composer', path: '/components/composer' },
       { id: 'icon-button', label: 'IconButton', path: '/components/icon-button' },
+      { id: 'scroll-area', label: 'ScrollArea', path: '/components/scroll-area' },
       { id: 'select', label: 'Select', path: '/components/select' },
-      { id: 'streaming-text', label: 'StreamingText', path: '/components/streaming-text' },
     ],
   },
 ]

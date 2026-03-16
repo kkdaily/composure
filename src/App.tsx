@@ -7,7 +7,7 @@ import { ButtonPage } from './docs/pages/ButtonPage'
 import { IconButtonPage } from './docs/pages/IconButtonPage'
 import { ComposerPage } from './docs/pages/ComposerPage'
 import { ChatMessagePage } from './docs/pages/ChatMessagePage'
-import { StreamingTextPage } from './docs/pages/StreamingTextPage'
+import { ScrollAreaPage } from './docs/pages/ScrollAreaPage'
 import { SelectPage } from './docs/pages/SelectPage'
 import { CodeBlockPage } from './docs/pages/CodeBlockPage'
 import { AvatarPage } from './docs/pages/AvatarPage'
@@ -24,17 +24,9 @@ function App() {
         <Route path="/components/code-block" element={<CodeBlockPage />} />
         <Route path="/components/composer" element={<ComposerPage />} />
         <Route path="/components/icon-button" element={<IconButtonPage />} />
+        <Route path="/components/scroll-area" element={<ScrollAreaPage />} />
         <Route path="/components/select" element={<SelectPage />} />
-        <Route path="/components/streaming-text" element={<StreamingTextPage />} />
-        <Route path="/avatar" element={<Navigate to="/components/avatar" replace />} />
-        <Route path="/button" element={<Navigate to="/components/button" replace />} />
-        <Route path="/chat-message" element={<Navigate to="/components/chat-message" replace />} />
-        <Route path="/code-block" element={<Navigate to="/components/code-block" replace />} />
-        <Route path="/composer" element={<Navigate to="/components/composer" replace />} />
-        <Route path="/icon-button" element={<Navigate to="/components/icon-button" replace />} />
-        <Route path="/select" element={<Navigate to="/components/select" replace />} />
-        <Route path="/streaming-text" element={<Navigate to="/components/streaming-text" replace />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
+<Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </DocsLayout>
   )

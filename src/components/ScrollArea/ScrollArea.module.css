@@ -1,0 +1,31 @@
+/* ===========================
+   ScrollArea
+   =========================== */
+
+.scrollArea {
+  position: relative;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* --- Scroll to bottom indicator --- */
+
+.scrollToBottom {
+  position: sticky;
+  bottom: var(--space-3);
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.scrollToBottom > * {
+  pointer-events: auto;
+}
+
+/* --- Reduced motion --- */
+
+@media (prefers-reduced-motion: reduce) {
+  .scrollArea {
+    scroll-behavior: auto;
+  }
+}

@@ -46,6 +46,7 @@
 .demoArea {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   gap: var(--space-4);
   padding: var(--space-6);
   background-color: var(--color-bg-2);
@@ -53,72 +54,12 @@
   border-radius: var(--radius-md);
 }
 
-.demoOutput {
-  font-size: var(--text-sm);
-  line-height: var(--leading-relaxed);
-  color: var(--color-text-primary);
-  min-height: 48px;
-}
-
-.demoButtons {
-  display: flex;
-  gap: var(--space-2);
-}
-
-.demoButton {
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  padding: var(--space-1) var(--space-4);
-  background-color: var(--color-accent);
-  color: var(--color-text-on-accent);
-  border: none;
-  border-radius: var(--radius-md);
-  cursor: pointer;
-  transition: background-color var(--speed-fast) var(--ease-out);
-}
-
-.demoButton:hover:not(:disabled) {
-  background-color: var(--color-accent-hover);
-}
-
-.demoButton:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.demoButton:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 2px;
-}
-
-.emptyState {
-  font-size: var(--text-sm);
-  color: var(--color-text-muted);
-  font-style: italic;
-}
-
 /* Example areas */
 .exampleArea {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   gap: var(--space-4);
-  font-size: var(--text-sm);
-  line-height: var(--leading-relaxed);
-  color: var(--color-text-primary);
-}
-
-.exampleRow {
-  display: flex;
-  align-items: baseline;
-  gap: var(--space-4);
-}
-
-.exampleLabel {
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  color: var(--color-text-muted);
-  min-width: 48px;
-  flex-shrink: 0;
 }
 
 /* Controls for interactive demo */
@@ -178,6 +119,43 @@
   color: var(--color-text-on-accent);
 }
 
+/* ScrollArea demo container */
+.scrollContainer {
+  width: 100%;
+  height: 300px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg-1);
+}
+
+.conversation {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-4);
+}
+
+.scrollToBottomButton {
+  background-color: var(--color-bg-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  padding: var(--space-2);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-secondary);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition:
+    background-color var(--speed-fast) var(--ease-out),
+    color var(--speed-fast) var(--ease-out);
+}
+
+.scrollToBottomButton:hover {
+  background-color: var(--color-bg-3);
+  color: var(--color-text-primary);
+}
+
 /* Props table */
 .tableWrapper {
   overflow-x: auto;
@@ -218,11 +196,8 @@
 
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  .demoButton {
-    transition: none;
-  }
-
-  .chip {
+  .chip,
+  .scrollToBottomButton {
     transition: none;
   }
 }
