@@ -11,6 +11,7 @@ import { ChatMessagePage } from './docs/pages/ChatMessagePage'
 import { StreamingTextPage } from './docs/pages/StreamingTextPage'
 import { SelectPage } from './docs/pages/SelectPage'
 import { CodeBlockPage } from './docs/pages/CodeBlockPage'
+import { AvatarPage } from './docs/pages/AvatarPage'
 import { ComponentPlaceholder } from './docs/pages/ComponentPlaceholder'
 
 const componentNames: Record<string, string> = {
@@ -48,6 +49,8 @@ function App() {
         return <SelectPage />
       case 'code-block':
         return <CodeBlockPage />
+      case 'avatar':
+        return <AvatarPage />
       default:
         return (
           <ComponentPlaceholder

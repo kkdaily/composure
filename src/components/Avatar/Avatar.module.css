@@ -1,0 +1,80 @@
+/* ===========================
+   Avatar
+   =========================== */
+
+.avatar {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  flex-shrink: 0;
+  background-color: var(--color-bg-3);
+  color: var(--color-text-secondary);
+}
+
+/* --- Sizes --- */
+
+.sm {
+  width: var(--space-6);
+  height: var(--space-6);
+}
+
+.md {
+  width: var(--space-7);
+  height: var(--space-7);
+}
+
+.lg {
+  width: var(--space-9);
+  height: var(--space-9);
+}
+
+/* --- Image --- */
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.imageHidden {
+  position: absolute;
+  width: 0;
+  height: 0;
+  opacity: 0;
+}
+
+/* --- Fallback --- */
+
+.fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  font-weight: var(--weight-medium);
+  line-height: 1;
+  user-select: none;
+}
+
+.fallbackSm {
+  font-size: var(--text-xs);
+}
+
+.fallbackMd {
+  font-size: var(--text-sm);
+}
+
+.fallbackLg {
+  font-size: var(--text-base);
+}
+
+/* --- Reduced motion --- */
+
+@media (prefers-reduced-motion: reduce) {
+  .avatar {
+    transition: none;
+  }
+}
