@@ -1,0 +1,160 @@
+/* ---- Spacing Page ---- */
+
+.table {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.tableRow {
+  display: grid;
+  grid-template-columns: 120px 72px 1fr;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-3) var(--space-5);
+  border-bottom: 1px solid var(--color-border);
+  background-color: var(--color-bg-1);
+}
+
+.tableRow:last-child {
+  border-bottom: none;
+}
+
+.tableRow:hover {
+  background-color: var(--color-bg-2);
+}
+
+.tableHeader {
+  display: grid;
+  grid-template-columns: 120px 72px 1fr;
+  gap: var(--space-4);
+  padding: var(--space-3) var(--space-5);
+  border-bottom: 1px solid var(--color-border);
+  background-color: var(--color-bg-2);
+}
+
+.tableHeaderCell {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.tokenVar {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-accent);
+  white-space: nowrap;
+}
+
+.tokenValue {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}
+
+.spacerTrack {
+  display: flex;
+  align-items: center;
+}
+
+.spacerBlock {
+  height: 24px;
+  background-color: var(--color-accent);
+  border-radius: var(--radius-sm);
+  opacity: 0.85;
+  flex-shrink: 0;
+}
+
+/* ---- Radius Grid ---- */
+
+.radiusGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: var(--space-4);
+}
+
+.radiusCard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-5);
+  background-color: var(--color-bg-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+.radiusDemo {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background-color: var(--color-accent);
+  opacity: 0.9;
+}
+
+.radiusMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.radiusLabel {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--color-text-primary);
+}
+
+.radiusValue {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+/* ---- Animation Speed Table ---- */
+
+.speedTable {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.speedRow {
+  display: grid;
+  grid-template-columns: 140px 72px 1fr;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-5);
+  border-bottom: 1px solid var(--color-border);
+  background-color: var(--color-bg-1);
+}
+
+.speedRow:last-child {
+  border-bottom: none;
+}
+
+.speedRow:hover {
+  background-color: var(--color-bg-2);
+}
+
+.speedDesc {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}
+
+.speedBarTrack {
+  flex: 1;
+  height: 4px;
+  background-color: var(--color-bg-3);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.speedBar {
+  height: 100%;
+  background-color: var(--color-accent);
+  border-radius: var(--radius-full);
+}
