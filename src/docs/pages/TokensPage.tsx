@@ -11,6 +11,8 @@ const colors = [
   { variable: '--color-accent-hover', label: 'Accent Hover' },
   { variable: '--color-assistant-bubble', label: 'Assistant Bubble' },
   { variable: '--color-user-bubble', label: 'User Bubble' },
+  { variable: '--color-user-bubble-text', label: 'User Bubble Text' },
+  { variable: '--color-text-on-accent', label: 'Text on Accent' },
   { variable: '--color-destructive', label: 'Destructive' },
   { variable: '--color-border', label: 'Border' },
 ]
@@ -28,13 +30,31 @@ const spacing = [
   { variable: '--space-10', value: '64px' },
 ]
 
-const typography = [
+const fontSizes = [
   { variable: '--text-xs', value: '0.75rem', label: 'Extra Small' },
   { variable: '--text-sm', value: '0.875rem', label: 'Small' },
   { variable: '--text-base', value: '1rem', label: 'Base' },
   { variable: '--text-lg', value: '1.125rem', label: 'Large' },
   { variable: '--text-xl', value: '1.25rem', label: 'Extra Large' },
   { variable: '--text-2xl', value: '1.5rem', label: '2X Large' },
+]
+
+const fontFamilies = [
+  { variable: '--font-sans', label: 'Sans', sample: 'The quick brown fox' },
+  { variable: '--font-mono', label: 'Mono', sample: 'const x = 42' },
+]
+
+const lineHeights = [
+  { variable: '--leading-tight', value: '1.25' },
+  { variable: '--leading-normal', value: '1.5' },
+  { variable: '--leading-relaxed', value: '1.75' },
+]
+
+const fontWeights = [
+  { variable: '--weight-normal', value: '400', label: 'Normal' },
+  { variable: '--weight-medium', value: '500', label: 'Medium' },
+  { variable: '--weight-semibold', value: '600', label: 'Semibold' },
+  { variable: '--weight-bold', value: '700', label: 'Bold' },
 ]
 
 const radii = [
@@ -48,6 +68,7 @@ const animation = [
   { variable: '--speed-fast', value: '120ms' },
   { variable: '--speed-normal', value: '220ms' },
   { variable: '--speed-stream', value: '30ms' },
+  { variable: '--ease-out', value: 'cubic-bezier(0.16, 1, 0.3, 1)' },
 ]
 
 export function TokensPage() {
@@ -59,6 +80,7 @@ export function TokensPage() {
         used across components. They support light and dark mode automatically.
       </p>
 
+      {/* Colors */}
       <section className={styles.section}>
         <h2 className={styles.heading}>Colors</h2>
         <div className={styles.colorGrid}>
@@ -77,6 +99,7 @@ export function TokensPage() {
         </div>
       </section>
 
+      {/* Spacing */}
       <section className={styles.section}>
         <h2 className={styles.heading}>Spacing</h2>
         <div className={styles.spacingList}>
@@ -93,10 +116,13 @@ export function TokensPage() {
         </div>
       </section>
 
+      {/* Typography */}
       <section className={styles.section}>
         <h2 className={styles.heading}>Typography</h2>
+
+        <h3 className={styles.subHeading}>Font size</h3>
         <div className={styles.typeList}>
-          {typography.map((t) => (
+          {fontSizes.map((t) => (
             <div key={t.variable} className={styles.typeItem}>
               <span
                 className={styles.typeSample}
@@ -109,8 +135,57 @@ export function TokensPage() {
             </div>
           ))}
         </div>
+
+        <h3 className={styles.subHeading}>Font family</h3>
+        <div className={styles.typeList}>
+          {fontFamilies.map((f) => (
+            <div key={f.variable} className={styles.typeItem}>
+              <span
+                className={styles.typeSample}
+                style={{ fontFamily: `var(${f.variable})` }}
+              >
+                {f.sample}
+              </span>
+              <code className={styles.typeVar}>{f.variable}</code>
+              <span className={styles.typeValue}>{f.label}</span>
+            </div>
+          ))}
+        </div>
+
+        <h3 className={styles.subHeading}>Line height</h3>
+        <div className={styles.typeList}>
+          {lineHeights.map((l) => (
+            <div key={l.variable} className={styles.typeItem}>
+              <span
+                className={styles.typeSample}
+                style={{ lineHeight: `var(${l.variable})` }}
+              >
+                {l.value}
+              </span>
+              <code className={styles.typeVar}>{l.variable}</code>
+              <span className={styles.typeValue}>{l.value}</span>
+            </div>
+          ))}
+        </div>
+
+        <h3 className={styles.subHeading}>Font weight</h3>
+        <div className={styles.typeList}>
+          {fontWeights.map((w) => (
+            <div key={w.variable} className={styles.typeItem}>
+              <span
+                className={styles.typeSample}
+                style={{ fontWeight: `var(${w.variable})` }}
+              >
+                {w.label}
+              </span>
+              <code className={styles.typeVar}>{w.variable}</code>
+              <span className={styles.typeValue}>{w.value}</span>
+            </div>
+          ))}
+        </div>
       </section>
 
+      {/* Border Radius */}
       <section className={styles.section}>
         <h2 className={styles.heading}>Border Radius</h2>
         <div className={styles.radiusGrid}>
@@ -127,6 +202,7 @@ export function TokensPage() {
         </div>
       </section>
 
+      {/* Animation */}
       <section className={styles.section}>
         <h2 className={styles.heading}>Animation</h2>
         <div className={styles.animList}>
@@ -136,10 +212,6 @@ export function TokensPage() {
               <span className={styles.animValue}>{a.value}</span>
             </div>
           ))}
-          <div className={styles.animItem}>
-            <code className={styles.animVar}>--ease-out</code>
-            <span className={styles.animValue}>cubic-bezier(0.16, 1, 0.3, 1)</span>
-          </div>
         </div>
       </section>
     </div>

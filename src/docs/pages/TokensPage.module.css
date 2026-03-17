@@ -30,6 +30,13 @@
   color: var(--color-text-primary);
 }
 
+.subHeading {
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-primary);
+  margin-top: var(--space-2);
+}
+
 /* Colors */
 .colorGrid {
   display: grid;
