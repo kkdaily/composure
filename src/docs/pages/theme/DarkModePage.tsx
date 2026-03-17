@@ -27,7 +27,7 @@ export function DarkModePage() {
     <div className={styles.page}>
       <h1 className={styles.title}>Dark Mode</h1>
       <p className={styles.subtitle}>
-        Dark mode inverts the color palette to reduce eye strain in low-light environments.
+        Easier on the eyes at night, and a first-class experience in Composure.
       </p>
 
       <section className={styles.section}>
