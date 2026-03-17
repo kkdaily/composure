@@ -7,6 +7,7 @@ import {
   ComposerFooterEnd,
 } from '../../components/Composer/Composer'
 import { IconButton } from '../../components/IconButton/IconButton'
+import { Select } from '../../components/Select/Select'
 import { CodeSnippet } from '../CodeSnippet'
 import styles from './ComposerPage.module.css'
 
@@ -57,12 +58,19 @@ const AI_RESPONSES = [
   'Interesting! Based on my analysis, I\'d recommend starting with the basics.',
 ]
 
+const MODEL_OPTIONS = [
+  { value: 'gpt-4o', label: 'GPT-4o' },
+  { value: 'claude-3-5-sonnet', label: 'Claude 3.5 Sonnet' },
+  { value: 'gemini-1-5-pro', label: 'Gemini 1.5 Pro' },
+]
+
 export function ComposerPage() {
   const [demoValue, setDemoValue] = useState('')
   const [demoDisabled, setDemoDisabled] = useState(false)
   const [demoState, setDemoState] = useState<DemoState>('idle')
   const [demoFooter, setDemoFooter] = useState<DemoFooter>('none')
   const [demoSendPosition, setDemoSendPosition] = useState<DemoSendPosition>('inline')
+  const [demoModel, setDemoModel] = useState('gpt-4o')
   const [messages, setMessages] = useState<DemoMessage[]>([])
   const [streamingText, setStreamingText] = useState('')
   const streamRef = useRef<number | null>(null)
@@ -187,9 +195,16 @@ export function ComposerPage() {
                     <GlobeIcon />
                   </IconButton>
                 </ComposerFooterStart>
-                {demoSendPosition === 'footer' && (
-                  <ComposerFooterEnd>
-                    {demoState === 'streaming' ? (
+                <ComposerFooterEnd>
+                  <Select
+                    value={demoModel}
+                    onChange={setDemoModel}
+                    options={MODEL_OPTIONS}
+                    size="sm"
+                    disabled={demoDisabled}
+                  />
+                  {demoSendPosition === 'footer' && (
+                    demoState === 'streaming' ? (
                       <IconButton variant="destructive" label="Stop generating" onClick={stopStreaming}>
                         <StopIcon />
                       </IconButton>
@@ -197,9 +212,9 @@ export function ComposerPage() {
                       <IconButton variant="primary" label="Send message" disabled={!demoValue.trim()} onClick={() => handleDemoSubmit(demoValue)}>
                         <SendIcon />
                       </IconButton>
-                    )}
-                  </ComposerFooterEnd>
-                )}
+                    )
+                  )}
+                </ComposerFooterEnd>
               </ComposerFooter>
             )}
           </Composer>
