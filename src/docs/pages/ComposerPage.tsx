@@ -182,7 +182,7 @@ export function ComposerPage() {
             {demoFooter !== 'none' && (
               <ComposerFooter bordered={demoFooter === 'bordered'}>
                 <ComposerFooterStart>
-                  <IconButton label="Add" size="sm">
+                  <IconButton label="Add" size="md">
                     <PlusIcon />
                   </IconButton>
                 </ComposerFooterStart>
@@ -191,7 +191,7 @@ export function ComposerPage() {
                     value={demoModel}
                     onChange={setDemoModel}
                     options={MODEL_OPTIONS}
-                    size="sm"
+                    size="md"
                     disabled={demoDisabled}
                   />
                   {demoSendPosition === 'footer' && (
@@ -414,7 +414,7 @@ export function ComposerPage() {
           </IconButton>
           <ComposerFooter>
             <ComposerFooterStart>
-              <IconButton label="Add" size="sm">
+              <IconButton label="Add" size="md">
                 <PlusIcon />
               </IconButton>
             </ComposerFooterStart>
@@ -430,7 +430,7 @@ export function ComposerPage() {
   </IconButton>
   <ComposerFooter>
     <ComposerFooterStart>
-      <IconButton label="Add" size="sm">
+      <IconButton label="Add" size="md">
         <PlusIcon />
       </IconButton>
     </ComposerFooterStart>
@@ -461,7 +461,7 @@ export function ComposerPage() {
           </IconButton>
           <ComposerFooter bordered={false}>
             <ComposerFooterStart>
-              <IconButton label="Add" size="sm">
+              <IconButton label="Add" size="md">
                 <PlusIcon />
               </IconButton>
             </ComposerFooterStart>
@@ -474,7 +474,7 @@ export function ComposerPage() {
   </IconButton>
   <ComposerFooter bordered={false}>
     <ComposerFooterStart>
-      <IconButton label="Add" size="sm">
+      <IconButton label="Add" size="md">
         <PlusIcon />
       </IconButton>
     </ComposerFooterStart>
@@ -499,7 +499,7 @@ export function ComposerPage() {
           <ComposerInput placeholder="Message…" />
           <ComposerFooter>
             <ComposerFooterStart>
-              <IconButton label="Add" size="sm">
+              <IconButton label="Add" size="md">
                 <PlusIcon />
               </IconButton>
             </ComposerFooterStart>
@@ -514,7 +514,7 @@ export function ComposerPage() {
   <ComposerInput placeholder="Message…" />
   <ComposerFooter>
     <ComposerFooterStart>
-      <IconButton label="Add" size="sm">
+      <IconButton label="Add" size="md">
         <PlusIcon />
       </IconButton>
     </ComposerFooterStart>
