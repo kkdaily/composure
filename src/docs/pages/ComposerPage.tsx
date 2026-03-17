@@ -192,6 +192,7 @@ export function ComposerPage() {
                     onChange={setDemoModel}
                     options={MODEL_OPTIONS}
                     size="md"
+                    variant="ghost"
                     disabled={demoDisabled}
                   />
                   {demoSendPosition === 'footer' && (
