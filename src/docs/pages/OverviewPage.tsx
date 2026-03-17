@@ -36,12 +36,12 @@ export function OverviewPage() {
           <span className={styles.stepLabel}>Step 1</span>
           <h2 className={styles.heading}>Install the package</h2>
           <p className={styles.body}>
-            Add Composure to your project with npm, yarn, or pnpm.
+            Add Composure to your project via the shadcn CLI.
           </p>
         </div>
         <div className={styles.installRow}>
           <span className={styles.installPrompt}>$</span>
-          <span className={styles.installCmd}>npm install composure</span>
+          <span className={styles.installCmd}>pnpm dlx shadcn@latest add @composure/button</span>
         </div>
       </section>
 
