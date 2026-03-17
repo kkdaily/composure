@@ -27,8 +27,7 @@ export function DarkModePage() {
     <div className={styles.page}>
       <h1 className={styles.title}>Dark Mode</h1>
       <p className={styles.subtitle}>
-        Three appearance modes — system, light, and dark — driven by a{' '}
-        <code className={styles.code}>data-theme</code> attribute and CSS custom properties.
+        Dark mode inverts the color palette to reduce eye strain in low-light environments.
       </p>
 
       <section className={styles.section}>
