@@ -28,7 +28,7 @@ const sections: { heading: string; items: SidebarItem[] }[] = [
   {
     heading: 'Getting Started',
     items: [
-      { id: 'overview', label: 'Overview', path: '/' },
+      { id: 'overview', label: 'Getting Started', path: '/' },
       { id: 'tokens', label: 'Tokens', path: '/tokens' },
     ],
   },
