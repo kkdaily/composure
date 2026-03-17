@@ -1,3 +1,4 @@
+import { CodeSnippet } from '../../CodeSnippet'
 import styles from './ThemePage.module.css'
 
 const spacingScale = [
@@ -72,8 +73,7 @@ export function SpacingPage() {
 
       <section className={styles.section}>
         <h2 className={styles.heading}>Usage</h2>
-        <pre className={styles.codeBlock}>
-          <code>{`/* Padding and gap */
+        <CodeSnippet language="css">{`/* Padding and gap */
 .card {
   padding: var(--space-6);
   gap: var(--space-4);
@@ -86,8 +86,7 @@ export function SpacingPage() {
 
 .pill {
   border-radius: var(--radius-full);
-}`}</code>
-        </pre>
+}`}</CodeSnippet>
       </section>
     </div>
   )

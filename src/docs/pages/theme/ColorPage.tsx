@@ -1,4 +1,5 @@
 import { useTheme, ACCENT_COLORS, type AccentColor } from '../../../context/theme'
+import { CodeSnippet } from '../../CodeSnippet'
 import styles from './ThemePage.module.css'
 
 const ACCENT_HEX: Record<AccentColor, { light: string; dark: string; label: string }> = {
@@ -92,8 +93,7 @@ export function ColorPage() {
 
       <section className={styles.section}>
         <h2 className={styles.heading}>Usage</h2>
-        <pre className={styles.codeBlock}>
-          <code>{`/* In any component CSS module */
+        <CodeSnippet language="css">{`/* In any component CSS module */
 .button {
   background-color: var(--color-accent);
   color: var(--color-text-on-accent);
@@ -101,8 +101,7 @@ export function ColorPage() {
 
 .button:hover {
   background-color: var(--color-accent-hover);
-}`}</code>
-        </pre>
+}`}</CodeSnippet>
       </section>
     </div>
   )

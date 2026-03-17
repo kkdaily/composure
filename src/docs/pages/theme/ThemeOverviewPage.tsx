@@ -1,3 +1,4 @@
+import { CodeSnippet } from '../../CodeSnippet'
 import styles from './ThemePage.module.css'
 
 export function ThemeOverviewPage() {
@@ -27,13 +28,11 @@ export function ThemeOverviewPage() {
           the root. It accepts an optional <code className={styles.code}>accentColor</code> prop
           to set the default accent palette.
         </p>
-        <pre className={styles.codeBlock}>
-          <code>{`import { ThemeProvider } from './context/theme'
+        <CodeSnippet language="tsx">{`import { ThemeProvider } from './context/theme'
 
 <ThemeProvider accentColor="indigo">
   <App />
-</ThemeProvider>`}</code>
-        </pre>
+</ThemeProvider>`}</CodeSnippet>
       </section>
 
       <section className={styles.section}>
@@ -42,8 +41,7 @@ export function ThemeOverviewPage() {
           Any component inside the provider can read and update the theme via{' '}
           <code className={styles.code}>useTheme()</code>.
         </p>
-        <pre className={styles.codeBlock}>
-          <code>{`import { useTheme } from './context/theme'
+        <CodeSnippet language="tsx">{`import { useTheme } from './context/theme'
 
 function MyComponent() {
   const {
@@ -53,8 +51,7 @@ function MyComponent() {
     accentColor,    // 'indigo' | 'violet' | 'blue' | ...
     setAccentColor,
   } = useTheme()
-}`}</code>
-        </pre>
+}`}</CodeSnippet>
       </section>
 
     </div>

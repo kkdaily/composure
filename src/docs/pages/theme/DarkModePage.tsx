@@ -1,4 +1,5 @@
 import { useTheme, type Theme } from '../../../context/theme'
+import { CodeSnippet } from '../../CodeSnippet'
 import styles from './ThemePage.module.css'
 
 const MODES: { value: Theme; label: string; description: string }[] = [
@@ -60,8 +61,7 @@ export function DarkModePage() {
           <code className={styles.code}>tokens.css</code> respond to this attribute to swap color
           values — no JavaScript needed once the attribute is set.
         </p>
-        <pre className={styles.codeBlock}>
-          <code>{`/* System preference (no attribute override) */
+        <CodeSnippet language="css">{`/* System preference (no attribute override) */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']):not([data-theme='dark']) {
     --color-bg-1: #0a0a0a;
@@ -75,14 +75,12 @@ export function DarkModePage() {
   --color-bg-1: #0a0a0a;
   --color-text-primary: #f0f0f0;
   /* ... */
-}`}</code>
-        </pre>
+}`}</CodeSnippet>
       </section>
 
       <section className={styles.section}>
         <h2 className={styles.heading}>Controlling appearance</h2>
-        <pre className={styles.codeBlock}>
-          <code>{`import { useTheme } from './context/theme'
+        <CodeSnippet language="tsx">{`import { useTheme } from './context/theme'
 
 function AppearanceToggle() {
   const { theme, setTheme } = useTheme()
@@ -94,8 +92,7 @@ function AppearanceToggle() {
       <option value="dark">Dark</option>
     </select>
   )
-}`}</code>
-        </pre>
+}`}</CodeSnippet>
       </section>
 
       <section className={styles.section}>

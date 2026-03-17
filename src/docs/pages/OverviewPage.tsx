@@ -1,4 +1,5 @@
 import { NavLink } from 'react-router-dom'
+import { CodeSnippet } from '../CodeSnippet'
 import styles from './OverviewPage.module.css'
 
 export function OverviewPage() {
@@ -55,9 +56,7 @@ export function OverviewPage() {
             imports.
           </p>
         </div>
-        <div className={styles.codeBlock}>
-          <code>{`import 'composure/tokens.css'`}</code>
-        </div>
+        <CodeSnippet language="tsx">{`import 'composure/tokens.css'`}</CodeSnippet>
       </section>
 
       {/* ---- Step 3: Wrap with ThemeProvider ---- */}
@@ -71,8 +70,7 @@ export function OverviewPage() {
             automatically.
           </p>
         </div>
-        <div className={styles.codeBlock}>
-          <code>{`import 'composure/tokens.css'
+        <CodeSnippet language="tsx">{`import 'composure/tokens.css'
 import { ThemeProvider } from 'composure'
 
 export default function App() {
@@ -81,8 +79,7 @@ export default function App() {
       {/* your app */}
     </ThemeProvider>
   )
-}`}</code>
-        </div>
+}`}</CodeSnippet>
       </section>
 
       {/* ---- Step 4: Use a component ---- */}
@@ -96,8 +93,7 @@ export default function App() {
             them however your layout requires.
           </p>
         </div>
-        <div className={styles.codeBlock}>
-          <code>{`import {
+        <CodeSnippet language="tsx">{`import {
   ScrollArea,
   ChatMessage,
   Composer,
@@ -139,8 +135,7 @@ export function Chat() {
       </Composer>
     </div>
   )
-}`}</code>
-        </div>
+}`}</CodeSnippet>
       </section>
 
     </div>
