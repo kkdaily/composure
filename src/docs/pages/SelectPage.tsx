@@ -9,6 +9,7 @@ import styles from './SelectPage.module.css'
 
 type DemoSize = 'sm' | 'md' | 'lg'
 type DemoToggle = 'on' | 'off'
+type DemoVariant = 'default' | 'ghost'
 
 /* ===========================
    Shared options
@@ -34,6 +35,7 @@ const modelOptionsWithDisabled = [
 
 export function SelectPage() {
   const [demoSize, setDemoSize] = useState<DemoSize>('md')
+  const [demoVariant, setDemoVariant] = useState<DemoVariant>('default')
   const [demoDisabled, setDemoDisabled] = useState<DemoToggle>('off')
   const [demoValue, setDemoValue] = useState('')
 
@@ -45,6 +47,7 @@ export function SelectPage() {
   const [labelValue, setLabelValue] = useState('claude-opus-4-6')
   const [placeholderValue, setPlaceholderValue] = useState('')
   const [disabledOptValue, setDisabledOptValue] = useState('claude-opus-4-6')
+  const [ghostValue, setGhostValue] = useState('claude-opus-4-6')
   const [disabledValue, setDisabledValue] = useState('claude-opus-4-6')
 
   return (
@@ -66,6 +69,7 @@ export function SelectPage() {
             options={modelOptions}
             placeholder="Choose a model…"
             size={demoSize}
+            variant={demoVariant}
             disabled={demoDisabled === 'on'}
             aria-label="Model"
           />
@@ -81,6 +85,20 @@ export function SelectPage() {
                   onClick={() => setDemoSize(s)}
                 >
                   {s}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className={styles.controlGroup}>
+            <span className={styles.controlLabel}>Variant</span>
+            <div className={styles.controlOptions}>
+              {(['default', 'ghost'] as DemoVariant[]).map((v) => (
+                <button
+                  key={v}
+                  className={`${styles.chip} ${demoVariant === v ? styles.chipActive : ''}`}
+                  onClick={() => setDemoVariant(v)}
+                >
+                  {v}
                 </button>
               ))}
             </div>
@@ -266,6 +284,32 @@ export function SelectPage() {
 />`}</CodeSnippet>
       </section>
 
+      {/* Ghost variant */}
+      <section className={styles.section}>
+        <h2 className={styles.heading}>Ghost</h2>
+        <p className={styles.sectionDescription}>
+          The <code>ghost</code> variant removes the border and background,
+          blending into any surface. Useful inside toolbars, footers, or
+          anywhere a visible border would add visual noise.
+        </p>
+        <div className={styles.exampleArea}>
+          <Select
+            value={ghostValue}
+            onChange={setGhostValue}
+            options={modelOptions}
+            variant="ghost"
+            aria-label="Model"
+          />
+        </div>
+        <CodeSnippet>{`<Select
+  variant="ghost"
+  value={model}
+  onChange={setModel}
+  options={modelOptions}
+  aria-label="Model"
+/>`}</CodeSnippet>
+      </section>
+
       {/* Disabled */}
       <section className={styles.section}>
         <h2 className={styles.heading}>Disabled</h2>
@@ -343,6 +387,12 @@ export function SelectPage() {
                 <td><code>{`'sm' | 'md' | 'lg'`}</code></td>
                 <td><code>'md'</code></td>
                 <td>Size of the select — matches Button sizes</td>
+              </tr>
+              <tr>
+                <td><code>variant</code></td>
+                <td><code>{`'default' | 'ghost'`}</code></td>
+                <td><code>'default'</code></td>
+                <td>Visual style — ghost is borderless with a transparent background</td>
               </tr>
             </tbody>
           </table>

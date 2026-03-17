@@ -71,6 +71,20 @@
   padding: 0 var(--space-9) 0 var(--space-5);
 }
 
+/* --- Variants --- */
+
+.ghost {
+  background-color: transparent;
+  border-color: transparent;
+  color: var(--color-text-secondary);
+}
+
+.ghost:hover:not(:disabled) {
+  border-color: transparent;
+  background-color: var(--color-bg-3);
+  color: var(--color-text-primary);
+}
+
 /* --- Chevron --- */
 
 .chevron {

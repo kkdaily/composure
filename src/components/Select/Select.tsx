@@ -35,6 +35,8 @@ export interface SelectProps
   label?: string
   /** Size of the select */
   size?: 'sm' | 'md' | 'lg'
+  /** Visual style — 'default' shows a border and background, 'ghost' is borderless and transparent */
+  variant?: 'default' | 'ghost'
   /** Whether the entire select is disabled */
   disabled?: boolean
   /** Additional CSS class for external overrides */
@@ -48,6 +50,7 @@ export function Select({
   placeholder,
   label,
   size = 'md',
+  variant = 'default',
   disabled = false,
   className,
   ...rest
@@ -55,7 +58,12 @@ export function Select({
   const generatedId = useId()
   const selectId = rest.id ?? generatedId
 
-  const selectClassNames = [styles.select, styles[size], className ?? '']
+  const selectClassNames = [
+    styles.select,
+    styles[size],
+    variant === 'ghost' ? styles.ghost : '',
+    className ?? '',
+  ]
     .filter(Boolean)
     .join(' ')
 
