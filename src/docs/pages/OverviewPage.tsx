@@ -45,24 +45,10 @@ export function OverviewPage() {
         </div>
       </section>
 
-      {/* ---- Step 2: Import tokens ---- */}
+      {/* ---- Step 2: Wrap with ThemeProvider ---- */}
       <section className={styles.section}>
         <div className={styles.sectionHeader}>
           <span className={styles.stepLabel}>Step 2</span>
-          <h2 className={styles.heading}>Import the design tokens</h2>
-          <p className={styles.body}>
-            All component styles depend on CSS custom properties defined in the
-            token sheet. Import it once at your app root before any component
-            imports.
-          </p>
-        </div>
-        <CodeSnippet language="tsx">{`import 'composure/tokens.css'`}</CodeSnippet>
-      </section>
-
-      {/* ---- Step 3: Wrap with ThemeProvider ---- */}
-      <section className={styles.section}>
-        <div className={styles.sectionHeader}>
-          <span className={styles.stepLabel}>Step 3</span>
           <h2 className={styles.heading}>Wrap your app with ThemeProvider</h2>
           <p className={styles.body}>
             ThemeProvider sets the active color mode and accent palette on the
@@ -82,10 +68,10 @@ export default function App() {
 }`}</CodeSnippet>
       </section>
 
-      {/* ---- Step 4: Use a component ---- */}
+      {/* ---- Step 3: Use a component ---- */}
       <section className={styles.section}>
         <div className={styles.sectionHeader}>
-          <span className={styles.stepLabel}>Step 4</span>
+          <span className={styles.stepLabel}>Step 3</span>
           <h2 className={styles.heading}>Use your first component</h2>
           <p className={styles.body}>
             Import components as named exports. Complex components like Composer
