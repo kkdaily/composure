@@ -1,7 +1,6 @@
-import { useState, useCallback } from 'react'
+import { useState } from 'react'
 import {
   CodeBlock,
-  CodeBlockHeader,
   CodeBlockContent,
 } from '../../components/CodeBlock/CodeBlock'
 import {
@@ -9,26 +8,12 @@ import {
   ChatMessageAvatar,
   ChatMessageContent,
 } from '../../components/ChatMessage/ChatMessage'
-import { IconButton } from '../../components/IconButton/IconButton'
 import { CodeSnippet } from '../CodeSnippet'
 import styles from './CodeBlockPage.module.css'
 
 /* ===========================
    Icons
    =========================== */
-
-const CopyIcon = () => (
-  <svg width="1em" height="1em" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <rect x="5" y="5" width="9" height="9" rx="1" />
-    <path d="M2 11V3a1 1 0 0 1 1-1h8" />
-  </svg>
-)
-
-const CheckIcon = () => (
-  <svg width="1em" height="1em" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M3 8.5l3.5 3.5 6.5-7" />
-  </svg>
-)
 
 const SparkleIcon = () => (
   <svg width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor">
@@ -76,7 +61,6 @@ console.log(greeting)`
 
 type DemoLanguage = 'none' | 'typescript' | 'python'
 type DemoToggle = 'on' | 'off'
-type DemoHeader = 'none' | 'filename' | 'filename + copy'
 
 /* ===========================
    Page
@@ -85,25 +69,15 @@ type DemoHeader = 'none' | 'filename' | 'filename + copy'
 export function CodeBlockPage() {
   const [demoLanguage, setDemoLanguage] = useState<DemoLanguage>('typescript')
   const [demoLineNumbers, setDemoLineNumbers] = useState<DemoToggle>('off')
-  const [demoHeader, setDemoHeader] = useState<DemoHeader>('filename + copy')
-  const [demoCopied, setDemoCopied] = useState(false)
 
   const demoCode = demoLanguage === 'python' ? samplePython : sampleTypescript
-  const demoFilename = demoLanguage === 'python' ? 'stream.py' : 'chat.ts'
-
-  const handleDemoCopy = useCallback(() => {
-    navigator.clipboard.writeText(demoCode).then(() => {
-      setDemoCopied(true)
-      setTimeout(() => setDemoCopied(false), 1500)
-    })
-  }, [demoCode])
 
   return (
     <div className={styles.page}>
       <h1 className={styles.title}>CodeBlock</h1>
       <p className={styles.subtitle}>
-        A composable code display for AI chat responses — header, content,
-        and line numbers with full consumer control over actions.
+        A styled code display for AI chat responses — syntax highlighting, line
+        numbers, and a hover copy button built in.
       </p>
 
       {/* Interactive demo */}
@@ -111,21 +85,6 @@ export function CodeBlockPage() {
         <h2 className={styles.heading}>Demo</h2>
         <div className={styles.demoArea}>
           <CodeBlock>
-            {demoHeader !== 'none' && (
-              <CodeBlockHeader>
-                <span>{demoFilename}</span>
-                {demoHeader === 'filename + copy' && (
-                  <IconButton
-                    label={demoCopied ? 'Copied' : 'Copy code'}
-                    size="sm"
-                    variant="ghost"
-                    onClick={handleDemoCopy}
-                  >
-                    {demoCopied ? <CheckIcon /> : <CopyIcon />}
-                  </IconButton>
-                )}
-              </CodeBlockHeader>
-            )}
             <CodeBlockContent
               language={demoLanguage === 'none' ? undefined : demoLanguage}
               showLineNumbers={demoLineNumbers === 'on'}
@@ -163,20 +122,6 @@ export function CodeBlockPage() {
               ))}
             </div>
           </div>
-          <div className={styles.controlGroup}>
-            <span className={styles.controlLabel}>Header</span>
-            <div className={styles.controlOptions}>
-              {(['none', 'filename', 'filename + copy'] as DemoHeader[]).map((h) => (
-                <button
-                  key={h}
-                  className={`${styles.chip} ${demoHeader === h ? styles.chipActive : ''}`}
-                  onClick={() => setDemoHeader(h)}
-                >
-                  {h}
-                </button>
-              ))}
-            </div>
-          </div>
         </div>
       </section>
 
@@ -184,9 +129,8 @@ export function CodeBlockPage() {
       <section className={styles.section}>
         <h2 className={styles.heading}>Basic Usage</h2>
         <p className={styles.sectionDescription}>
-          The simplest configuration — a <code>CodeBlock</code> with just{' '}
-          <code>CodeBlockContent</code>. Useful for inline code snippets in AI
-          responses where no header or actions are needed.
+          Wrap <code>CodeBlockContent</code> in <code>CodeBlock</code>. A copy
+          button appears automatically at the top right when the user hovers.
         </p>
         <CodeBlock>
           <CodeBlockContent>{sampleShort}</CodeBlockContent>
@@ -199,32 +143,19 @@ console.log(greeting)\`}
 </CodeBlock>`}</CodeSnippet>
       </section>
 
-      {/* With Header */}
+      {/* Syntax Highlighting */}
       <section className={styles.section}>
-        <h2 className={styles.heading}>With Header</h2>
+        <h2 className={styles.heading}>Syntax Highlighting</h2>
         <p className={styles.sectionDescription}>
-          Add a <code>CodeBlockHeader</code> to display a filename, language
-          label, or action buttons. The header is a flexbox row with{' '}
-          <code>space-between</code> layout — place your own content freely.
+          Pass a <code>language</code> prop to <code>CodeBlockContent</code> to
+          enable syntax highlighting. Tokens are resolved from the active theme.
         </p>
         <CodeBlock>
-          <CodeBlockHeader>
-            <span>chat.ts</span>
-            <IconButton label="Copy code" size="sm" variant="ghost">
-              <CopyIcon />
-            </IconButton>
-          </CodeBlockHeader>
           <CodeBlockContent language="typescript">
             {sampleTypescript}
           </CodeBlockContent>
         </CodeBlock>
         <CodeSnippet>{`<CodeBlock>
-  <CodeBlockHeader>
-    <span>chat.ts</span>
-    <IconButton label="Copy code" size="sm" variant="ghost">
-      <CopyIcon />
-    </IconButton>
-  </CodeBlockHeader>
   <CodeBlockContent language="typescript">
     {codeString}
   </CodeBlockContent>
@@ -235,22 +166,16 @@ console.log(greeting)\`}
       <section className={styles.section}>
         <h2 className={styles.heading}>Line Numbers</h2>
         <p className={styles.sectionDescription}>
-          Enable <code>showLineNumbers</code> on <code>CodeBlockContent</code>{' '}
-          for longer code snippets where line references are helpful — for example,
-          when an AI assistant explains specific lines in generated code.
+          Enable <code>showLineNumbers</code> for longer snippets where line
+          references matter — for example, when an AI explains specific lines
+          in generated code.
         </p>
         <CodeBlock>
-          <CodeBlockHeader>
-            <span>stream.py</span>
-          </CodeBlockHeader>
           <CodeBlockContent language="python" showLineNumbers>
             {samplePython}
           </CodeBlockContent>
         </CodeBlock>
         <CodeSnippet>{`<CodeBlock>
-  <CodeBlockHeader>
-    <span>stream.py</span>
-  </CodeBlockHeader>
   <CodeBlockContent language="python" showLineNumbers>
     {codeString}
   </CodeBlockContent>
@@ -272,12 +197,6 @@ console.log(greeting)\`}
           <ChatMessageContent variant="plain">
             <p className={styles.inlineText}>Here's how you can send a message to the API:</p>
             <CodeBlock>
-              <CodeBlockHeader>
-                <span>chat.ts</span>
-                <IconButton label="Copy code" size="sm" variant="ghost">
-                  <CopyIcon />
-                </IconButton>
-              </CodeBlockHeader>
               <CodeBlockContent language="typescript">
                 {sampleShort}
               </CodeBlockContent>
@@ -291,12 +210,6 @@ console.log(greeting)\`}
   <ChatMessageContent variant="plain">
     <p>Here's how you can send a message to the API:</p>
     <CodeBlock>
-      <CodeBlockHeader>
-        <span>chat.ts</span>
-        <IconButton label="Copy code" size="sm" variant="ghost">
-          <CopyIcon />
-        </IconButton>
-      </CodeBlockHeader>
       <CodeBlockContent language="typescript">
         {codeString}
       </CodeBlockContent>
@@ -325,7 +238,7 @@ console.log(greeting)\`}
                 <td><code>language</code></td>
                 <td><code>string</code></td>
                 <td>—</td>
-                <td>Language identifier — sets a data attribute for syntax highlighting integration</td>
+                <td>Language identifier for syntax highlighting (e.g. <code>"typescript"</code>, <code>"python"</code>)</td>
               </tr>
               <tr>
                 <td><code>showLineNumbers</code></td>
