@@ -26,7 +26,7 @@ interface SidebarItem {
 
 const sections: { heading: string; items: SidebarItem[] }[] = [
   {
-    heading: 'Getting Started',
+    heading: 'Overview',
     items: [
       { id: 'overview', label: 'Getting Started', path: '/' },
       { id: 'tokens', label: 'Tokens', path: '/tokens' },
