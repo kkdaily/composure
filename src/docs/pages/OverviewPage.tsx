@@ -1,72 +1,6 @@
 import { NavLink } from 'react-router-dom'
 import styles from './OverviewPage.module.css'
 
-const COMPONENTS: { name: string; path: string; desc: string }[] = [
-  {
-    name: 'Avatar',
-    path: '/components/avatar',
-    desc: 'User or assistant identity with image fallback and role indicator.',
-  },
-  {
-    name: 'Button',
-    path: '/components/button',
-    desc: 'Primary action trigger with size, variant, and loading state.',
-  },
-  {
-    name: 'ChatMessage',
-    path: '/components/chat-message',
-    desc: 'Full conversation turn with avatar, content, and role-aware styling.',
-  },
-  {
-    name: 'CodeBlock',
-    path: '/components/code-block',
-    desc: 'Syntax-highlighted code with language label and copy button.',
-  },
-  {
-    name: 'Composer',
-    path: '/components/composer',
-    desc: 'Auto-resizing message input with optional header and footer slots.',
-  },
-  {
-    name: 'IconButton',
-    path: '/components/icon-button',
-    desc: 'Compact accessible button for icon-only actions.',
-  },
-  {
-    name: 'ScrollArea',
-    path: '/components/scroll-area',
-    desc: 'Overflow container that auto-scrolls to new content.',
-  },
-  {
-    name: 'Select',
-    path: '/components/select',
-    desc: 'Accessible dropdown for choosing a value from a list.',
-  },
-]
-
-const PRINCIPLES = [
-  {
-    icon: '◆',
-    title: 'Token-driven',
-    text: 'Every color, spacing value, radius, and animation speed is a CSS custom property. No raw values appear in component stylesheets.',
-  },
-  {
-    icon: '◈',
-    title: 'Composable',
-    text: 'Complex components are split into named exports (Composer, ComposerInput, ComposerFooter) rather than monolithic blocks. Combine them however your layout requires.',
-  },
-  {
-    icon: '◉',
-    title: 'Accessible',
-    text: 'Semantic HTML, visible focus rings, ARIA attributes, and prefers-reduced-motion support are built in — not bolted on.',
-  },
-  {
-    icon: '◎',
-    title: 'Themeable',
-    text: 'Light, dark, and system modes plus eight accent color palettes are supported through ThemeProvider with zero additional CSS needed.',
-  },
-]
-
 export function OverviewPage() {
   return (
     <div className={styles.page}>
@@ -206,44 +140,6 @@ export function Chat() {
     </div>
   )
 }`}</code>
-        </div>
-      </section>
-
-      {/* ---- Components ---- */}
-      <section className={styles.section}>
-        <div className={styles.sectionHeader}>
-          <h2 className={styles.heading}>Components</h2>
-          <p className={styles.body}>
-            Eight components covering the most common patterns in AI chat
-            interfaces. Each has a live demo, all major props documented, and
-            copyable code snippets.
-          </p>
-        </div>
-        <div className={styles.componentGrid}>
-          {COMPONENTS.map((c) => (
-            <NavLink key={c.name} to={c.path} className={styles.componentCard}>
-              <span className={styles.componentName}>{c.name}</span>
-              <span className={styles.componentDesc}>{c.desc}</span>
-            </NavLink>
-          ))}
-        </div>
-      </section>
-
-      {/* ---- Principles ---- */}
-      <section className={styles.section}>
-        <div className={styles.sectionHeader}>
-          <h2 className={styles.heading}>Design principles</h2>
-        </div>
-        <div className={styles.principleList}>
-          {PRINCIPLES.map((p) => (
-            <div key={p.title} className={styles.principleRow}>
-              <span className={styles.principleIcon}>{p.icon}</span>
-              <div className={styles.principleContent}>
-                <span className={styles.principleTitle}>{p.title}</span>
-                <span className={styles.principleText}>{p.text}</span>
-              </div>
-            </div>
-          ))}
         </div>
       </section>
 
