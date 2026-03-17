@@ -9,6 +9,7 @@ import { DarkModePage } from './docs/pages/theme/DarkModePage'
 import { TypographyPage } from './docs/pages/theme/TypographyPage'
 import { SpacingPage } from './docs/pages/theme/SpacingPage'
 import { RadiusPage } from './docs/pages/theme/RadiusPage'
+import { AnimationPage } from './docs/pages/theme/AnimationPage'
 import { ButtonPage } from './docs/pages/ButtonPage'
 import { IconButtonPage } from './docs/pages/IconButtonPage'
 import { ComposerPage } from './docs/pages/ComposerPage'
@@ -30,6 +31,7 @@ function App() {
         <Route path="/theme/typography" element={<TypographyPage />} />
         <Route path="/theme/spacing" element={<SpacingPage />} />
         <Route path="/theme/radius" element={<RadiusPage />} />
+        <Route path="/theme/animation" element={<AnimationPage />} />
         <Route path="/components/avatar" element={<AvatarPage />} />
         <Route path="/components/button" element={<ButtonPage />} />
         <Route path="/components/chat-message" element={<ChatMessagePage />} />

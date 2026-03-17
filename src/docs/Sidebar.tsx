@@ -10,6 +10,7 @@ export type PageId =
   | 'theme-typography'
   | 'theme-spacing'
   | 'theme-radius'
+  | 'theme-animation'
   | 'avatar'
   | 'button'
   | 'chat-message'
@@ -42,6 +43,7 @@ const sections: { heading: string; items: SidebarItem[] }[] = [
       { id: 'theme-typography', label: 'Typography',   path: '/theme/typography' },
       { id: 'theme-spacing',    label: 'Spacing',      path: '/theme/spacing' },
       { id: 'theme-radius',     label: 'Radius',       path: '/theme/radius' },
+      { id: 'theme-animation',  label: 'Animation',    path: '/theme/animation' },
     ],
   },
   {

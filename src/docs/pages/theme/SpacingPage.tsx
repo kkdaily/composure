@@ -15,12 +15,6 @@ const spacingScale = [
   { variable: '--space-10', value: '64px', px: 64 },
 ]
 
-const speeds = [
-  { variable: '--speed-fast',   value: '120ms', ms: 120, desc: 'Micro-interactions, hover states' },
-  { variable: '--speed-normal', value: '220ms', ms: 220, desc: 'Panel reveals, modal entrances' },
-  { variable: '--speed-stream', value: '30ms',  ms: 30,  desc: 'Token-by-token text streaming' },
-]
-
 const MAX_PX = 64
 
 export function SpacingPage() {
@@ -58,27 +52,6 @@ export function SpacingPage() {
       </section>
 
       <section className={styles.section}>
-        <h2 className={styles.heading}>Animation Speed</h2>
-        <p className={styles.body}>
-          Three timing tokens give the UI a consistent sense of motion — fast for instant feedback, normal for transitions, and stream for real-time text.
-        </p>
-        <div className={pageStyles.speedTable}>
-          <div className={pageStyles.tableHeader}>
-            <span className={pageStyles.tableHeaderCell}>Token</span>
-            <span className={pageStyles.tableHeaderCell}>Value</span>
-            <span className={pageStyles.tableHeaderCell}>Use case</span>
-          </div>
-          {speeds.map((s) => (
-            <div key={s.variable} className={pageStyles.speedRow}>
-              <code className={pageStyles.tokenVar}>{s.variable}</code>
-              <span className={pageStyles.tokenValue}>{s.value}</span>
-              <span className={pageStyles.speedDesc}>{s.desc}</span>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className={styles.section}>
         <h2 className={styles.heading}>Usage</h2>
         <CodeSnippet language="css">{`/* Padding and gap */
 .card {
@@ -86,13 +59,9 @@ export function SpacingPage() {
   gap: var(--space-4);
 }
 
-/* Transitions */
-.panel {
-  transition: opacity var(--speed-normal) var(--ease-out);
-}
-
-.chip:hover {
-  transition: background-color var(--speed-fast) var(--ease-out);
+/* Margin */
+.section + .section {
+  margin-top: var(--space-8);
 }`}</CodeSnippet>
       </section>
     </div>
