@@ -1,4 +1,4 @@
-import { useId, type SelectHTMLAttributes } from 'react'
+import { useId, useRef, useEffect, type SelectHTMLAttributes } from 'react'
 import styles from './Select.module.css'
 
 /* ===========================
@@ -43,6 +43,12 @@ export interface SelectProps
   className?: string
 }
 
+const FONT_SIZE: Record<string, string> = {
+  sm: 'var(--text-xs)',
+  md: 'var(--text-sm)',
+  lg: 'var(--text-base)',
+}
+
 export function Select({
   value,
   onChange,
@@ -57,6 +63,24 @@ export function Select({
 }: SelectProps) {
   const generatedId = useId()
   const selectId = rest.id ?? generatedId
+  const selectRef = useRef<HTMLSelectElement>(null)
+  const rulerRef = useRef<HTMLSpanElement>(null)
+
+  const selectedLabel =
+    options.find((o) => o.value === value)?.label ?? placeholder ?? ''
+
+  useEffect(() => {
+    const select = selectRef.current
+    const ruler = rulerRef.current
+    if (!select || !ruler) return
+    const computed = window.getComputedStyle(select)
+    const extra =
+      parseFloat(computed.paddingLeft) +
+      parseFloat(computed.paddingRight) +
+      parseFloat(computed.borderLeftWidth) +
+      parseFloat(computed.borderRightWidth)
+    select.style.width = `${ruler.offsetWidth + extra}px`
+  }, [value, size, options])
 
   const selectClassNames = [
     styles.select,
@@ -75,7 +99,16 @@ export function Select({
         </label>
       )}
       <div className={styles.selectWrapper}>
+        <span
+          ref={rulerRef}
+          className={styles.ruler}
+          style={{ fontSize: FONT_SIZE[size] }}
+          aria-hidden="true"
+        >
+          {selectedLabel}
+        </span>
         <select
+          ref={selectRef}
           id={selectId}
           className={selectClassNames}
           value={value}

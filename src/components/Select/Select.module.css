@@ -71,6 +71,19 @@
   padding: 0 var(--space-9) 0 var(--space-5);
 }
 
+/* --- Ruler (hidden element used to measure text width) --- */
+
+.ruler {
+  position: absolute;
+  top: -9999px;
+  left: -9999px;
+  visibility: hidden;
+  white-space: nowrap;
+  pointer-events: none;
+  font-family: var(--font-sans);
+  font-weight: var(--weight-normal);
+}
+
 /* --- Variants --- */
 
 .ghost {
