@@ -41,7 +41,7 @@ const ThemeContext = createContext<ThemeContextValue | null>(null)
 
 const STORAGE_KEY = 'composure-theme'
 const ACCENT_STORAGE_KEY = 'composure-accent'
-const DEFAULT_ACCENT: AccentColor = 'indigo'
+const DEFAULT_ACCENT: AccentColor = 'violet'
 
 function getSystemTheme(): ResolvedTheme {
   return window.matchMedia('(prefers-color-scheme: dark)').matches

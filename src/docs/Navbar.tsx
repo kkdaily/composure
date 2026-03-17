@@ -1,17 +1,6 @@
 import { NavLink } from 'react-router-dom'
-import { useTheme, ACCENT_COLORS, type Theme, type AccentColor } from '../context/theme'
+import { useTheme, type Theme } from '../context/theme'
 import styles from './Navbar.module.css'
-
-const ACCENT_HEX: Record<AccentColor, string> = {
-  indigo: '#5f61ee',
-  violet: '#7c3aed',
-  blue: '#2563eb',
-  teal: '#0d9488',
-  green: '#16a34a',
-  orange: '#ea580c',
-  red: '#dc2626',
-  crimson: '#e11d48',
-}
 
 function LogoMark() {
   return (
@@ -90,7 +79,7 @@ const THEME_ICONS: Record<Theme, () => JSX.Element> = {
 }
 
 export function Navbar() {
-  const { theme, setTheme, accentColor, setAccentColor } = useTheme()
+  const { theme, setTheme } = useTheme()
 
   function cycleTheme() {
     const idx = THEME_CYCLE.indexOf(theme)
@@ -107,20 +96,6 @@ export function Navbar() {
         <span className={styles.brandName}>Composure</span>
       </NavLink>
       <div className={styles.actions}>
-        <div className={styles.accentPicker} role="group" aria-label="Accent color">
-          {ACCENT_COLORS.map((color) => (
-            <button
-              key={color}
-              onClick={() => setAccentColor(color)}
-              className={`${styles.accentSwatch} ${accentColor === color ? styles.accentSwatchActive : ''}`}
-              style={{ backgroundColor: ACCENT_HEX[color] }}
-              aria-label={`${color} accent`}
-              aria-pressed={accentColor === color}
-              title={color}
-            />
-          ))}
-        </div>
-        <div className={styles.divider} aria-hidden="true" />
         <button
           onClick={cycleTheme}
           className={styles.iconButton}

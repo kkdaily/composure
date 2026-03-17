@@ -15,13 +15,13 @@
   --color-text-secondary: #555555;
   --color-text-muted: #646464; /* was #999999 — darkened to clear 4.5:1 on white */
 
-  /* Accent (default: indigo) */
-  --color-accent: #5f61ee; /* was #6366f1 — darkened so white text clears 4.5:1 */
-  --color-accent-hover: #5254cc;
+  /* Accent (default: violet) */
+  --color-accent: #7c3aed;
+  --color-accent-hover: #6d28d9;
 
   /* Chat bubbles */
   --color-assistant-bubble: #f0f0f0;
-  --color-user-bubble: #5f61ee; /* matches accent */
+  --color-user-bubble: #7c3aed;
   --color-user-bubble-text: #ffffff;
 
   /* Semantic */
