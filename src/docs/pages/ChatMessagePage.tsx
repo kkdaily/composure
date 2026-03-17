@@ -59,6 +59,7 @@ const ThumbDownIcon = () => (
 type DemoRole = 'assistant' | 'user'
 type DemoVariant = 'filled' | 'plain'
 type DemoToggle = 'show' | 'hide'
+type DemoOnOff = 'on' | 'off'
 
 /* ===========================
    Page
@@ -69,6 +70,7 @@ export function ChatMessagePage() {
   const [demoVariant, setDemoVariant] = useState<DemoVariant>('filled')
   const [demoAvatar, setDemoAvatar] = useState<DemoToggle>('show')
   const [demoActions, setDemoActions] = useState<DemoToggle>('show')
+  const [demoHoverActions, setDemoHoverActions] = useState<DemoOnOff>('off')
 
   return (
     <div className={styles.page}>
@@ -82,7 +84,7 @@ export function ChatMessagePage() {
       <section className={styles.section}>
         <h2 className={styles.heading}>Demo</h2>
         <div className={styles.demoArea}>
-          <ChatMessage role={demoRole}>
+          <ChatMessage role={demoRole} showActionsOnHover={demoHoverActions === 'on'}>
             {demoAvatar === 'show' && (
               <ChatMessageAvatar>
                 {demoRole === 'assistant' ? <SparkleIcon /> : <UserIcon />}
@@ -158,6 +160,20 @@ export function ChatMessagePage() {
                   key={t}
                   className={`${styles.chip} ${demoActions === t ? styles.chipActive : ''}`}
                   onClick={() => setDemoActions(t)}
+                >
+                  {t}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className={styles.controlGroup}>
+            <span className={styles.controlLabel}>Hover actions</span>
+            <div className={styles.controlOptions}>
+              {(['on', 'off'] as DemoOnOff[]).map((t) => (
+                <button
+                  key={t}
+                  className={`${styles.chip} ${demoHoverActions === t ? styles.chipActive : ''}`}
+                  onClick={() => setDemoHoverActions(t)}
                 >
                   {t}
                 </button>
@@ -260,6 +276,48 @@ export function ChatMessagePage() {
           </ChatMessage>
         </div>
         <CodeSnippet>{`<ChatMessage role="assistant">
+  <ChatMessageAvatar>
+    <SparkleIcon />
+  </ChatMessageAvatar>
+  <ChatMessageContent>
+    Here's a quick summary of the key differences...
+  </ChatMessageContent>
+  <ChatMessageActions>
+    <IconButton label="Copy" size="sm"><CopyIcon /></IconButton>
+    <IconButton label="Regenerate" size="sm"><RefreshIcon /></IconButton>
+    <IconButton label="Good response" size="sm"><ThumbUpIcon /></IconButton>
+    <IconButton label="Bad response" size="sm"><ThumbDownIcon /></IconButton>
+  </ChatMessageActions>
+</ChatMessage>`}</CodeSnippet>
+      </section>
+
+      {/* Hover Actions */}
+      <section className={styles.section}>
+        <h2 className={styles.heading}>Hover Actions</h2>
+        <p className={styles.sectionDescription}>
+          Pass <code>showActionsOnHover</code> to keep actions hidden until the
+          user hovers the message. Actions are also revealed on keyboard focus
+          within the row, keeping the interface accessible. Hover over the
+          message below to see it in action.
+        </p>
+        <div className={styles.conversation}>
+          <ChatMessage role="assistant" showActionsOnHover>
+            <ChatMessageAvatar>
+              <SparkleIcon />
+            </ChatMessageAvatar>
+            <ChatMessageContent>
+              Here's a quick summary of the key differences between server
+              components and client components in React.
+            </ChatMessageContent>
+            <ChatMessageActions>
+              <IconButton label="Copy" size="sm"><CopyIcon /></IconButton>
+              <IconButton label="Regenerate" size="sm"><RefreshIcon /></IconButton>
+              <IconButton label="Good response" size="sm"><ThumbUpIcon /></IconButton>
+              <IconButton label="Bad response" size="sm"><ThumbDownIcon /></IconButton>
+            </ChatMessageActions>
+          </ChatMessage>
+        </div>
+        <CodeSnippet>{`<ChatMessage role="assistant" showActionsOnHover>
   <ChatMessageAvatar>
     <SparkleIcon />
   </ChatMessageAvatar>
@@ -467,6 +525,12 @@ export function ChatMessagePage() {
                 <td><code>{`'assistant' | 'user'`}</code></td>
                 <td>—</td>
                 <td>Determines bubble color and layout direction</td>
+              </tr>
+              <tr>
+                <td><code>showActionsOnHover</code></td>
+                <td><code>boolean</code></td>
+                <td><code>false</code></td>
+                <td>Hides <code>ChatMessageActions</code> until the message is hovered or focused</td>
               </tr>
             </tbody>
           </table>

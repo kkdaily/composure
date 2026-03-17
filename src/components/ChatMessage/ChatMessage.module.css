@@ -87,10 +87,22 @@
   justify-self: end;
 }
 
+/* --- Hover actions --- */
+
+.actionsOnHover .actions {
+  opacity: 0;
+  transition: opacity 150ms ease;
+}
+
+.actionsOnHover:hover .actions,
+.actionsOnHover:focus-within .actions {
+  opacity: 1;
+}
+
 /* --- Reduced motion --- */
 
 @media (prefers-reduced-motion: reduce) {
-  .chatMessage {
+  .actionsOnHover .actions {
     transition: none;
   }
 }

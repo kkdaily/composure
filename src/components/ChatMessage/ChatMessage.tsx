@@ -34,6 +34,8 @@ export interface ChatMessageProps
   extends Omit<HTMLAttributes<HTMLDivElement>, 'className' | 'role'> {
   /** Determines bubble color and layout direction */
   role: 'assistant' | 'user'
+  /** When true, ChatMessageActions are hidden and only revealed on hover */
+  showActionsOnHover?: boolean
   /** Additional CSS class for external overrides */
   className?: string
   /** ChatMessage sub-components */
@@ -42,6 +44,7 @@ export interface ChatMessageProps
 
 export function ChatMessage({
   role,
+  showActionsOnHover = false,
   className,
   children,
   ...rest
@@ -49,6 +52,7 @@ export function ChatMessage({
   const classNames = [
     styles.chatMessage,
     role === 'user' ? styles.user : '',
+    showActionsOnHover ? styles.actionsOnHover : '',
     className ?? '',
   ]
     .filter(Boolean)
