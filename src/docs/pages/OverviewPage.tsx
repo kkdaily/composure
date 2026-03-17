@@ -1,4 +1,5 @@
 import { NavLink } from 'react-router-dom'
+import { CodeBlock, CodeBlockContent } from '../../components/CodeBlock/CodeBlock'
 import { CodeSnippet } from '../CodeSnippet'
 import styles from './OverviewPage.module.css'
 
@@ -39,10 +40,9 @@ export function OverviewPage() {
             Add Composure to your project via the shadcn CLI.
           </p>
         </div>
-        <div className={styles.installRow}>
-          <span className={styles.installPrompt}>$</span>
-          <span className={styles.installCmd}>pnpm dlx shadcn@latest add @composure/button</span>
-        </div>
+        <CodeBlock>
+          <CodeBlockContent language="bash">pnpm dlx shadcn@latest add @composure/button</CodeBlockContent>
+        </CodeBlock>
       </section>
 
       {/* ---- Step 2: Wrap with ThemeProvider ---- */}
