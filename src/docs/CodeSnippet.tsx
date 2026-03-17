@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react'
+import { CodeBlock, CodeBlockHeader, CodeBlockContent } from '../components/CodeBlock/CodeBlock'
 import { IconButton } from '../components/IconButton/IconButton'
-import styles from './CodeSnippet.module.css'
 
 const CopyIcon = () => (
   <svg width="1em" height="1em" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -17,10 +17,11 @@ const CheckIcon = () => (
 
 export interface CodeSnippetProps {
   children: string
+  language?: string
   className?: string
 }
 
-export function CodeSnippet({ children, className }: CodeSnippetProps) {
+export function CodeSnippet({ children, language = 'tsx', className }: CodeSnippetProps) {
   const [copied, setCopied] = useState(false)
 
   const handleCopy = useCallback(() => {
@@ -31,11 +32,9 @@ export function CodeSnippet({ children, className }: CodeSnippetProps) {
   }, [children])
 
   return (
-    <div className={`${styles.wrapper} ${className ?? ''}`}>
-      <pre className={styles.pre}>
-        <code className={styles.code}>{children}</code>
-      </pre>
-      <div className={styles.copyButton}>
+    <CodeBlock className={className}>
+      <CodeBlockHeader>
+        <span />
         <IconButton
           variant="ghost"
           size="sm"
@@ -44,7 +43,8 @@ export function CodeSnippet({ children, className }: CodeSnippetProps) {
         >
           {copied ? <CheckIcon /> : <CopyIcon />}
         </IconButton>
-      </div>
-    </div>
+      </CodeBlockHeader>
+      <CodeBlockContent language={language}>{children}</CodeBlockContent>
+    </CodeBlock>
   )
 }
