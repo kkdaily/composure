@@ -2,7 +2,6 @@ import { useState, useRef, useCallback, useEffect } from 'react'
 import { ScrollArea, ScrollAreaScrollToBottom } from '../../components/ScrollArea/ScrollArea'
 import {
   ChatMessage,
-  ChatMessageAvatar,
   ChatMessageContent,
 } from '../../components/ChatMessage/ChatMessage'
 import { CodeSnippet } from '../CodeSnippet'
@@ -11,19 +10,6 @@ import styles from './ScrollAreaPage.module.css'
 /* ===========================
    Icons
    =========================== */
-
-const SparkleIcon = () => (
-  <svg width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-    <path d="M8 1l1.5 4.5L14 7l-4.5 1.5L8 13l-1.5-4.5L2 7l4.5-1.5z" />
-  </svg>
-)
-
-const UserIcon = () => (
-  <svg width="1em" height="1em" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    <circle cx="8" cy="5" r="3" />
-    <path d="M2 14c0-2.8 2.7-5 6-5s6 2.2 6 5" />
-  </svg>
-)
 
 const ArrowDownIcon = () => (
   <svg width="1em" height="1em" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -51,8 +37,6 @@ interface Message {
 const initialMessages: Message[] = [
   { id: 1, role: 'user', text: 'Can you explain how React context works?' },
   { id: 2, role: 'assistant', text: 'React context provides a way to pass data through the component tree without having to pass props down manually at every level. You create a context with createContext(), provide it with a Provider, and consume it with useContext().' },
-  { id: 3, role: 'user', text: 'When should I use context versus props?' },
-  { id: 4, role: 'assistant', text: 'Use context when data needs to be accessed by many components at different nesting levels — things like themes, auth state, or locale. For data that only one or two children need, regular props are simpler and more explicit.' },
 ]
 
 const streamingResponse = `Great question! There are several strategies to optimize context performance in React applications.
@@ -79,17 +63,18 @@ function useStreamingDemo(fullText: string, speed = 12) {
   const indexRef = useRef(0)
 
   const startStreaming = useCallback(() => {
-    if (isStreaming) return
+    // Reset first if already streaming or has previous results
+    if (intervalRef.current) clearInterval(intervalRef.current)
+    setStreamedText('')
+    indexRef.current = 0
 
     // Add the user follow-up question, then start streaming
     setMessages([
       ...initialMessages,
-      { id: 5, role: 'user', text: 'What about performance? Any tips to optimize context?' },
+      { id: 3, role: 'user', text: 'What about performance? Any tips to optimize context?' },
     ])
-    setStreamedText('')
-    indexRef.current = 0
     setIsStreaming(true)
-  }, [isStreaming])
+  }, [])
 
   useEffect(() => {
     if (!isStreaming) return
@@ -110,15 +95,7 @@ function useStreamingDemo(fullText: string, speed = 12) {
     }
   }, [isStreaming, fullText, speed])
 
-  const reset = useCallback(() => {
-    if (intervalRef.current) clearInterval(intervalRef.current)
-    setIsStreaming(false)
-    setStreamedText('')
-    indexRef.current = 0
-    setMessages(initialMessages)
-  }, [])
-
-  return { messages, streamedText, isStreaming, startStreaming, reset }
+  return { messages, streamedText, isStreaming, startStreaming }
 }
 
 /* ===========================
@@ -128,7 +105,7 @@ function useStreamingDemo(fullText: string, speed = 12) {
 export function ScrollAreaPage() {
   const [demoMode, setDemoMode] = useState<DemoMode>('auto')
   const demo = useStreamingDemo(streamingResponse)
-  const basicDemo = useStreamingDemo(streamingResponse)
+
 
   return (
     <div className={styles.page}>
@@ -151,17 +128,11 @@ export function ScrollAreaPage() {
             <div className={styles.conversation}>
               {demo.messages.map((msg) => (
                 <ChatMessage key={msg.id} role={msg.role}>
-                  <ChatMessageAvatar>
-                    {msg.role === 'assistant' ? <SparkleIcon /> : <UserIcon />}
-                  </ChatMessageAvatar>
                   <ChatMessageContent>{msg.text}</ChatMessageContent>
                 </ChatMessage>
               ))}
               {demo.streamedText && (
                 <ChatMessage role="assistant">
-                  <ChatMessageAvatar>
-                    <SparkleIcon />
-                  </ChatMessageAvatar>
                   <ChatMessageContent>{demo.streamedText}</ChatMessageContent>
                 </ChatMessage>
               )}
@@ -172,18 +143,13 @@ export function ScrollAreaPage() {
               </button>
             </ScrollAreaScrollToBottom>
           </ScrollArea>
-          <div className={styles.controlOptions}>
-            <button
-              className={styles.chip}
-              onClick={demo.startStreaming}
-              disabled={demo.isStreaming}
-            >
-              {demo.isStreaming ? 'Streaming…' : 'Stream response'}
-            </button>
-            <button className={styles.chip} onClick={demo.reset}>
-              Reset
-            </button>
-          </div>
+          <button
+            className={styles.chip}
+            onClick={demo.startStreaming}
+            disabled={demo.isStreaming}
+          >
+            {demo.isStreaming ? 'Streaming…' : 'Stream response'}
+          </button>
         </div>
         <div className={styles.controls}>
           <div className={styles.controlGroup}>
@@ -212,35 +178,6 @@ export function ScrollAreaPage() {
           arriving at the bottom will auto-scroll the container — unless the
           user has scrolled up to read earlier messages.
         </p>
-        <div className={styles.exampleArea}>
-          <ScrollArea mode="auto" className={styles.scrollContainer}>
-            <div className={styles.conversation}>
-              {basicDemo.messages.map((msg) => (
-                <ChatMessage key={msg.id} role={msg.role}>
-                  <ChatMessageAvatar>
-                    {msg.role === 'assistant' ? <SparkleIcon /> : <UserIcon />}
-                  </ChatMessageAvatar>
-                  <ChatMessageContent>{msg.text}</ChatMessageContent>
-                </ChatMessage>
-              ))}
-              {basicDemo.streamedText && (
-                <ChatMessage role="assistant">
-                  <ChatMessageAvatar>
-                    <SparkleIcon />
-                  </ChatMessageAvatar>
-                  <ChatMessageContent>{basicDemo.streamedText}</ChatMessageContent>
-                </ChatMessage>
-              )}
-            </div>
-          </ScrollArea>
-          <button
-            className={styles.chip}
-            onClick={basicDemo.startStreaming}
-            disabled={basicDemo.isStreaming}
-          >
-            {basicDemo.isStreaming ? 'Streaming…' : 'Stream response'}
-          </button>
-        </div>
         <CodeSnippet>{`<ScrollArea mode="auto" className={styles.chatContainer}>
   {messages.map((msg) => (
     <ChatMessage key={msg.id} role={msg.role}>

@@ -1,4 +1,5 @@
 import { type ReactNode, type HTMLAttributes } from 'react'
+import { useHighlighter } from './useHighlighter'
 import styles from './CodeBlock.module.css'
 
 /* ===========================
@@ -68,6 +69,8 @@ export function CodeBlockContent({
   children,
   ...rest
 }: CodeBlockContentProps) {
+  const { tokens, ready } = useHighlighter(children, language)
+
   const lines = children.split('\n')
 
   // Remove trailing empty line that often appears in template literals
@@ -83,6 +86,18 @@ export function CodeBlockContent({
     .filter(Boolean)
     .join(' ')
 
+  // Render highlighted tokens when ready, plain text as fallback
+  const renderLine = (lineIndex: number) => {
+    if (ready && tokens[lineIndex]) {
+      return tokens[lineIndex].map((token, j) => (
+        <span key={j} style={token.color ? { color: token.color } : undefined}>
+          {token.content}
+        </span>
+      ))
+    }
+    return lines[lineIndex] || '\n'
+  }
+
   return (
     <pre className={preClassNames} tabIndex={0} {...rest}>
       <code
@@ -90,17 +105,31 @@ export function CodeBlockContent({
         {...(language ? { 'data-language': language } : {})}
       >
         {showLineNumbers
-          ? lines.map((line, i) => (
+          ? lines.map((_, i) => (
               <span key={i} className={styles.line}>
                 <span className={styles.lineNumber} aria-hidden="true">
                   {i + 1}
                 </span>
                 <span className={styles.lineContent}>
-                  {line || '\n'}
+                  {renderLine(i)}
                 </span>
               </span>
             ))
-          : children}
+          : ready && tokens.length > 0
+            ? tokens.map((line, i) => (
+                <span key={i}>
+                  {line.map((token, j) => (
+                    <span
+                      key={j}
+                      style={token.color ? { color: token.color } : undefined}
+                    >
+                      {token.content}
+                    </span>
+                  ))}
+                  {i < tokens.length - 1 ? '\n' : ''}
+                </span>
+              ))
+            : children}
       </code>
     </pre>
   )
