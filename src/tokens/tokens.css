@@ -75,9 +75,16 @@
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* --- Dark Mode --- */
+/* ===========================
+   Dark Mode Tokens
+   Applied when:
+     - No data-theme is set and the OS prefers dark  (system / inherit)
+     - data-theme="dark" is explicitly set            (manual override)
+   =========================== */
+
+/* System preference — only fires when no explicit override is in place */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme='light']):not([data-theme='dark']) {
     --color-bg-1: #0a0a0a;
     --color-bg-2: #141414;
     --color-bg-3: #1e1e1e;
@@ -97,4 +104,26 @@
     --color-border: #2a2a2a;
     --color-text-on-accent: #ffffff;
   }
+}
+
+/* Explicit dark override — set by ThemeProvider via data-theme="dark" on <html> */
+:root[data-theme='dark'] {
+  --color-bg-1: #0a0a0a;
+  --color-bg-2: #141414;
+  --color-bg-3: #1e1e1e;
+
+  --color-text-primary: #f0f0f0;
+  --color-text-secondary: #a0a0a0;
+  --color-text-muted: #666666;
+
+  --color-accent: #818cf8;
+  --color-accent-hover: #9298fb;
+
+  --color-assistant-bubble: #1e1e1e;
+  --color-user-bubble: #6366f1;
+  --color-user-bubble-text: #ffffff;
+
+  --color-destructive: #f87171;
+  --color-border: #2a2a2a;
+  --color-text-on-accent: #ffffff;
 }

@@ -44,25 +44,29 @@
   gap: var(--space-3);
 }
 
-.githubLink {
+.iconButton {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 36px;
   height: 36px;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   color: var(--color-text-secondary);
   text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
   transition: color var(--speed-fast) var(--ease-out),
     background-color var(--speed-fast) var(--ease-out);
 }
 
-.githubLink:hover {
+.iconButton:hover {
   color: var(--color-text-primary);
   background-color: var(--color-bg-3);
 }
 
-.githubIcon {
+.iconButton svg {
   width: 20px;
   height: 20px;
 }

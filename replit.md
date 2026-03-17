@@ -16,13 +16,31 @@ A React + TypeScript frontend application built with Vite. Uses React Router for
 
 ```
 src/
-  App.tsx          - Main application component
-  main.tsx         - Entry point with BrowserRouter
-  index.css        - Global styles
-  components/      - Reusable UI components
-  docs/            - Documentation content
-  tokens/          - Design tokens (CSS variables)
+  App.tsx            - Main application component
+  main.tsx           - Entry point; wraps app in ThemeProvider + BrowserRouter
+  index.css          - Global styles
+  context/
+    theme.tsx        - ThemeProvider + useTheme hook (light/dark/system)
+  assets/
+    logos/           - SVG logo variations (composure-v1.svg used in navbar)
+  docs/
+    Navbar.tsx       - Top navbar with logo, brand, theme toggle, GitHub link
+    Sidebar.tsx      - Left sidebar navigation
+    DocsLayout.tsx   - Page layout combining Navbar + Sidebar + content
+  tokens/
+    tokens.css       - Design tokens (CSS vars); dark tokens under [data-theme="dark"]
 ```
+
+## Theme System
+
+Inspired by Radix UI's `<Theme>` pattern:
+
+- **`ThemeProvider`** (`src/context/theme.tsx`) wraps the app and manages theme state
+- Supports three modes: `"light"`, `"dark"`, `"system"` — persisted to `localStorage` as `composure-theme`
+- Sets `data-theme` attribute on `<html>` so CSS variables respond without JavaScript
+- **CSS strategy:** `[data-theme="dark"]` forces dark; `@media (prefers-color-scheme: dark)` with `:not([data-theme])` handles system mode
+- **`useTheme()`** hook exposes `{ theme, resolvedTheme, setTheme }` anywhere in the tree
+- The navbar has a toggle button cycling system → light → dark with matching icons
 
 ## Development
 
