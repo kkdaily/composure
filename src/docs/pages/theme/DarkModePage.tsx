@@ -27,7 +27,7 @@ export function DarkModePage() {
     <div className={styles.page}>
       <h1 className={styles.title}>Dark Mode</h1>
       <p className={styles.subtitle}>
-        Easier on the eyes at night, and a first-class experience in Composure.
+        Light, dark, and system modes that automatically swap the full color palette with a single attribute.
       </p>
 
       <section className={styles.section}>
