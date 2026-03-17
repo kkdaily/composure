@@ -9,7 +9,7 @@ export function OverviewPage() {
 
       {/* ---- Hero ---- */}
       <section className={styles.hero}>
-        <span className={styles.badge}>v0.1.0 — work in progress</span>
+        <span className={styles.badge}>v0.1.0</span>
         <h1 className={styles.title}>Composure</h1>
         <p className={styles.subtitle}>
           A React component library for AI-powered interfaces. Purpose-built for
