@@ -9,6 +9,7 @@ export type PageId =
   | 'theme-dark-mode'
   | 'theme-typography'
   | 'theme-spacing'
+  | 'theme-radius'
   | 'avatar'
   | 'button'
   | 'chat-message'
@@ -40,6 +41,7 @@ const sections: { heading: string; items: SidebarItem[] }[] = [
       { id: 'theme-dark-mode',  label: 'Dark Mode',    path: '/theme/dark-mode' },
       { id: 'theme-typography', label: 'Typography',   path: '/theme/typography' },
       { id: 'theme-spacing',    label: 'Spacing',      path: '/theme/spacing' },
+      { id: 'theme-radius',     label: 'Radius',       path: '/theme/radius' },
     ],
   },
   {
