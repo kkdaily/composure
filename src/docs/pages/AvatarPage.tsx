@@ -65,7 +65,7 @@ export function AvatarPage() {
       <section className={styles.section}>
         <h2 className={styles.heading}>Demo</h2>
         <div className={styles.demoArea}>
-          <Avatar size={demoSize}>
+          <Avatar key={demoContent} size={demoSize}>
             {demoContent === 'image' && (
               <AvatarImage
                 src="https://api.dicebear.com/9.x/notionists/svg?seed=composure"
