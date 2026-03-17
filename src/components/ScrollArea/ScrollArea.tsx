@@ -57,6 +57,10 @@ export function ScrollArea({
   const containerRef = useRef<HTMLDivElement>(null)
   const [isAtBottom, setIsAtBottom] = useState(true)
   const isUserScrollingRef = useRef(false)
+  // Ref mirrors the mode prop so MutationObserver callbacks always read the
+  // latest value instead of a stale useEffect closure.
+  const modeRef = useRef(mode)
+  modeRef.current = mode
 
   const checkIsAtBottom = useCallback(() => {
     const el = containerRef.current
@@ -129,13 +133,15 @@ export function ScrollArea({
     return () => el.removeEventListener('scroll', handleScroll)
   }, [checkIsAtBottom])
 
-  // Observe content changes — auto-scroll when appropriate, sync isAtBottom in all modes
+  // Observe content changes — auto-scroll when appropriate, sync isAtBottom in all modes.
+  // Reads modeRef.current (not the closure mode) so the callback always sees the
+  // latest prop value, even if the useEffect hasn't re-run yet.
   useEffect(() => {
     const el = containerRef.current
     if (!el) return
 
     const observer = new MutationObserver(() => {
-      if (mode === 'auto' && !isUserScrollingRef.current) {
+      if (modeRef.current === 'auto' && !isUserScrollingRef.current) {
         el.scrollTo({ top: el.scrollHeight })
         setIsAtBottom(true)
       } else {
@@ -150,7 +156,7 @@ export function ScrollArea({
     })
 
     return () => observer.disconnect()
-  }, [mode, checkIsAtBottom])
+  }, [checkIsAtBottom])
 
   const classNames = [styles.scrollArea, className ?? '']
     .filter(Boolean)
