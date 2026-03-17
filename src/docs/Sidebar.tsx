@@ -49,12 +49,6 @@ export interface SidebarProps {
 export function Sidebar({ className }: SidebarProps) {
   return (
     <nav className={`${styles.sidebar} ${className ?? ''}`}>
-      <div className={styles.logo}>
-        <NavLink to="/" className={styles.logoLink}>
-          <span className={styles.logoText}>Composure</span>
-          <span className={styles.tagline}>UI for AI</span>
-        </NavLink>
-      </div>
       {sections.map((section) => (
         <div key={section.heading} className={styles.section}>
           <h3 className={styles.sectionHeading}>{section.heading}</h3>

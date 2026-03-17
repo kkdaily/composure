@@ -1,12 +1,17 @@
+.root {
+  min-height: 100vh;
+}
+
 .layout {
   display: flex;
-  min-height: 100vh;
+  min-height: calc(100vh - 56px);
+  padding-top: 56px;
 }
 
 .main {
   flex: 1;
   margin-left: 240px;
-  min-height: 100vh;
+  min-height: calc(100vh - 56px);
 }
 
 .content {

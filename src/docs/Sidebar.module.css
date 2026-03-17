@@ -1,9 +1,9 @@
 .sidebar {
   width: 240px;
   min-width: 240px;
-  height: 100vh;
+  height: calc(100vh - 56px);
   position: fixed;
-  top: 0;
+  top: 56px;
   left: 0;
   overflow-y: auto;
   background-color: var(--color-bg-2);
