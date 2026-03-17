@@ -96,10 +96,15 @@ export interface HighlightResult {
  * Hook that returns syntax-highlighted tokens for a code string.
  * Returns `{ tokens: [], ready: false }` while the highlighter loads,
  * then re-renders with the highlighted tokens.
+ *
+ * @param resolvedTheme - The app's active resolved theme ('light' | 'dark').
+ *   Pass this explicitly so the highlighter respects the user's chosen mode
+ *   rather than the OS-level prefers-color-scheme media query.
  */
 export function useHighlighter(
   code: string,
-  language?: string
+  language?: string,
+  resolvedTheme?: 'light' | 'dark'
 ): HighlightResult {
   const [result, setResult] = useState<HighlightResult>({
     tokens: [],
@@ -119,7 +124,12 @@ export function useHighlighter(
       const canonicalLang = await ensureLanguageLoaded(highlighter, language!)
       if (cancelled || !canonicalLang) return
 
-      const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+      // Prefer the explicitly resolved app theme; fall back to OS preference
+      // only when no theme has been determined yet.
+      const isDark =
+        resolvedTheme != null
+          ? resolvedTheme === 'dark'
+          : window.matchMedia('(prefers-color-scheme: dark)').matches
 
       const { tokens } = highlighter.codeToTokens(code, {
         lang: canonicalLang,
@@ -136,7 +146,7 @@ export function useHighlighter(
     return () => {
       cancelled = true
     }
-  }, [code, language])
+  }, [code, language, resolvedTheme])
 
   return result
 }

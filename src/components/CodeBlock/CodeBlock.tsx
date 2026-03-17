@@ -1,5 +1,6 @@
 import { type ReactNode, type HTMLAttributes } from 'react'
 import { useHighlighter } from './useHighlighter'
+import { useTheme } from '../../context/theme'
 import styles from './CodeBlock.module.css'
 
 /* ===========================
@@ -69,7 +70,8 @@ export function CodeBlockContent({
   children,
   ...rest
 }: CodeBlockContentProps) {
-  const { tokens, ready } = useHighlighter(children, language)
+  const { resolvedTheme } = useTheme()
+  const { tokens, ready } = useHighlighter(children, language, resolvedTheme)
 
   const lines = children.split('\n')
 
