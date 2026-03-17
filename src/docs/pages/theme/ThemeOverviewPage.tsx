@@ -57,32 +57,6 @@ function MyComponent() {
         </pre>
       </section>
 
-      <section className={styles.section}>
-        <h2 className={styles.heading}>How it works</h2>
-        <ul className={styles.list}>
-          <li>
-            <strong>Light / dark</strong> — <code className={styles.code}>ThemeProvider</code> sets{' '}
-            <code className={styles.code}>data-theme="dark"</code> or removes the attribute for system
-            mode. CSS variables respond immediately — no class toggling, no JavaScript on the
-            critical path.
-          </li>
-          <li>
-            <strong>Accent color</strong> — <code className={styles.code}>data-accent="violet"</code>{' '}
-            activates a curated palette of <code className={styles.code}>--color-accent</code> and
-            related tokens defined in <code className={styles.code}>tokens.css</code>.
-          </li>
-          <li>
-            <strong>Persistence</strong> — Both choices are saved to{' '}
-            <code className={styles.code}>localStorage</code> and restored on the next visit.
-          </li>
-          <li>
-            <strong>System preference</strong> — When theme is set to{' '}
-            <code className={styles.code}>"system"</code>, a{' '}
-            <code className={styles.code}>prefers-color-scheme</code> media query drives dark mode
-            automatically.
-          </li>
-        </ul>
-      </section>
     </div>
   )
 }
