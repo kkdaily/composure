@@ -4,6 +4,11 @@ import styles from './Sidebar.module.css'
 export type PageId =
   | 'overview'
   | 'tokens'
+  | 'theme-overview'
+  | 'theme-color'
+  | 'theme-dark-mode'
+  | 'theme-typography'
+  | 'theme-spacing'
   | 'avatar'
   | 'button'
   | 'chat-message'
@@ -25,6 +30,16 @@ const sections: { heading: string; items: SidebarItem[] }[] = [
     items: [
       { id: 'overview', label: 'Overview', path: '/' },
       { id: 'tokens', label: 'Tokens', path: '/tokens' },
+    ],
+  },
+  {
+    heading: 'Theme',
+    items: [
+      { id: 'theme-overview',   label: 'Overview',    path: '/theme' },
+      { id: 'theme-color',      label: 'Color',        path: '/theme/color' },
+      { id: 'theme-dark-mode',  label: 'Dark Mode',    path: '/theme/dark-mode' },
+      { id: 'theme-typography', label: 'Typography',   path: '/theme/typography' },
+      { id: 'theme-spacing',    label: 'Spacing',      path: '/theme/spacing' },
     ],
   },
   {

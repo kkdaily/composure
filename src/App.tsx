@@ -3,6 +3,11 @@ import { Sidebar } from './docs/Sidebar'
 import { DocsLayout } from './docs/DocsLayout'
 import { OverviewPage } from './docs/pages/OverviewPage'
 import { TokensPage } from './docs/pages/TokensPage'
+import { ThemeOverviewPage } from './docs/pages/theme/ThemeOverviewPage'
+import { ColorPage } from './docs/pages/theme/ColorPage'
+import { DarkModePage } from './docs/pages/theme/DarkModePage'
+import { TypographyPage } from './docs/pages/theme/TypographyPage'
+import { SpacingPage } from './docs/pages/theme/SpacingPage'
 import { ButtonPage } from './docs/pages/ButtonPage'
 import { IconButtonPage } from './docs/pages/IconButtonPage'
 import { ComposerPage } from './docs/pages/ComposerPage'
@@ -18,6 +23,11 @@ function App() {
       <Routes>
         <Route path="/" element={<OverviewPage />} />
         <Route path="/tokens" element={<TokensPage />} />
+        <Route path="/theme" element={<ThemeOverviewPage />} />
+        <Route path="/theme/color" element={<ColorPage />} />
+        <Route path="/theme/dark-mode" element={<DarkModePage />} />
+        <Route path="/theme/typography" element={<TypographyPage />} />
+        <Route path="/theme/spacing" element={<SpacingPage />} />
         <Route path="/components/avatar" element={<AvatarPage />} />
         <Route path="/components/button" element={<ButtonPage />} />
         <Route path="/components/chat-message" element={<ChatMessagePage />} />
@@ -26,7 +36,7 @@ function App() {
         <Route path="/components/icon-button" element={<IconButtonPage />} />
         <Route path="/components/scroll-area" element={<ScrollAreaPage />} />
         <Route path="/components/select" element={<SelectPage />} />
-<Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </DocsLayout>
   )
