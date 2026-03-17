@@ -53,9 +53,9 @@ const AI_RESPONSES = [
 ]
 
 const MODEL_OPTIONS = [
-  { value: 'gpt-4.5', label: 'GPT-4.5' },
-  { value: 'claude-3-7-sonnet', label: 'Claude 3.7 Sonnet' },
-  { value: 'gemini-2-5-pro', label: 'Gemini 2.5 Pro' },
+  { value: 'gpt-5.4', label: 'GPT-5.4' },
+  { value: 'claude-opus-4-6', label: 'Claude Opus 4.6' },
+  { value: 'gemini-3-1-pro', label: 'Gemini 3.1 Pro' },
 ]
 
 export function ComposerPage() {
@@ -64,7 +64,7 @@ export function ComposerPage() {
   const [demoState, setDemoState] = useState<DemoState>('idle')
   const [demoFooter, setDemoFooter] = useState<DemoFooter>('none')
   const [demoSendPosition, setDemoSendPosition] = useState<DemoSendPosition>('inline')
-  const [demoModel, setDemoModel] = useState('gpt-4.5')
+  const [demoModel, setDemoModel] = useState('gpt-5.4')
   const [messages, setMessages] = useState<DemoMessage[]>([])
   const [streamingText, setStreamingText] = useState('')
   const streamRef = useRef<number | null>(null)

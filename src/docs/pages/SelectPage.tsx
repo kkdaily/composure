@@ -15,16 +15,16 @@ type DemoToggle = 'on' | 'off'
    =========================== */
 
 const modelOptions = [
-  { value: 'claude-3-7-sonnet', label: 'Claude 3.7 Sonnet' },
-  { value: 'claude-3-5-haiku', label: 'Claude 3.5 Haiku' },
-  { value: 'claude-3-opus', label: 'Claude 3 Opus' },
+  { value: 'claude-opus-4-6', label: 'Claude Opus 4.6' },
+  { value: 'claude-sonnet-4-5', label: 'Claude Sonnet 4.5' },
+  { value: 'claude-haiku-4', label: 'Claude Haiku 4' },
 ]
 
 const modelOptionsWithDisabled = [
-  { value: 'claude-3-7-sonnet', label: 'Claude 3.7 Sonnet' },
-  { value: 'claude-3-5-haiku', label: 'Claude 3.5 Haiku' },
-  { value: 'claude-3-opus', label: 'Claude 3 Opus' },
-  { value: 'gpt-4.5', label: 'GPT-4.5', disabled: true },
+  { value: 'claude-opus-4-6', label: 'Claude Opus 4.6' },
+  { value: 'claude-sonnet-4-5', label: 'Claude Sonnet 4.5' },
+  { value: 'claude-haiku-4', label: 'Claude Haiku 4' },
+  { value: 'gpt-5.4', label: 'GPT-5.4', disabled: true },
   { value: 'o3', label: 'o3', disabled: true },
 ]
 
@@ -38,14 +38,14 @@ export function SelectPage() {
   const [demoValue, setDemoValue] = useState('')
 
   // Section state
-  const [basicValue, setBasicValue] = useState('claude-3-7-sonnet')
-  const [smValue, setSmValue] = useState('claude-3-7-sonnet')
-  const [mdValue, setMdValue] = useState('claude-3-7-sonnet')
-  const [lgValue, setLgValue] = useState('claude-3-7-sonnet')
-  const [labelValue, setLabelValue] = useState('claude-3-7-sonnet')
+  const [basicValue, setBasicValue] = useState('claude-opus-4-6')
+  const [smValue, setSmValue] = useState('claude-opus-4-6')
+  const [mdValue, setMdValue] = useState('claude-opus-4-6')
+  const [lgValue, setLgValue] = useState('claude-opus-4-6')
+  const [labelValue, setLabelValue] = useState('claude-opus-4-6')
   const [placeholderValue, setPlaceholderValue] = useState('')
-  const [disabledOptValue, setDisabledOptValue] = useState('claude-3-7-sonnet')
-  const [disabledValue, setDisabledValue] = useState('claude-3-7-sonnet')
+  const [disabledOptValue, setDisabledOptValue] = useState('claude-opus-4-6')
+  const [disabledValue, setDisabledValue] = useState('claude-opus-4-6')
 
   return (
     <div className={styles.page}>
@@ -118,15 +118,15 @@ export function SelectPage() {
             aria-label="Model"
           />
         </div>
-        <CodeSnippet>{`const [model, setModel] = useState('claude-3-7-sonnet')
+        <CodeSnippet>{`const [model, setModel] = useState('claude-opus-4-6')
 
 <Select
   value={model}
   onChange={setModel}
   options={[
-    { value: 'claude-3-7-sonnet', label: 'Claude 3.7 Sonnet' },
-    { value: 'claude-3-5-haiku', label: 'Claude 3.5 Haiku' },
-    { value: 'claude-3-opus', label: 'Claude 3 Opus' },
+    { value: 'claude-opus-4-6', label: 'Claude Opus 4.6' },
+    { value: 'claude-sonnet-4-5', label: 'Claude Sonnet 4.5' },
+    { value: 'claude-haiku-4', label: 'Claude Haiku 4' },
   ]}
   aria-label="Model"
 />`}</CodeSnippet>
@@ -258,9 +258,9 @@ export function SelectPage() {
   value={model}
   onChange={setModel}
   options={[
-    { value: 'claude-3-7-sonnet', label: 'Claude 3.7 Sonnet' },
-    { value: 'claude-3-5-haiku', label: 'Claude 3.5 Haiku' },
-    { value: 'gpt-4.5', label: 'GPT-4.5', disabled: true },
+    { value: 'claude-opus-4-6', label: 'Claude Opus 4.6' },
+    { value: 'claude-sonnet-4-5', label: 'Claude Sonnet 4.5' },
+    { value: 'gpt-5.4', label: 'GPT-5.4', disabled: true },
   ]}
   aria-label="Model"
 />`}</CodeSnippet>
