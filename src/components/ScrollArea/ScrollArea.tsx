@@ -57,7 +57,6 @@ export function ScrollArea({
   const containerRef = useRef<HTMLDivElement>(null)
   const [isAtBottom, setIsAtBottom] = useState(true)
   const isUserScrollingRef = useRef(false)
-  const lastScrollTopRef = useRef(0)
 
   const checkIsAtBottom = useCallback(() => {
     const el = containerRef.current
@@ -78,33 +77,57 @@ export function ScrollArea({
     isUserScrollingRef.current = false
   }, [mode])
 
-  // Handle scroll events to detect user scroll-up
+  // Manage isUserScrollingRef exclusively via wheel/touch events.
+  // These only fire from real user input, never from programmatic scrollTo.
+  // - Wheel up (deltaY < 0): latch isUserScrollingRef = true
+  // - Wheel down (deltaY > 0) AND at bottom: unlatch isUserScrollingRef = false
+  // The scroll event handler NEVER touches isUserScrollingRef — it only syncs isAtBottom state.
+  useEffect(() => {
+    const el = containerRef.current
+    if (!el || mode !== 'auto') return
+
+    const handleWheel = (e: WheelEvent) => {
+      if (e.deltaY < 0) {
+        // User scrolling up — disable auto-scroll
+        isUserScrollingRef.current = true
+      } else if (e.deltaY > 0 && isUserScrollingRef.current) {
+        // User scrolling down — check if they've reached the bottom
+        // Use requestAnimationFrame to read layout after the wheel scroll applies
+        requestAnimationFrame(() => {
+          if (checkIsAtBottom()) {
+            isUserScrollingRef.current = false
+          }
+        })
+      }
+    }
+
+    const handleTouchMove = () => {
+      // Any touch interaction — disable auto-scroll. The scroll-to-bottom
+      // button is the primary way to resume on touch devices.
+      isUserScrollingRef.current = true
+    }
+
+    el.addEventListener('wheel', handleWheel, { passive: true })
+    el.addEventListener('touchmove', handleTouchMove, { passive: true })
+
+    return () => {
+      el.removeEventListener('wheel', handleWheel)
+      el.removeEventListener('touchmove', handleTouchMove)
+    }
+  }, [mode, checkIsAtBottom])
+
+  // Sync isAtBottom state for the scroll-to-bottom indicator
   useEffect(() => {
     const el = containerRef.current
     if (!el) return
 
     const handleScroll = () => {
-      const currentScrollTop = el.scrollTop
-      const atBottom = checkIsAtBottom()
-
-      // Only track user-scroll-up when in auto mode
-      if (mode === 'auto') {
-        if (currentScrollTop < lastScrollTopRef.current && !atBottom) {
-          isUserScrollingRef.current = true
-        }
-
-        if (atBottom) {
-          isUserScrollingRef.current = false
-        }
-      }
-
-      setIsAtBottom(atBottom)
-      lastScrollTopRef.current = currentScrollTop
+      setIsAtBottom(checkIsAtBottom())
     }
 
     el.addEventListener('scroll', handleScroll, { passive: true })
     return () => el.removeEventListener('scroll', handleScroll)
-  }, [checkIsAtBottom, mode])
+  }, [checkIsAtBottom])
 
   // Observe content changes — auto-scroll when appropriate, sync isAtBottom in all modes
   useEffect(() => {
@@ -113,11 +136,9 @@ export function ScrollArea({
 
     const observer = new MutationObserver(() => {
       if (mode === 'auto' && !isUserScrollingRef.current) {
-        // Auto-scroll to bottom
         el.scrollTo({ top: el.scrollHeight })
         setIsAtBottom(true)
       } else {
-        // Not auto-scrolling — sync isAtBottom so the indicator can appear
         setIsAtBottom(checkIsAtBottom())
       }
     })
