@@ -3,7 +3,7 @@ import { CodeSnippet } from '../../CodeSnippet'
 import styles from './ThemePage.module.css'
 
 const ACCENT_HEX: Record<AccentColor, { light: string; dark: string; label: string }> = {
-  indigo:  { light: '#6366f1', dark: '#818cf8',  label: 'Indigo' },
+  indigo:  { light: '#5f61ee', dark: '#818cf8',  label: 'Indigo' },
   violet:  { light: '#7c3aed', dark: '#a78bfa',  label: 'Violet' },
   blue:    { light: '#2563eb', dark: '#60a5fa',  label: 'Blue' },
   teal:    { light: '#0d9488', dark: '#2dd4bf',  label: 'Teal' },

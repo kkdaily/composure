@@ -3,7 +3,7 @@ import { useTheme, ACCENT_COLORS, type Theme, type AccentColor } from '../contex
 import styles from './Navbar.module.css'
 
 const ACCENT_HEX: Record<AccentColor, string> = {
-  indigo: '#6366f1',
+  indigo: '#5f61ee',
   violet: '#7c3aed',
   blue: '#2563eb',
   teal: '#0d9488',

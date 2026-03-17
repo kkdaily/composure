@@ -94,12 +94,12 @@
 
 .chipActive {
   background-color: var(--color-accent);
-  color: #ffffff;
+  color: var(--color-text-on-accent);
   border-color: var(--color-accent);
 }
 
 .chipActive:hover {
-  color: #ffffff;
+  color: var(--color-text-on-accent);
 }
 
 .row {
