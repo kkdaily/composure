@@ -8,7 +8,7 @@ import { ThemeProvider } from './context/theme.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <ThemeProvider>
+    <ThemeProvider accentColor="indigo">
       <BrowserRouter>
         <App />
       </BrowserRouter>
