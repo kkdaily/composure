@@ -124,23 +124,29 @@ export function ButtonPage() {
           <div className={styles.controlGroup}>
             <span className={styles.controlLabel}>Loading</span>
             <div className={styles.controlOptions}>
-              <button
-                className={`${styles.chip} ${demoLoading ? styles.chipActive : ''}`}
-                onClick={() => setDemoLoading(!demoLoading)}
-              >
-                {demoLoading ? 'on' : 'off'}
-              </button>
+              {(['off', 'on'] as const).map((t) => (
+                <button
+                  key={t}
+                  className={`${styles.chip} ${demoLoading === (t === 'on') ? styles.chipActive : ''}`}
+                  onClick={() => setDemoLoading(t === 'on')}
+                >
+                  {t}
+                </button>
+              ))}
             </div>
           </div>
           <div className={styles.controlGroup}>
             <span className={styles.controlLabel}>Disabled</span>
             <div className={styles.controlOptions}>
-              <button
-                className={`${styles.chip} ${demoDisabled ? styles.chipActive : ''}`}
-                onClick={() => setDemoDisabled(!demoDisabled)}
-              >
-                {demoDisabled ? 'on' : 'off'}
-              </button>
+              {(['off', 'on'] as const).map((t) => (
+                <button
+                  key={t}
+                  className={`${styles.chip} ${demoDisabled === (t === 'on') ? styles.chipActive : ''}`}
+                  onClick={() => setDemoDisabled(t === 'on')}
+                >
+                  {t}
+                </button>
+              ))}
             </div>
           </div>
         </div>
