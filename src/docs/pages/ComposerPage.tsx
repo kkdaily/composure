@@ -29,16 +29,10 @@ const SparkleIcon = () => (
   </svg>
 )
 
-const PaperclipIcon = () => (
-  <svg width="1em" height="1em" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M13.5 7l-5.7 5.7a3.2 3.2 0 0 1-4.5-4.5L9 2.5a2.1 2.1 0 0 1 3 3L6.3 11.2a1.1 1.1 0 0 1-1.5-1.5L10.5 4" />
-  </svg>
-)
-
-const GlobeIcon = () => (
-  <svg width="1em" height="1em" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="8" cy="8" r="6" />
-    <path d="M2 8h12M8 2c1.7 2 2.7 4 2.7 6s-1 4-2.7 6c-1.7-2-2.7-4-2.7-6s1-4 2.7-6z" />
+const PlusIcon = () => (
+  <svg width="1em" height="1em" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+    <line x1="8" y1="3" x2="8" y2="13" />
+    <line x1="3" y1="8" x2="13" y2="8" />
   </svg>
 )
 
@@ -188,11 +182,8 @@ export function ComposerPage() {
             {demoFooter !== 'none' && (
               <ComposerFooter bordered={demoFooter === 'bordered'}>
                 <ComposerFooterStart>
-                  <IconButton label="Attach file" size="sm">
-                    <PaperclipIcon />
-                  </IconButton>
-                  <IconButton label="Search the web" size="sm">
-                    <GlobeIcon />
+                  <IconButton label="Add" size="sm">
+                    <PlusIcon />
                   </IconButton>
                 </ComposerFooterStart>
                 <ComposerFooterEnd>
@@ -423,11 +414,8 @@ export function ComposerPage() {
           </IconButton>
           <ComposerFooter>
             <ComposerFooterStart>
-              <IconButton label="Attach file" size="sm">
-                <PaperclipIcon />
-              </IconButton>
-              <IconButton label="Search the web" size="sm">
-                <GlobeIcon />
+              <IconButton label="Add" size="sm">
+                <PlusIcon />
               </IconButton>
             </ComposerFooterStart>
             <ComposerFooterEnd>
@@ -442,11 +430,8 @@ export function ComposerPage() {
   </IconButton>
   <ComposerFooter>
     <ComposerFooterStart>
-      <IconButton label="Attach file" size="sm">
-        <PaperclipIcon />
-      </IconButton>
-      <IconButton label="Search the web" size="sm">
-        <GlobeIcon />
+      <IconButton label="Add" size="sm">
+        <PlusIcon />
       </IconButton>
     </ComposerFooterStart>
     <ComposerFooterEnd>
@@ -476,11 +461,8 @@ export function ComposerPage() {
           </IconButton>
           <ComposerFooter bordered={false}>
             <ComposerFooterStart>
-              <IconButton label="Attach file" size="sm">
-                <PaperclipIcon />
-              </IconButton>
-              <IconButton label="Search the web" size="sm">
-                <GlobeIcon />
+              <IconButton label="Add" size="sm">
+                <PlusIcon />
               </IconButton>
             </ComposerFooterStart>
           </ComposerFooter>
@@ -492,8 +474,8 @@ export function ComposerPage() {
   </IconButton>
   <ComposerFooter bordered={false}>
     <ComposerFooterStart>
-      <IconButton label="Attach file" size="sm">
-        <PaperclipIcon />
+      <IconButton label="Add" size="sm">
+        <PlusIcon />
       </IconButton>
     </ComposerFooterStart>
   </ComposerFooter>
@@ -517,8 +499,8 @@ export function ComposerPage() {
           <ComposerInput placeholder="Message…" />
           <ComposerFooter>
             <ComposerFooterStart>
-              <IconButton label="Attach file" size="sm">
-                <PaperclipIcon />
+              <IconButton label="Add" size="sm">
+                <PlusIcon />
               </IconButton>
             </ComposerFooterStart>
             <ComposerFooterEnd>
@@ -532,8 +514,8 @@ export function ComposerPage() {
   <ComposerInput placeholder="Message…" />
   <ComposerFooter>
     <ComposerFooterStart>
-      <IconButton label="Attach file" size="sm">
-        <PaperclipIcon />
+      <IconButton label="Add" size="sm">
+        <PlusIcon />
       </IconButton>
     </ComposerFooterStart>
     <ComposerFooterEnd>
