@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { type HighlighterCore, type ThemedToken } from 'shiki/core'
 import { createHighlighterCore } from 'shiki/core'
 import { createJavaScriptRegexEngine } from 'shiki/engine/javascript'
@@ -93,27 +93,54 @@ export interface HighlightResult {
 }
 
 /**
- * Hook that returns syntax-highlighted tokens for a code string.
- * Returns `{ tokens: [], ready: false }` while the highlighter loads,
- * then re-renders with the highlighted tokens.
- *
- * @param resolvedTheme - The app's active resolved theme ('light' | 'dark').
- *   Pass this explicitly so the highlighter respects the user's chosen mode
- *   rather than the OS-level prefers-color-scheme media query.
+ * Synchronously highlight code if the highlighter and language are already
+ * loaded. Returns null when the fast path isn't available (first load).
  */
+function highlightSync(
+  code: string,
+  language: string,
+  resolvedTheme?: 'light' | 'dark'
+): ThemedToken[][] | null {
+  if (!highlighterInstance) return null
+
+  const canonical = languageAliases[language] || language
+  if (!loadedLanguages.has(canonical)) return null
+
+  const isDark =
+    resolvedTheme != null
+      ? resolvedTheme === 'dark'
+      : window.matchMedia('(prefers-color-scheme: dark)').matches
+
+  const { tokens } = highlighterInstance.codeToTokens(code, {
+    lang: canonical,
+    theme: isDark ? 'github-dark' : 'github-light',
+  })
+
+  return tokens
+}
+
 export function useHighlighter(
   code: string,
   language?: string,
   resolvedTheme?: 'light' | 'dark'
 ): HighlightResult {
-  const [result, setResult] = useState<HighlightResult>({
+  // Fast path: if highlighter + language are already loaded, compute
+  // tokens synchronously. This eliminates the flash during streaming
+  // where the component would render unhighlighted, then re-render
+  // highlighted after the async effect completes.
+  const syncTokens = useMemo(
+    () => (language ? highlightSync(code, language, resolvedTheme) : null),
+    [code, language, resolvedTheme]
+  )
+
+  const [asyncResult, setAsyncResult] = useState<HighlightResult>({
     tokens: [],
     ready: false,
   })
 
   useEffect(() => {
-    if (!language) {
-      setResult({ tokens: [], ready: false })
+    // If sync path already produced tokens, skip the async work
+    if (syncTokens || !language) {
       return
     }
 
@@ -124,8 +151,6 @@ export function useHighlighter(
       const canonicalLang = await ensureLanguageLoaded(highlighter, language!)
       if (cancelled || !canonicalLang) return
 
-      // Prefer the explicitly resolved app theme; fall back to OS preference
-      // only when no theme has been determined yet.
       const isDark =
         resolvedTheme != null
           ? resolvedTheme === 'dark'
@@ -137,7 +162,7 @@ export function useHighlighter(
       })
 
       if (!cancelled) {
-        setResult({ tokens, ready: true })
+        setAsyncResult({ tokens, ready: true })
       }
     }
 
@@ -146,7 +171,11 @@ export function useHighlighter(
     return () => {
       cancelled = true
     }
-  }, [code, language, resolvedTheme])
+  }, [code, language, resolvedTheme, syncTokens])
 
-  return result
+  if (syncTokens) {
+    return { tokens: syncTokens, ready: true }
+  }
+
+  return asyncResult
 }

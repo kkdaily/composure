@@ -16,7 +16,9 @@ export type PageId =
   | 'chat-message'
   | 'code-block'
   | 'composer'
+  | 'file-preview'
   | 'icon-button'
+  | 'markdown-renderer'
   | 'scroll-area'
   | 'select'
 
@@ -54,7 +56,9 @@ const sections: { heading: string; items: SidebarItem[] }[] = [
       { id: 'chat-message', label: 'ChatMessage', path: '/components/chat-message' },
       { id: 'code-block', label: 'CodeBlock', path: '/components/code-block' },
       { id: 'composer', label: 'Composer', path: '/components/composer' },
+      { id: 'file-preview', label: 'FilePreview', path: '/components/file-preview' },
       { id: 'icon-button', label: 'IconButton', path: '/components/icon-button' },
+      { id: 'markdown-renderer', label: 'MarkdownRenderer', path: '/components/markdown-renderer' },
       { id: 'scroll-area', label: 'ScrollArea', path: '/components/scroll-area' },
       { id: 'select', label: 'Select', path: '/components/select' },
     ],

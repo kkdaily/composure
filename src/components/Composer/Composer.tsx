@@ -225,6 +225,70 @@ export interface ComposerFooterEndProps {
   children: ReactNode
 }
 
+/* ===========================
+   ComposerHeader
+   =========================== */
+
+export interface ComposerHeaderProps {
+  /** Whether to show a border between the header and the input area */
+  bordered?: boolean
+  /** Additional CSS class for external overrides */
+  className?: string
+  /** Header content — typically ComposerHeaderStart and/or ComposerHeaderEnd */
+  children: ReactNode
+}
+
+export function ComposerHeader({ bordered = false, className, children }: ComposerHeaderProps) {
+  const classNames = [
+    styles.header,
+    bordered ? styles.headerBordered : '',
+    className ?? '',
+  ].filter(Boolean).join(' ')
+  return <div className={classNames}>{children}</div>
+}
+
+/* ===========================
+   ComposerHeaderStart
+   =========================== */
+
+export interface ComposerHeaderStartProps {
+  /** Additional CSS class for external overrides */
+  className?: string
+  /** Left-aligned header items */
+  children: ReactNode
+}
+
+export function ComposerHeaderStart({
+  className,
+  children,
+}: ComposerHeaderStartProps) {
+  const classNames = [styles.headerStart, className ?? '']
+    .filter(Boolean)
+    .join(' ')
+  return <div className={classNames}>{children}</div>
+}
+
+/* ===========================
+   ComposerHeaderEnd
+   =========================== */
+
+export interface ComposerHeaderEndProps {
+  /** Additional CSS class for external overrides */
+  className?: string
+  /** Right-aligned header items */
+  children: ReactNode
+}
+
+export function ComposerHeaderEnd({
+  className,
+  children,
+}: ComposerHeaderEndProps) {
+  const classNames = [styles.headerEnd, className ?? '']
+    .filter(Boolean)
+    .join(' ')
+  return <div className={classNames}>{children}</div>
+}
+
 export function ComposerFooterEnd({
   className,
   children,

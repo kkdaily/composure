@@ -190,9 +190,11 @@ export function ScrollAreaScrollToBottom({
 }: ScrollAreaScrollToBottomProps) {
   const { isAtBottom, scrollToBottom } = useScrollAreaContext()
 
-  if (isAtBottom) return null
-
-  const classNames = [styles.scrollToBottom, className ?? '']
+  const classNames = [
+    styles.scrollToBottom,
+    isAtBottom ? styles.scrollToBottomHidden : styles.scrollToBottomVisible,
+    className ?? '',
+  ]
     .filter(Boolean)
     .join(' ')
 
@@ -200,6 +202,7 @@ export function ScrollAreaScrollToBottom({
     <div
       className={classNames}
       onClick={scrollToBottom}
+      aria-hidden={isAtBottom || undefined}
       {...rest}
     >
       {children}

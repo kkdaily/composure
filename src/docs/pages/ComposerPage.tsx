@@ -2,12 +2,15 @@ import { useState, useRef, useEffect, useCallback } from 'react'
 import {
   Composer,
   ComposerInput,
+  ComposerHeader,
+  ComposerHeaderStart,
   ComposerFooter,
   ComposerFooterStart,
   ComposerFooterEnd,
 } from '../../components/Composer/Composer'
 import { IconButton } from '../../components/IconButton/IconButton'
 import { Select } from '../../components/Select/Select'
+import { FilePreview } from '../../components/FilePreview/FilePreview'
 import { CodeSnippet } from '../CodeSnippet'
 import styles from './ComposerPage.module.css'
 
@@ -36,7 +39,9 @@ const PlusIcon = () => (
   </svg>
 )
 
+
 type DemoState = 'idle' | 'streaming'
+type DemoHeader = 'none' | 'plain' | 'bordered'
 type DemoFooter = 'none' | 'bordered' | 'borderless'
 type DemoSendPosition = 'inline' | 'footer'
 
@@ -62,6 +67,7 @@ export function ComposerPage() {
   const [demoValue, setDemoValue] = useState('')
   const [demoDisabled, setDemoDisabled] = useState(false)
   const [demoState, setDemoState] = useState<DemoState>('idle')
+  const [demoHeader, setDemoHeader] = useState<DemoHeader>('none')
   const [demoFooter, setDemoFooter] = useState<DemoFooter>('none')
   const [demoSendPosition, setDemoSendPosition] = useState<DemoSendPosition>('inline')
   const [demoModel, setDemoModel] = useState('gpt-5.4')
@@ -124,6 +130,7 @@ export function ComposerPage() {
   const [footerValue, setFooterValue] = useState('')
   const [footerSendValue, setFooterSendValue] = useState('')
   const [borderlessValue, setBorderlessValue] = useState('')
+  const [headerValue, setHeaderValue] = useState('')
 
   return (
     <div className={styles.page}>
@@ -167,6 +174,14 @@ export function ComposerPage() {
             onSubmit={handleDemoSubmit}
             disabled={demoDisabled}
           >
+            {demoHeader !== 'none' && (
+              <ComposerHeader bordered={demoHeader === 'bordered'}>
+                <ComposerHeaderStart>
+                  <FilePreview name="report.pdf" size="2.4 MB" onRemove={() => {}} />
+                  <FilePreview name="data.csv" size="840 KB" onRemove={() => {}} />
+                </ComposerHeaderStart>
+              </ComposerHeader>
+            )}
             <ComposerInput placeholder="Ask anything…" />
             {demoSendPosition === 'inline' && (
               demoState === 'streaming' ? (
@@ -212,6 +227,20 @@ export function ComposerPage() {
           </Composer>
         </div>
         <div className={styles.controls}>
+          <div className={styles.controlGroup}>
+            <span className={styles.controlLabel}>Header</span>
+            <div className={styles.controlOptions}>
+              {(['none', 'plain', 'bordered'] as DemoHeader[]).map((h) => (
+                <button
+                  key={h}
+                  className={`${styles.chip} ${demoHeader === h ? styles.chipActive : ''}`}
+                  onClick={() => setDemoHeader(h)}
+                >
+                  {h}
+                </button>
+              ))}
+            </div>
+          </div>
           <div className={styles.controlGroup}>
             <span className={styles.controlLabel}>Footer</span>
             <div className={styles.controlOptions}>
@@ -483,6 +512,47 @@ export function ComposerPage() {
 </Composer>`}</CodeSnippet>
       </section>
 
+      {/* With Header */}
+      <section className={styles.section}>
+        <h2 className={styles.heading}>With Header</h2>
+        <p className={styles.sectionDescription}>
+          Use <code>ComposerHeader</code> to add a row of content above the
+          textarea — file attachments, selected tools, or context indicators.{' '}
+          <code>ComposerHeaderStart</code> groups items on the left;{' '}
+          <code>ComposerHeaderEnd</code> pushes items to the right. Both are
+          optional. The header always renders above the input regardless of DOM
+          order.
+        </p>
+        <Composer
+          value={headerValue}
+          onChange={setHeaderValue}
+          onSubmit={() => setHeaderValue('')}
+        >
+          <ComposerHeader>
+            <ComposerHeaderStart>
+              <FilePreview name="report.pdf" size="2.4 MB" onRemove={() => {}} />
+              <FilePreview name="data.csv" size="840 KB" onRemove={() => {}} />
+            </ComposerHeaderStart>
+          </ComposerHeader>
+          <ComposerInput placeholder="Ask about these files…" />
+          <IconButton variant="primary" label="Send message" disabled={!headerValue.trim()}>
+            <SendIcon />
+          </IconButton>
+        </Composer>
+        <CodeSnippet>{`<Composer value={value} onChange={setValue} onSubmit={handleSend}>
+  <ComposerHeader>
+    <ComposerHeaderStart>
+      <FilePreview name="report.pdf" size="2.4 MB" onRemove={() => {}} />
+      <FilePreview name="data.csv" size="840 KB" onRemove={() => {}} />
+    </ComposerHeaderStart>
+  </ComposerHeader>
+  <ComposerInput placeholder="Ask about these files…" />
+  <IconButton variant="primary" label="Send message" disabled={!value.trim()}>
+    <SendIcon />
+  </IconButton>
+</Composer>`}</CodeSnippet>
+      </section>
+
       {/* Footer with Send Button */}
       <section className={styles.section}>
         <h2 className={styles.heading}>Footer with Send Button</h2>
@@ -548,6 +618,15 @@ export function ComposerPage() {
               ['placeholder', 'string', "'Send a message…'", 'Placeholder text'],
               ['maxRows', 'number', '8', 'Maximum rows before scrolling'],
               ['minRows', 'number', '1', 'Minimum visible rows'],
+            ]}
+          />
+        </div>
+
+        <h3 className={styles.subHeading}>ComposerHeader</h3>
+        <div className={styles.tableWrapper}>
+          <PropsTable
+            rows={[
+              ['bordered', 'boolean', 'false', 'Show a border between the header and the input area'],
             ]}
           />
         </div>

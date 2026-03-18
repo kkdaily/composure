@@ -73,21 +73,21 @@
 /* --- Sizes --- */
 
 .sm {
-  width: 28px;
-  height: 28px;
-  font-size: 14px;
+  width: var(--size-sm);
+  height: var(--size-sm);
+  font-size: var(--text-sm);
 }
 
 .md {
-  width: 36px;
-  height: 36px;
-  font-size: 16px;
+  width: var(--size-md);
+  height: var(--size-md);
+  font-size: var(--text-base);
 }
 
 .lg {
-  width: 44px;
-  height: 44px;
-  font-size: 20px;
+  width: var(--size-lg);
+  height: var(--size-lg);
+  font-size: var(--text-xl);
 }
 
 /* --- Icon --- */

@@ -31,6 +31,21 @@ export function OverviewPage() {
         </div>
       </section>
 
+      {/* ---- What's included ---- */}
+      <section className={styles.section}>
+        <div className={styles.sectionHeader}>
+          <h2 className={styles.heading}>What's included</h2>
+          <p className={styles.body}>
+            Composure focuses on the components unique to AI chat interfaces —
+            Composer, ChatMessage, CodeBlock, ScrollArea, and FilePreview. The
+            primitives (Button, IconButton, Select, Avatar) exist to support
+            those components and to demonstrate the underlying design system. In
+            production, you'd likely swap them for your own primitives or use
+            shadcn/ui equivalents.
+          </p>
+        </div>
+      </section>
+
       {/* ---- Step 1: Install ---- */}
       <section className={styles.section}>
         <div className={styles.sectionHeader}>

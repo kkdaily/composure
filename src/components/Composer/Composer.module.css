@@ -52,6 +52,35 @@
   color: var(--color-text-muted);
 }
 
+/* --- Header --- */
+
+.header {
+  flex-basis: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding-bottom: var(--space-2);
+  order: -1;
+}
+
+.headerBordered {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.headerStart {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.headerEnd {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-left: auto;
+}
+
 /* --- Footer --- */
 
 .footer {

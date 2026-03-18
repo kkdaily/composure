@@ -47,8 +47,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
+  width: var(--size-sm);
+  height: var(--size-sm);
   padding: 0;
   background: var(--color-bg-2);
   border: 1px solid var(--color-border);
@@ -57,7 +57,10 @@
   font-size: var(--text-sm);
   cursor: pointer;
   opacity: 0;
-  transition: opacity 150ms ease, color 150ms ease, background-color 150ms ease;
+  transition:
+    opacity var(--speed-fast) var(--ease-out),
+    color var(--speed-fast) var(--ease-out),
+    background-color var(--speed-fast) var(--ease-out);
 }
 
 .codeBlock:hover .copyButton {
@@ -76,7 +79,7 @@
 }
 
 .copyButtonCopied {
-  color: var(--color-success, #22c55e);
+  color: var(--color-success);
 }
 
 /* --- Line numbers --- */

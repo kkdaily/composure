@@ -17,10 +17,20 @@
   display: flex;
   justify-content: center;
   pointer-events: none;
+  transition: opacity var(--speed-normal) var(--ease-out);
 }
 
-.scrollToBottom > * {
+.scrollToBottomVisible {
+  opacity: 1;
+}
+
+.scrollToBottomVisible > * {
   pointer-events: auto;
+}
+
+.scrollToBottomHidden {
+  opacity: 0;
+  pointer-events: none;
 }
 
 /* --- Reduced motion --- */
@@ -28,5 +38,9 @@
 @media (prefers-reduced-motion: reduce) {
   .scrollArea {
     scroll-behavior: auto;
+  }
+
+  .scrollToBottom {
+    transition: none;
   }
 }

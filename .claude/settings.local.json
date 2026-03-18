@@ -10,7 +10,8 @@
       "Bash(ls /Users/kdaily/code/composure/node_modules/shiki/dist/*.d.mts)",
       "Bash(lsof -ti:5173)",
       "Bash(xargs kill:*)",
-      "Bash(node -e \"import\\(''shiki''\\).then\\(m => console.log\\(''HighlighterCore'' in m, ''ThemedToken'' in m\\)\\).catch\\(e => console.error\\(e.message\\)\\)\")"
+      "Bash(node -e \"import\\(''shiki''\\).then\\(m => console.log\\(''HighlighterCore'' in m, ''ThemedToken'' in m\\)\\).catch\\(e => console.error\\(e.message\\)\\)\")",
+      "Bash(ls -la /Users/kdaily/code/composure/src/components/*/)"
     ]
   }
 }

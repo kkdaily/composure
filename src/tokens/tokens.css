@@ -26,8 +26,30 @@
 
   /* Semantic */
   --color-destructive: #ef4444;
+  --color-success: #16a34a;
   --color-border: #e5e5e5;
   --color-text-on-accent: #ffffff;
+
+  /* File-type colors (icon bg / icon fg) */
+  --color-filetype-image-bg: #dbeafe;
+  --color-filetype-image-fg: #2563eb;
+  --color-filetype-document-bg: #fee2e2;
+  --color-filetype-document-fg: #dc2626;
+  --color-filetype-spreadsheet-bg: #dcfce7;
+  --color-filetype-spreadsheet-fg: #16a34a;
+  --color-filetype-code-bg: #f3e8ff;
+  --color-filetype-code-fg: #9333ea;
+  --color-filetype-archive-bg: #fef9c3;
+  --color-filetype-archive-fg: #ca8a04;
+  --color-filetype-video-bg: #fce7f3;
+  --color-filetype-video-fg: #db2777;
+  --color-filetype-audio-bg: #ffedd5;
+  --color-filetype-audio-fg: #ea580c;
+
+  /* Interactive element sizes */
+  --size-sm: 28px;
+  --size-md: 36px;
+  --size-lg: 44px;
 
   /* --- Spacing (base 4px) --- */
   --space-1: 4px;
@@ -101,8 +123,25 @@
     --color-user-bubble-text: #111111; /* dark text on light accent bubble */
 
     --color-destructive: #f87171;
+    --color-success: #4ade80;
     --color-border: #2a2a2a;
     --color-text-on-accent: #111111; /* all dark-mode accents are light — use dark text */
+
+    /* File-type colors — dark mode */
+    --color-filetype-image-bg: #1e3a5f;
+    --color-filetype-image-fg: #60a5fa;
+    --color-filetype-document-bg: #4c1d1d;
+    --color-filetype-document-fg: #f87171;
+    --color-filetype-spreadsheet-bg: #14532d;
+    --color-filetype-spreadsheet-fg: #4ade80;
+    --color-filetype-code-bg: #3b1764;
+    --color-filetype-code-fg: #c084fc;
+    --color-filetype-archive-bg: #422d08;
+    --color-filetype-archive-fg: #facc15;
+    --color-filetype-video-bg: #4a1035;
+    --color-filetype-video-fg: #f472b6;
+    --color-filetype-audio-bg: #431e07;
+    --color-filetype-audio-fg: #fb923c;
   }
 }
 
@@ -124,8 +163,25 @@
   --color-user-bubble-text: #111111; /* dark text on light accent bubble */
 
   --color-destructive: #f87171;
+  --color-success: #4ade80;
   --color-border: #2a2a2a;
   --color-text-on-accent: #111111; /* all dark-mode accents are light — use dark text */
+
+  /* File-type colors — dark mode */
+  --color-filetype-image-bg: #1e3a5f;
+  --color-filetype-image-fg: #60a5fa;
+  --color-filetype-document-bg: #4c1d1d;
+  --color-filetype-document-fg: #f87171;
+  --color-filetype-spreadsheet-bg: #14532d;
+  --color-filetype-spreadsheet-fg: #4ade80;
+  --color-filetype-code-bg: #3b1764;
+  --color-filetype-code-fg: #c084fc;
+  --color-filetype-archive-bg: #422d08;
+  --color-filetype-archive-fg: #facc15;
+  --color-filetype-video-bg: #4a1035;
+  --color-filetype-video-fg: #f472b6;
+  --color-filetype-audio-bg: #431e07;
+  --color-filetype-audio-fg: #fb923c;
 }
 
 /* ===========================

@@ -1,5 +1,6 @@
 .root {
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 .layout {
@@ -11,6 +12,7 @@
 .main {
   flex: 1;
   margin-left: 240px;
+  min-width: 0;
   min-height: calc(100vh - 56px);
 }
 
