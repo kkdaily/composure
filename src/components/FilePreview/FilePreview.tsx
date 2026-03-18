@@ -1,4 +1,4 @@
-import { type HTMLAttributes } from 'react'
+import { type HTMLAttributes, type JSX } from 'react'
 import styles from './FilePreview.module.css'
 
 /* ===========================

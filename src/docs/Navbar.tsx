@@ -1,5 +1,6 @@
+import { useState, useRef, useEffect, type JSX } from 'react'
 import { NavLink } from 'react-router-dom'
-import { useTheme, type Theme } from '../context/theme'
+import { useTheme, ACCENT_COLORS, type Theme, type AccentColor } from '../context/theme'
 import styles from './Navbar.module.css'
 
 function LogoMark() {
@@ -78,6 +79,91 @@ const THEME_ICONS: Record<Theme, () => JSX.Element> = {
   system: SystemIcon,
 }
 
+/** Static hex per accent so swatches don't rely on CSS vars */
+const ACCENT_HEX: Record<AccentColor, string> = {
+  indigo: '#6366f1',
+  violet: '#7c3aed',
+  blue: '#2563eb',
+  teal: '#0d9488',
+  green: '#16a34a',
+  orange: '#ea580c',
+  red: '#dc2626',
+  crimson: '#e11d48',
+}
+
+function PaletteIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="10" />
+      <circle cx="12" cy="8" r="2" fill="currentColor" stroke="none" />
+      <circle cx="8" cy="14" r="2" fill="currentColor" stroke="none" />
+      <circle cx="16" cy="14" r="2" fill="currentColor" stroke="none" />
+    </svg>
+  )
+}
+
+function AccentPicker() {
+  const { accentColor, setAccentColor } = useTheme()
+  const [open, setOpen] = useState(false)
+  const containerRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!open) return
+    function handleClick(e: MouseEvent) {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        setOpen(false)
+      }
+    }
+    function handleKey(e: KeyboardEvent) {
+      if (e.key === 'Escape') setOpen(false)
+    }
+    document.addEventListener('mousedown', handleClick)
+    document.addEventListener('keydown', handleKey)
+    return () => {
+      document.removeEventListener('mousedown', handleClick)
+      document.removeEventListener('keydown', handleKey)
+    }
+  }, [open])
+
+  return (
+    <div className={styles.accentPickerContainer} ref={containerRef}>
+      <button
+        onClick={() => setOpen((o) => !o)}
+        className={styles.iconButton}
+        aria-label="Change accent color"
+        title="Change accent color"
+        aria-expanded={open}
+      >
+        <PaletteIcon />
+      </button>
+      {open && (
+        <div className={styles.accentPopover} role="listbox" aria-label="Accent colors">
+          {ACCENT_COLORS.map((color) => (
+            <button
+              key={color}
+              role="option"
+              aria-selected={color === accentColor}
+              aria-label={color}
+              title={color.charAt(0).toUpperCase() + color.slice(1)}
+              className={[
+                styles.accentSwatch,
+                color === accentColor ? styles.accentSwatchActive : '',
+              ]
+                .filter(Boolean)
+                .join(' ')}
+              style={{ backgroundColor: ACCENT_HEX[color] }}
+              onClick={() => {
+                setAccentColor(color)
+                setOpen(false)
+              }}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
 export function Navbar() {
   const { theme, setTheme } = useTheme()
 
@@ -96,6 +182,7 @@ export function Navbar() {
         <span className={styles.brandName}>Composure</span>
       </NavLink>
       <div className={styles.actions}>
+        <AccentPicker />
         <button
           onClick={cycleTheme}
           className={styles.iconButton}
