@@ -164,8 +164,8 @@ export interface FilePreviewProps
   extends Omit<HTMLAttributes<HTMLDivElement>, 'className'> {
   /** File name to display */
   name: string
-  /** File size string (e.g. "2.4 MB") */
-  size?: string
+  /** Size of the component — matches Button heights */
+  size?: 'sm' | 'md' | 'lg'
   /** File type for icon selection — auto-detected from extension if omitted */
   type?: FileType
   /** Image thumbnail URL — shown as visual preview for image files */
@@ -178,7 +178,7 @@ export interface FilePreviewProps
 
 export function FilePreview({
   name,
-  size,
+  size = 'md',
   type,
   thumbnail,
   onRemove,
@@ -188,7 +188,7 @@ export function FilePreview({
   const resolvedType = type ?? detectFileType(name)
   const Icon = iconsByType[resolvedType]
 
-  const classNames = [styles.filePreview, className ?? '']
+  const classNames = [styles.filePreview, styles[size], className ?? '']
     .filter(Boolean)
     .join(' ')
 
@@ -205,10 +205,7 @@ export function FilePreview({
           <Icon />
         )}
       </div>
-      <div className={styles.info}>
-        <span className={styles.name}>{name}</span>
-        {size && <span className={styles.size}>{size}</span>}
-      </div>
+      <span className={styles.name}>{name}</span>
       {onRemove && (
         <button
           type="button"

@@ -177,8 +177,8 @@ export function ComposerPage() {
             {demoHeader !== 'none' && (
               <ComposerHeader bordered={demoHeader === 'bordered'}>
                 <ComposerHeaderStart>
-                  <FilePreview name="report.pdf" size="2.4 MB" onRemove={() => {}} />
-                  <FilePreview name="data.csv" size="840 KB" onRemove={() => {}} />
+                  <FilePreview name="screenshot.png" thumbnail="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=120&h=120&fit=crop" onRemove={() => {}} />
+                  <FilePreview name="report.pdf" onRemove={() => {}} />
                 </ComposerHeaderStart>
               </ComposerHeader>
             )}
@@ -530,8 +530,8 @@ export function ComposerPage() {
         >
           <ComposerHeader>
             <ComposerHeaderStart>
-              <FilePreview name="report.pdf" size="2.4 MB" onRemove={() => {}} />
-              <FilePreview name="data.csv" size="840 KB" onRemove={() => {}} />
+              <FilePreview name="report.pdf" onRemove={() => {}} />
+              <FilePreview name="data.csv" onRemove={() => {}} />
             </ComposerHeaderStart>
           </ComposerHeader>
           <ComposerInput placeholder="Ask about these files…" />
@@ -542,8 +542,8 @@ export function ComposerPage() {
         <CodeSnippet>{`<Composer value={value} onChange={setValue} onSubmit={handleSend}>
   <ComposerHeader>
     <ComposerHeaderStart>
-      <FilePreview name="report.pdf" size="2.4 MB" onRemove={() => {}} />
-      <FilePreview name="data.csv" size="840 KB" onRemove={() => {}} />
+      <FilePreview name="report.pdf" onRemove={() => {}} />
+      <FilePreview name="data.csv" onRemove={() => {}} />
     </ComposerHeaderStart>
   </ComposerHeader>
   <ComposerInput placeholder="Ask about these files…" />

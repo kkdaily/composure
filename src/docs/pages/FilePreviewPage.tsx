@@ -27,15 +27,16 @@ const SendIcon = () => (
    =========================== */
 
 type DemoType = 'image' | 'document' | 'code' | 'spreadsheet' | 'generic'
+type DemoSize = 'sm' | 'md' | 'lg'
 type DemoRemove = 'on' | 'off'
 type DemoThumbnail = 'on' | 'off'
 
-const demoFilesByType: Record<DemoType, { name: string; size: string }> = {
-  image: { name: 'screenshot.png', size: '1.2 MB' },
-  document: { name: 'report.pdf', size: '2.4 MB' },
-  code: { name: 'index.tsx', size: '8.3 KB' },
-  spreadsheet: { name: 'data.csv', size: '840 KB' },
-  generic: { name: 'backup.dat', size: '15 MB' },
+const demoFilesByType: Record<DemoType, { name: string }> = {
+  image: { name: 'screenshot.png' },
+  document: { name: 'report.pdf' },
+  code: { name: 'index.tsx' },
+  spreadsheet: { name: 'data.csv' },
+  generic: { name: 'backup.dat' },
 }
 
 /* ===========================
@@ -44,6 +45,7 @@ const demoFilesByType: Record<DemoType, { name: string; size: string }> = {
 
 export function FilePreviewPage() {
   const [demoType, setDemoType] = useState<DemoType>('document')
+  const [demoSize, setDemoSize] = useState<DemoSize>('md')
   const [demoRemove, setDemoRemove] = useState<DemoRemove>('on')
   const [demoThumbnail, setDemoThumbnail] = useState<DemoThumbnail>('off')
 
@@ -53,9 +55,9 @@ export function FilePreviewPage() {
   // Composer demo state
   const [composerValue, setComposerValue] = useState('')
   const [composerFiles, setComposerFiles] = useState([
-    { name: 'quarterly-report.pdf', size: '2.4 MB' },
-    { name: 'chart.png', size: '340 KB' },
-    { name: 'raw-data.csv', size: '1.1 MB' },
+    { name: 'quarterly-report.pdf' },
+    { name: 'chart.png' },
+    { name: 'raw-data.csv' },
   ])
 
   return (
@@ -63,7 +65,7 @@ export function FilePreviewPage() {
       <h1 className={styles.title}>FilePreview</h1>
       <p className={styles.subtitle}>
         A compact preview card for file attachments — auto-detects file type
-        from extension and displays a colored icon, filename, size, and optional
+        from extension and displays a colored icon, filename, and optional
         remove button.
       </p>
 
@@ -73,7 +75,7 @@ export function FilePreviewPage() {
         <div className={styles.demoArea}>
           <FilePreview
             name={demoFile.name}
-            size={demoFile.size}
+            size={demoSize}
             type={demoType}
             thumbnail={showThumbnail ? 'https://picsum.photos/id/10/80/80' : undefined}
             onRemove={demoRemove === 'on' ? () => {} : undefined}
@@ -90,6 +92,20 @@ export function FilePreviewPage() {
                   onClick={() => setDemoType(t)}
                 >
                   {t}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className={styles.controlGroup}>
+            <span className={styles.controlLabel}>Size</span>
+            <div className={styles.controlOptions}>
+              {(['sm', 'md', 'lg'] as DemoSize[]).map((s) => (
+                <button
+                  key={s}
+                  className={`${styles.chip} ${demoSize === s ? styles.chipActive : ''}`}
+                  onClick={() => setDemoSize(s)}
+                >
+                  {s}
                 </button>
               ))}
             </div>
@@ -131,16 +147,34 @@ export function FilePreviewPage() {
       <section className={styles.section}>
         <h2 className={styles.heading}>Basic Usage</h2>
         <p className={styles.sectionDescription}>
-          Pass a <code>name</code> and optional <code>size</code>. The file type
-          icon and color are auto-detected from the file extension — no manual
-          type prop needed for common file formats.
+          Pass a <code>name</code> and the file type icon and color are
+          auto-detected from the file extension — no manual type prop needed
+          for common file formats.
         </p>
         <div className={styles.previewRow}>
-          <FilePreview name="report.pdf" size="2.4 MB" />
-          <FilePreview name="notes.txt" size="12 KB" />
+          <FilePreview name="report.pdf" />
+          <FilePreview name="notes.txt" />
         </div>
-        <CodeSnippet>{`<FilePreview name="report.pdf" size="2.4 MB" />
-<FilePreview name="notes.txt" size="12 KB" />`}</CodeSnippet>
+        <CodeSnippet>{`<FilePreview name="report.pdf" />
+<FilePreview name="notes.txt" />`}</CodeSnippet>
+      </section>
+
+      {/* Sizes */}
+      <section className={styles.section}>
+        <h2 className={styles.heading}>Sizes</h2>
+        <p className={styles.sectionDescription}>
+          FilePreview supports <code>sm</code>, <code>md</code>, and{' '}
+          <code>lg</code> sizes that match the height of the Button component
+          at the same size — so they align naturally when placed side by side.
+        </p>
+        <div className={styles.previewRow}>
+          <FilePreview name="small.pdf" size="sm" />
+          <FilePreview name="medium.pdf" size="md" />
+          <FilePreview name="large.pdf" size="lg" />
+        </div>
+        <CodeSnippet>{`<FilePreview name="small.pdf" size="sm" />
+<FilePreview name="medium.pdf" size="md" />
+<FilePreview name="large.pdf" size="lg" />`}</CodeSnippet>
       </section>
 
       {/* File Types */}
@@ -152,23 +186,23 @@ export function FilePreviewPage() {
           extension, or you can set the <code>type</code> prop explicitly.
         </p>
         <div className={styles.previewRow}>
-          <FilePreview name="photo.png" size="1.2 MB" />
-          <FilePreview name="report.pdf" size="2.4 MB" />
-          <FilePreview name="data.csv" size="840 KB" />
-          <FilePreview name="index.tsx" size="8.3 KB" />
-          <FilePreview name="bundle.zip" size="15 MB" />
-          <FilePreview name="clip.mp4" size="48 MB" />
-          <FilePreview name="track.mp3" size="5.2 MB" />
-          <FilePreview name="backup.dat" size="128 MB" />
+          <FilePreview name="photo.png" />
+          <FilePreview name="report.pdf" />
+          <FilePreview name="data.csv" />
+          <FilePreview name="index.tsx" />
+          <FilePreview name="bundle.zip" />
+          <FilePreview name="clip.mp4" />
+          <FilePreview name="track.mp3" />
+          <FilePreview name="backup.dat" />
         </div>
-        <CodeSnippet>{`<FilePreview name="photo.png" size="1.2 MB" />
-<FilePreview name="report.pdf" size="2.4 MB" />
-<FilePreview name="data.csv" size="840 KB" />
-<FilePreview name="index.tsx" size="8.3 KB" />
-<FilePreview name="bundle.zip" size="15 MB" />
-<FilePreview name="clip.mp4" size="48 MB" />
-<FilePreview name="track.mp3" size="5.2 MB" />
-<FilePreview name="backup.dat" size="128 MB" />`}</CodeSnippet>
+        <CodeSnippet>{`<FilePreview name="photo.png" />
+<FilePreview name="report.pdf" />
+<FilePreview name="data.csv" />
+<FilePreview name="index.tsx" />
+<FilePreview name="bundle.zip" />
+<FilePreview name="clip.mp4" />
+<FilePreview name="track.mp3" />
+<FilePreview name="backup.dat" />`}</CodeSnippet>
       </section>
 
       {/* With Thumbnail */}
@@ -182,18 +216,15 @@ export function FilePreviewPage() {
         <div className={styles.previewRow}>
           <FilePreview
             name="landscape.jpg"
-            size="3.1 MB"
             thumbnail="https://picsum.photos/id/10/80/80"
           />
           <FilePreview
             name="portrait.png"
-            size="1.8 MB"
             thumbnail="https://picsum.photos/id/64/80/80"
           />
         </div>
         <CodeSnippet>{`<FilePreview
   name="landscape.jpg"
-  size="3.1 MB"
   thumbnail="/thumbnails/landscape-thumb.jpg"
 />`}</CodeSnippet>
       </section>
@@ -207,12 +238,11 @@ export function FilePreviewPage() {
           attached files before sending.
         </p>
         <div className={styles.previewRow}>
-          <FilePreview name="draft.docx" size="156 KB" onRemove={() => {}} />
-          <FilePreview name="styles.css" size="4.2 KB" onRemove={() => {}} />
+          <FilePreview name="draft.docx" onRemove={() => {}} />
+          <FilePreview name="styles.css" onRemove={() => {}} />
         </div>
         <CodeSnippet>{`<FilePreview
   name="draft.docx"
-  size="156 KB"
   onRemove={() => removeFile('draft.docx')}
 />`}</CodeSnippet>
       </section>
@@ -238,7 +268,6 @@ export function FilePreviewPage() {
                   <FilePreview
                     key={file.name}
                     name={file.name}
-                    size={file.size}
                     onRemove={() =>
                       setComposerFiles((prev) =>
                         prev.filter((f) => f.name !== file.name)
@@ -265,7 +294,6 @@ export function FilePreviewPage() {
         <FilePreview
           key={file.name}
           name={file.name}
-          size={file.size}
           onRemove={() => removeFile(file.name)}
         />
       ))}
@@ -304,9 +332,9 @@ export function FilePreviewPage() {
               </tr>
               <tr>
                 <td><code>size</code></td>
-                <td><code>string</code></td>
-                <td>—</td>
-                <td>File size string (e.g. &quot;2.4 MB&quot;)</td>
+                <td><code>{`'sm' | 'md' | 'lg'`}</code></td>
+                <td><code>'md'</code></td>
+                <td>Component size — matches Button heights at each size</td>
               </tr>
               <tr>
                 <td><code>type</code></td>
