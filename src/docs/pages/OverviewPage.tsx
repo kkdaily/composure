@@ -9,7 +9,10 @@ import {
 import {
   Composer,
   ComposerInput,
+  ComposerHeader,
+  ComposerHeaderStart,
   ComposerFooter,
+  ComposerFooterStart,
   ComposerFooterEnd,
 } from '../../components/Composer/Composer'
 import {
@@ -18,6 +21,7 @@ import {
 } from '../../components/ScrollArea/ScrollArea'
 import { MarkdownRenderer } from '../../components/MarkdownRenderer/MarkdownRenderer'
 import { IconButton } from '../../components/IconButton/IconButton'
+import { FilePreview } from '../../components/FilePreview/FilePreview'
 import { CodeSnippet } from '../CodeSnippet'
 import styles from './OverviewPage.module.css'
 
@@ -63,6 +67,14 @@ function CopyIcon() {
     <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <rect x="5" y="5" width="9" height="9" rx="1" />
       <path d="M2 11V3a1 1 0 0 1 1-1h8" />
+    </svg>
+  )
+}
+
+function PlusIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+      <path d="M8 3v10M3 8h10" />
     </svg>
   )
 }
@@ -240,6 +252,10 @@ export function OverviewPage() {
   const [composerValue, setComposerValue] = useState('')
   const [streamingContent, setStreamingContent] = useState<string | null>(null)
   const [isStreaming, setIsStreaming] = useState(false)
+  const [files, setFiles] = useState<string[]>([])
+
+  const demoFiles = useRef(['schema.prisma', 'utils.ts', 'data.csv'])
+  const fileIndexRef = useRef(0)
 
   const responseIndexRef = useRef(0)
   const streamIntervalRef = useRef<ReturnType<typeof setInterval>>()
@@ -306,6 +322,16 @@ export function OverviewPage() {
 
     timersRef.current.push(t)
   }, [isStreaming, startStream])
+
+  const handleAddFile = useCallback(() => {
+    const name = demoFiles.current[fileIndexRef.current % demoFiles.current.length]
+    fileIndexRef.current++
+    setFiles(prev => prev.includes(name) ? prev : [...prev, name])
+  }, [])
+
+  const handleRemoveFile = useCallback((name: string) => {
+    setFiles(prev => prev.filter(f => f !== name))
+  }, [])
 
   return (
     <div className={styles.page}>
@@ -403,8 +429,31 @@ export function OverviewPage() {
               onSubmit={handleSend}
               disabled={isStreaming}
             >
+              {files.length > 0 && (
+                <ComposerHeader>
+                  <ComposerHeaderStart>
+                    {files.map(name => (
+                      <FilePreview
+                        key={name}
+                        name={name}
+                        size="sm"
+                        onRemove={() => handleRemoveFile(name)}
+                      />
+                    ))}
+                  </ComposerHeaderStart>
+                </ComposerHeader>
+              )}
               <ComposerInput placeholder="Try sending a message…" />
               <ComposerFooter bordered={false}>
+                <ComposerFooterStart>
+                  <IconButton
+                    label="Attach file"
+                    size="sm"
+                    onClick={handleAddFile}
+                  >
+                    <PlusIcon />
+                  </IconButton>
+                </ComposerFooterStart>
                 <ComposerFooterEnd>
                   <IconButton
                     label="Send"
@@ -432,7 +481,7 @@ export function OverviewPage() {
           <p className={styles.body}>
             Every AI chat app rebuilds the same complex UI patterns. Composure
             extracts them into composable, accessible, theme-aware components
-            with zero external UI dependencies.
+            for the shadcn ecosystem.
           </p>
         </div>
 
@@ -464,10 +513,10 @@ export function OverviewPage() {
           </div>
           <div className={styles.highlightCard}>
             <span className={styles.highlightIcon}><PaletteHighlightIcon /></span>
-            <h3 className={styles.highlightTitle}>From-scratch design system</h3>
+            <h3 className={styles.highlightTitle}>Built for shadcn</h3>
             <p className={styles.highlightDesc}>
-              80+ tokens, 8 accent palettes, automatic dark mode, verified
-              4.5:1+ contrast ratios. No Radix, MUI, or Tailwind.
+              Designed for the shadcn registry. Works with your existing theme
+              tokens, dark mode, and primitives like Button and Avatar.
             </p>
           </div>
         </div>
@@ -478,12 +527,10 @@ export function OverviewPage() {
         <div className={styles.sectionHeader}>
           <h2 className={styles.heading}>What's included</h2>
           <p className={styles.body}>
-            Composure focuses on the components unique to AI chat interfaces —
-            Composer, ChatMessage, CodeBlock, ScrollArea, and MarkdownRenderer.
-            The primitives (Button, IconButton, Select, Avatar) exist to support
-            those components and demonstrate the underlying design system. In
-            production you'd likely swap them for your own primitives or use
-            shadcn/ui equivalents.
+            Six components purpose-built for AI chat interfaces: Composer,
+            ChatMessage, CodeBlock, ScrollArea, MarkdownRenderer, and
+            FilePreview. Designed for the shadcn registry — they work alongside
+            your existing shadcn primitives like Button and Avatar.
           </p>
         </div>
       </section>
