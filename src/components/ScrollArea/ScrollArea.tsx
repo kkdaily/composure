@@ -8,7 +8,7 @@ import {
   type ReactNode,
   type HTMLAttributes,
 } from 'react'
-import styles from './ScrollArea.module.css'
+import { cn } from '@/lib/utils'
 
 /* ===========================
    Context
@@ -158,13 +158,16 @@ export function ScrollArea({
     return () => observer.disconnect()
   }, [checkIsAtBottom])
 
-  const classNames = [styles.scrollArea, className ?? '']
-    .filter(Boolean)
-    .join(' ')
-
   return (
     <ScrollAreaContext.Provider value={{ isAtBottom, scrollToBottom }}>
-      <div className={classNames} ref={containerRef} {...rest}>
+      <div
+        className={cn(
+          'relative overflow-y-auto overflow-x-hidden [overflow-anchor:none]',
+          className
+        )}
+        ref={containerRef}
+        {...rest}
+      >
         {children}
       </div>
     </ScrollAreaContext.Provider>
@@ -193,22 +196,20 @@ export function ScrollAreaScrollToBottom({
 }: ScrollAreaScrollToBottomProps) {
   const { isAtBottom, scrollToBottom } = useScrollAreaContext()
 
-  const classNames = [
-    styles.scrollToBottom,
-    isAtBottom ? styles.scrollToBottomHidden : styles.scrollToBottomVisible,
-    className ?? '',
-  ]
-    .filter(Boolean)
-    .join(' ')
-
   return (
     <div
-      className={classNames}
+      className={cn(
+        'sticky bottom-3 flex justify-center pointer-events-none transition-opacity duration-200 ease-out motion-reduce:transition-none',
+        isAtBottom
+          ? 'opacity-0 pointer-events-none'
+          : 'opacity-100 [&>*]:pointer-events-auto',
+        className
+      )}
       aria-hidden={isAtBottom || undefined}
       {...rest}
     >
       <button
-        className={styles.scrollToBottomButton}
+        className="flex items-center justify-center w-9 h-9 border border-border rounded-full bg-card text-foreground cursor-pointer transition-colors duration-100 ease-out hover:bg-muted focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2 motion-reduce:transition-none"
         onClick={scrollToBottom}
         aria-label={label}
         tabIndex={isAtBottom ? -1 : 0}

@@ -12,7 +12,7 @@ import { IconButton } from '../../components/IconButton/IconButton'
 import { Select } from '../../components/Select/Select'
 import { FilePreview } from '../../components/FilePreview/FilePreview'
 import { CodeSnippet } from '../CodeSnippet'
-import styles from './ComposerPage.module.css'
+import { cn } from '@/lib/utils'
 
 const SendIcon = () => (
   <svg width="1em" height="1em" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -133,20 +133,29 @@ export function ComposerPage() {
   const [headerValue, setHeaderValue] = useState('')
 
   return (
-    <div className={styles.page}>
-      <h1 className={styles.title}>Composer</h1>
-      <p className={styles.subtitle}>
+    <div className="flex flex-col gap-10">
+      <style>{`
+        @keyframes blink {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .composer-demo-cursor { animation: none; }
+        }
+      `}</style>
+      <h1 className="text-3xl font-bold text-foreground tracking-tight">Composer</h1>
+      <p className="text-lg text-secondary-foreground leading-relaxed max-w-[540px]">
         A composable message input for AI chat interfaces — auto-resizing
         textarea with send and stop controls.
       </p>
 
       {/* Interactive demo */}
-      <section className={styles.section}>
-        <h2 className={styles.heading}>Demo</h2>
-        <div className={styles.demoArea}>
-          <div className={styles.messageLog} ref={messageLogRef}>
+      <section className="flex flex-col gap-5">
+        <h2 className="text-xl font-semibold text-foreground tracking-tight">Demo</h2>
+        <div className="flex flex-col gap-4 p-6 bg-card border border-border rounded-lg">
+          <div className="flex flex-col gap-2 min-h-[48px] max-h-[200px] overflow-y-auto" ref={messageLogRef}>
             {messages.length === 0 && !streamingText ? (
-              <span className={styles.emptyState}>
+              <span className="text-sm text-muted-foreground italic">
                 Type a message and press send…
               </span>
             ) : (
@@ -154,15 +163,23 @@ export function ComposerPage() {
                 {messages.map((msg, i) => (
                   <div
                     key={i}
-                    className={`${styles.message} ${msg.role === 'user' ? styles.messageUser : styles.messageAssistant}`}
+                    className={cn(
+                      'text-sm px-3 py-2 rounded-md max-w-[80%] leading-relaxed',
+                      msg.role === 'user'
+                        ? 'text-primary-foreground bg-[var(--color-user-bubble)] self-end'
+                        : 'text-foreground bg-[var(--color-assistant-bubble)] self-start'
+                    )}
                   >
                     {msg.content}
                   </div>
                 ))}
                 {streamingText && (
-                  <div className={`${styles.message} ${styles.messageAssistant}`}>
+                  <div className="text-sm px-3 py-2 rounded-md max-w-[80%] leading-relaxed text-foreground bg-[var(--color-assistant-bubble)] self-start">
                     {streamingText}
-                    <span className={styles.cursor} />
+                    <span
+                      className="composer-demo-cursor inline-block w-0.5 h-[1em] bg-foreground ml-px align-text-bottom"
+                      style={{ animation: 'blink 220ms step-end infinite' }}
+                    />
                   </div>
                 )}
               </>
@@ -226,14 +243,19 @@ export function ComposerPage() {
             )}
           </Composer>
         </div>
-        <div className={styles.controls}>
-          <div className={styles.controlGroup}>
-            <span className={styles.controlLabel}>Header</span>
-            <div className={styles.controlOptions}>
+        <div className="flex flex-col gap-3">
+          <div className="flex items-center gap-3">
+            <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground min-w-[80px]">Header</span>
+            <div className="flex items-center gap-1.5 flex-wrap">
               {(['none', 'plain', 'bordered'] as DemoHeader[]).map((h) => (
                 <button
                   key={h}
-                  className={`${styles.chip} ${demoHeader === h ? styles.chipActive : ''}`}
+                  className={cn(
+                    'px-2.5 py-1 text-xs font-medium rounded-md border cursor-pointer transition-colors',
+                    demoHeader === h
+                      ? 'bg-primary text-primary-foreground border-primary'
+                      : 'bg-transparent border-border text-secondary-foreground hover:bg-muted hover:text-foreground'
+                  )}
                   onClick={() => setDemoHeader(h)}
                 >
                   {h}
@@ -241,13 +263,18 @@ export function ComposerPage() {
               ))}
             </div>
           </div>
-          <div className={styles.controlGroup}>
-            <span className={styles.controlLabel}>Footer</span>
-            <div className={styles.controlOptions}>
+          <div className="flex items-center gap-3">
+            <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground min-w-[80px]">Footer</span>
+            <div className="flex items-center gap-1.5 flex-wrap">
               {(['none', 'bordered', 'borderless'] as DemoFooter[]).map((f) => (
                 <button
                   key={f}
-                  className={`${styles.chip} ${demoFooter === f ? styles.chipActive : ''}`}
+                  className={cn(
+                    'px-2.5 py-1 text-xs font-medium rounded-md border cursor-pointer transition-colors',
+                    demoFooter === f
+                      ? 'bg-primary text-primary-foreground border-primary'
+                      : 'bg-transparent border-border text-secondary-foreground hover:bg-muted hover:text-foreground'
+                  )}
                   onClick={() => {
                     setDemoFooter(f)
                     if (f === 'none' && demoSendPosition === 'footer') {
@@ -260,13 +287,18 @@ export function ComposerPage() {
               ))}
             </div>
           </div>
-          <div className={styles.controlGroup}>
-            <span className={styles.controlLabel}>Send</span>
-            <div className={styles.controlOptions}>
+          <div className="flex items-center gap-3">
+            <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground min-w-[80px]">Send</span>
+            <div className="flex items-center gap-1.5 flex-wrap">
               {(['inline', 'footer'] as DemoSendPosition[]).map((p) => (
                 <button
                   key={p}
-                  className={`${styles.chip} ${demoSendPosition === p ? styles.chipActive : ''}`}
+                  className={cn(
+                    'px-2.5 py-1 text-xs font-medium rounded-md border cursor-pointer transition-colors',
+                    demoSendPosition === p
+                      ? 'bg-primary text-primary-foreground border-primary'
+                      : 'bg-transparent border-border text-secondary-foreground hover:bg-muted hover:text-foreground'
+                  )}
                   onClick={() => {
                     setDemoSendPosition(p)
                     if (p === 'footer' && demoFooter === 'none') {
@@ -279,13 +311,18 @@ export function ComposerPage() {
               ))}
             </div>
           </div>
-          <div className={styles.controlGroup}>
-            <span className={styles.controlLabel}>Disabled</span>
-            <div className={styles.controlOptions}>
+          <div className="flex items-center gap-3">
+            <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground min-w-[80px]">Disabled</span>
+            <div className="flex items-center gap-1.5 flex-wrap">
               {(['off', 'on'] as const).map((t) => (
                 <button
                   key={t}
-                  className={`${styles.chip} ${demoDisabled === (t === 'on') ? styles.chipActive : ''}`}
+                  className={cn(
+                    'px-2.5 py-1 text-xs font-medium rounded-md border cursor-pointer transition-colors',
+                    demoDisabled === (t === 'on')
+                      ? 'bg-primary text-primary-foreground border-primary'
+                      : 'bg-transparent border-border text-secondary-foreground hover:bg-muted hover:text-foreground'
+                  )}
                   onClick={() => setDemoDisabled(t === 'on')}
                 >
                   {t}
@@ -297,9 +334,9 @@ export function ComposerPage() {
       </section>
 
       {/* Basic Usage */}
-      <section className={styles.section}>
-        <h2 className={styles.heading}>Basic Usage</h2>
-        <p className={styles.sectionDescription}>
+      <section className="flex flex-col gap-5">
+        <h2 className="text-xl font-semibold text-foreground tracking-tight">Basic Usage</h2>
+        <p className="text-sm text-secondary-foreground leading-relaxed max-w-[600px]">
           The minimal configuration — a <code>Composer</code> root with
           a <code>ComposerInput</code> and your own send button. The
           parent controls the input value and handles submission.
@@ -332,9 +369,9 @@ export function ComposerPage() {
       </section>
 
       {/* With Stop Button */}
-      <section className={styles.section}>
-        <h2 className={styles.heading}>With Stop Button</h2>
-        <p className={styles.sectionDescription}>
+      <section className="flex flex-col gap-5">
+        <h2 className="text-xl font-semibold text-foreground tracking-tight">With Stop Button</h2>
+        <p className="text-sm text-secondary-foreground leading-relaxed max-w-[600px]">
           Swap the send button for a stop button while the AI is generating a
           response. This lets the user cancel mid-stream — a standard pattern
           in ChatGPT, Claude, and similar interfaces.
@@ -372,9 +409,9 @@ export function ComposerPage() {
       </section>
 
       {/* Auto-Resize */}
-      <section className={styles.section}>
-        <h2 className={styles.heading}>Auto-Resize</h2>
-        <p className={styles.sectionDescription}>
+      <section className="flex flex-col gap-5">
+        <h2 className="text-xl font-semibold text-foreground tracking-tight">Auto-Resize</h2>
+        <p className="text-sm text-secondary-foreground leading-relaxed max-w-[600px]">
           <code>ComposerInput</code> grows with content up
           to <code>maxRows</code>, then becomes scrollable. Set{' '}
           <code>minRows</code> to start taller — useful for prompt-heavy
@@ -398,9 +435,9 @@ export function ComposerPage() {
       </section>
 
       {/* Custom Actions */}
-      <section className={styles.section}>
-        <h2 className={styles.heading}>Custom Actions</h2>
-        <p className={styles.sectionDescription}>
+      <section className="flex flex-col gap-5">
+        <h2 className="text-xl font-semibold text-foreground tracking-tight">Custom Actions</h2>
+        <p className="text-sm text-secondary-foreground leading-relaxed max-w-[600px]">
           Since the Composer doesn't own the action button, you can use any
           button variant, icon, or label. This example uses a sparkle icon
           for a "Generate" action instead of the typical send arrow.
@@ -424,9 +461,9 @@ export function ComposerPage() {
       </section>
 
       {/* With Footer */}
-      <section className={styles.section}>
-        <h2 className={styles.heading}>With Footer</h2>
-        <p className={styles.sectionDescription}>
+      <section className="flex flex-col gap-5">
+        <h2 className="text-xl font-semibold text-foreground tracking-tight">With Footer</h2>
+        <p className="text-sm text-secondary-foreground leading-relaxed max-w-[600px]">
           Use <code>ComposerFooter</code> to add a row of controls below the
           textarea — model pickers, file attachments, token counts, or any
           other metadata. <code>ComposerFooterStart</code> groups items on the
@@ -449,7 +486,7 @@ export function ComposerPage() {
               </IconButton>
             </ComposerFooterStart>
             <ComposerFooterEnd>
-              <span className={styles.tokenCount}>0 / 4,096 tokens</span>
+              <span className="text-xs text-muted-foreground font-mono">0 / 4,096 tokens</span>
             </ComposerFooterEnd>
           </ComposerFooter>
         </Composer>
@@ -472,9 +509,9 @@ export function ComposerPage() {
       </section>
 
       {/* Borderless Footer */}
-      <section className={styles.section}>
-        <h2 className={styles.heading}>Borderless Footer</h2>
-        <p className={styles.sectionDescription}>
+      <section className="flex flex-col gap-5">
+        <h2 className="text-xl font-semibold text-foreground tracking-tight">Borderless Footer</h2>
+        <p className="text-sm text-secondary-foreground leading-relaxed max-w-[600px]">
           Set <code>bordered=&#123;false&#125;</code> on <code>ComposerFooter</code> to
           remove the separator line between the input and footer — useful for a
           more minimal, compact look where the footer feels like part of the
@@ -513,9 +550,9 @@ export function ComposerPage() {
       </section>
 
       {/* With Header */}
-      <section className={styles.section}>
-        <h2 className={styles.heading}>With Header</h2>
-        <p className={styles.sectionDescription}>
+      <section className="flex flex-col gap-5">
+        <h2 className="text-xl font-semibold text-foreground tracking-tight">With Header</h2>
+        <p className="text-sm text-secondary-foreground leading-relaxed max-w-[600px]">
           Use <code>ComposerHeader</code> to add a row of content above the
           textarea — file attachments, selected tools, or context indicators.{' '}
           <code>ComposerHeaderStart</code> groups items on the left;{' '}
@@ -554,9 +591,9 @@ export function ComposerPage() {
       </section>
 
       {/* Footer with Send Button */}
-      <section className={styles.section}>
-        <h2 className={styles.heading}>Footer with Send Button</h2>
-        <p className={styles.sectionDescription}>
+      <section className="flex flex-col gap-5">
+        <h2 className="text-xl font-semibold text-foreground tracking-tight">Footer with Send Button</h2>
+        <p className="text-sm text-secondary-foreground leading-relaxed max-w-[600px]">
           Place the send button inside <code>ComposerFooterEnd</code> to
           move it into the footer row — matching layouts like
           ChatGPT where the action button sits alongside other footer controls
@@ -599,11 +636,11 @@ export function ComposerPage() {
       </section>
 
       {/* Props tables */}
-      <section className={styles.section}>
-        <h2 className={styles.heading}>Props</h2>
+      <section className="flex flex-col gap-5">
+        <h2 className="text-xl font-semibold text-foreground tracking-tight">Props</h2>
 
-        <h3 className={styles.subHeading}>Composer</h3>
-        <div className={styles.tableWrapper}>
+        <h3 className="text-base font-semibold text-foreground">Composer</h3>
+        <div className="overflow-x-auto -mx-6 px-6">
           <PropsTable
             rows={[
               ['disabled', 'boolean', 'false', 'Disables the entire composer'],
@@ -611,8 +648,8 @@ export function ComposerPage() {
           />
         </div>
 
-        <h3 className={styles.subHeading}>ComposerInput</h3>
-        <div className={styles.tableWrapper}>
+        <h3 className="text-base font-semibold text-foreground">ComposerInput</h3>
+        <div className="overflow-x-auto -mx-6 px-6">
           <PropsTable
             rows={[
               ['placeholder', 'string', "'Send a message…'", 'Placeholder text'],
@@ -622,8 +659,8 @@ export function ComposerPage() {
           />
         </div>
 
-        <h3 className={styles.subHeading}>ComposerHeader</h3>
-        <div className={styles.tableWrapper}>
+        <h3 className="text-base font-semibold text-foreground">ComposerHeader</h3>
+        <div className="overflow-x-auto -mx-6 px-6">
           <PropsTable
             rows={[
               ['bordered', 'boolean', 'false', 'Show a border between the header and the input area'],
@@ -631,8 +668,8 @@ export function ComposerPage() {
           />
         </div>
 
-        <h3 className={styles.subHeading}>ComposerFooter</h3>
-        <div className={styles.tableWrapper}>
+        <h3 className="text-base font-semibold text-foreground">ComposerFooter</h3>
+        <div className="overflow-x-auto -mx-6 px-6">
           <PropsTable
             rows={[
               ['bordered', 'boolean', 'true', 'Show a border between the footer and the input area'],
@@ -655,22 +692,22 @@ function PropsTable({
   rows: [string, string, string, string][]
 }) {
   return (
-    <table className={styles.propsTable}>
+    <table className="w-full text-sm border-collapse">
       <thead>
         <tr>
-          <th>Prop</th>
-          <th>Type</th>
-          <th>Default</th>
-          <th>Description</th>
+          <th className="text-left px-3 py-2 border-b-2 border-border text-muted-foreground font-medium text-xs uppercase tracking-wider">Prop</th>
+          <th className="text-left px-3 py-2 border-b-2 border-border text-muted-foreground font-medium text-xs uppercase tracking-wider">Type</th>
+          <th className="text-left px-3 py-2 border-b-2 border-border text-muted-foreground font-medium text-xs uppercase tracking-wider">Default</th>
+          <th className="text-left px-3 py-2 border-b-2 border-border text-muted-foreground font-medium text-xs uppercase tracking-wider">Description</th>
         </tr>
       </thead>
       <tbody>
         {rows.map(([prop, type, def, desc]) => (
           <tr key={prop}>
-            <td><code>{prop}</code></td>
-            <td><code>{type}</code></td>
-            <td>{def === '—' ? '—' : <code>{def}</code>}</td>
-            <td>{desc}</td>
+            <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top"><code className="font-mono text-[0.85em] bg-muted px-1.5 py-0.5 rounded-sm text-foreground">{prop}</code></td>
+            <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top"><code className="font-mono text-[0.85em] bg-muted px-1.5 py-0.5 rounded-sm text-foreground">{type}</code></td>
+            <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top">{def === '—' ? '—' : <code className="font-mono text-[0.85em] bg-muted px-1.5 py-0.5 rounded-sm text-foreground">{def}</code>}</td>
+            <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top">{desc}</td>
           </tr>
         ))}
       </tbody>

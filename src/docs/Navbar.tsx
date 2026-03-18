@@ -1,14 +1,14 @@
 import { useState, useRef, useEffect, type JSX } from 'react'
 import { NavLink } from 'react-router-dom'
 import { useTheme, ACCENT_COLORS, type Theme, type AccentColor } from '../context/theme'
-import styles from './Navbar.module.css'
+import { cn } from '@/lib/utils'
 
 function LogoMark() {
   return (
     <svg
       viewBox="0 0 100 100"
       xmlns="http://www.w3.org/2000/svg"
-      className={styles.logoMark}
+      className="size-7 shrink-0"
       aria-hidden="true"
     >
       <rect x="15" y="32" width="70" height="9" fill="currentColor" />
@@ -102,6 +102,8 @@ function PaletteIcon() {
   )
 }
 
+const navIconBtn = 'flex items-center justify-center size-9 rounded-md text-secondary-foreground no-underline bg-transparent border-none cursor-pointer p-0 transition-colors duration-[120ms] motion-reduce:transition-none hover:text-foreground hover:bg-muted [&_svg]:size-5'
+
 function AccentPicker() {
   const { accentColor, setAccentColor } = useTheme()
   const [open, setOpen] = useState(false)
@@ -126,10 +128,10 @@ function AccentPicker() {
   }, [open])
 
   return (
-    <div className={styles.accentPickerContainer} ref={containerRef}>
+    <div className="relative" ref={containerRef}>
       <button
         onClick={() => setOpen((o) => !o)}
-        className={styles.iconButton}
+        className={navIconBtn}
         aria-label="Change accent color"
         title="Change accent color"
         aria-expanded={open}
@@ -137,7 +139,7 @@ function AccentPicker() {
         <PaletteIcon />
       </button>
       {open && (
-        <div className={styles.accentPopover} role="listbox" aria-label="Accent colors">
+        <div className="absolute top-[calc(100%+8px)] right-0 flex gap-2 p-3 bg-background border border-border rounded-lg shadow-[0_4px_16px_rgba(0,0,0,0.12)] z-[200]" role="listbox" aria-label="Accent colors">
           {ACCENT_COLORS.map((color) => (
             <button
               key={color}
@@ -145,12 +147,10 @@ function AccentPicker() {
               aria-selected={color === accentColor}
               aria-label={color}
               title={color.charAt(0).toUpperCase() + color.slice(1)}
-              className={[
-                styles.accentSwatch,
-                color === accentColor ? styles.accentSwatchActive : '',
-              ]
-                .filter(Boolean)
-                .join(' ')}
+              className={cn(
+                'size-5 rounded-full border-2 border-transparent cursor-pointer p-0 outline-none transition-transform duration-[120ms] motion-reduce:transition-none hover:scale-[1.2] focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2',
+                color === accentColor && 'border-foreground scale-[1.2]'
+              )}
               style={{ backgroundColor: ACCENT_HEX[color] }}
               onClick={() => {
                 setAccentColor(color)
@@ -190,16 +190,16 @@ export function Navbar({ onMenuToggle }: NavbarProps) {
   const ThemeIcon = THEME_ICONS[theme]
 
   return (
-    <header className={styles.navbar}>
-      <NavLink to="/" className={styles.brand}>
+    <header className="fixed top-0 left-0 right-0 z-[100] h-14 flex items-center justify-between px-6 bg-background border-b border-border">
+      <NavLink to="/" className="flex items-center gap-3 no-underline text-foreground hover:opacity-80">
         <LogoMark />
-        <span className={styles.brandName}>Composure</span>
+        <span className="text-base font-semibold tracking-tight text-foreground">Composure</span>
       </NavLink>
-      <div className={styles.actions}>
+      <div className="flex items-center gap-3">
         <AccentPicker />
         <button
           onClick={cycleTheme}
-          className={styles.iconButton}
+          className={navIconBtn}
           aria-label={THEME_LABELS[theme]}
           title={THEME_LABELS[theme]}
         >
@@ -209,14 +209,14 @@ export function Navbar({ onMenuToggle }: NavbarProps) {
           href="https://github.com/kkdaily/composure"
           target="_blank"
           rel="noopener noreferrer"
-          className={styles.iconButton}
+          className={navIconBtn}
           aria-label="View on GitHub"
         >
           <GitHubIcon />
         </a>
         <button
           onClick={onMenuToggle}
-          className={`${styles.iconButton} ${styles.hamburger}`}
+          className={cn(navIconBtn, 'hidden max-md:flex')}
           aria-label="Toggle navigation menu"
         >
           <MenuIcon />

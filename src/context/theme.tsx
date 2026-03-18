@@ -51,10 +51,17 @@ function getSystemTheme(): ResolvedTheme {
 
 function applyTheme(theme: Theme) {
   const root = document.documentElement
-  if (theme === 'system') {
-    root.removeAttribute('data-theme')
+  if (theme === 'dark') {
+    root.classList.add('dark')
+  } else if (theme === 'light') {
+    root.classList.remove('dark')
   } else {
-    root.setAttribute('data-theme', theme)
+    // system — follow OS preference
+    if (getSystemTheme() === 'dark') {
+      root.classList.add('dark')
+    } else {
+      root.classList.remove('dark')
+    }
   }
 }
 
@@ -116,6 +123,11 @@ export function ThemeProvider({
     if (theme !== 'system') return
     const mq = window.matchMedia('(prefers-color-scheme: dark)')
     const handler = (e: MediaQueryListEvent) => {
+      if (e.matches) {
+        document.documentElement.classList.add('dark')
+      } else {
+        document.documentElement.classList.remove('dark')
+      }
       setResolvedTheme(e.matches ? 'dark' : 'light')
     }
     mq.addEventListener('change', handler)

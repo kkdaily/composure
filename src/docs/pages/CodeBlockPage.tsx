@@ -9,7 +9,7 @@ import {
   ChatMessageContent,
 } from '../../components/ChatMessage/ChatMessage'
 import { CodeSnippet } from '../CodeSnippet'
-import styles from './CodeBlockPage.module.css'
+import { cn } from '@/lib/utils'
 
 /* ===========================
    Icons
@@ -73,17 +73,17 @@ export function CodeBlockPage() {
   const demoCode = demoLanguage === 'python' ? samplePython : sampleTypescript
 
   return (
-    <div className={styles.page}>
-      <h1 className={styles.title}>CodeBlock</h1>
-      <p className={styles.subtitle}>
+    <div className="flex flex-col gap-10">
+      <h1 className="text-3xl font-bold text-foreground tracking-tight">CodeBlock</h1>
+      <p className="text-lg text-secondary-foreground leading-relaxed max-w-[540px]">
         A styled code display for AI chat responses — syntax highlighting, line
         numbers, and a hover copy button built in.
       </p>
 
       {/* Interactive demo */}
-      <section className={styles.section}>
-        <h2 className={styles.heading}>Demo</h2>
-        <div className={styles.demoArea}>
+      <section className="flex flex-col gap-5">
+        <h2 className="text-xl font-semibold text-foreground tracking-tight">Demo</h2>
+        <div className="flex flex-col gap-4 p-6 bg-card border border-border rounded-lg">
           <CodeBlock>
             <CodeBlockContent
               language={demoLanguage === 'none' ? undefined : demoLanguage}
@@ -93,14 +93,19 @@ export function CodeBlockPage() {
             </CodeBlockContent>
           </CodeBlock>
         </div>
-        <div className={styles.controls}>
-          <div className={styles.controlGroup}>
-            <span className={styles.controlLabel}>Language</span>
-            <div className={styles.controlOptions}>
+        <div className="flex flex-col gap-3">
+          <div className="flex items-center gap-3">
+            <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground min-w-[100px]">Language</span>
+            <div className="flex items-center gap-1.5 flex-wrap">
               {(['none', 'typescript', 'python'] as DemoLanguage[]).map((l) => (
                 <button
                   key={l}
-                  className={`${styles.chip} ${demoLanguage === l ? styles.chipActive : ''}`}
+                  className={cn(
+                    'px-2.5 py-1 text-xs font-medium rounded-md border cursor-pointer transition-colors',
+                    demoLanguage === l
+                      ? 'bg-primary text-primary-foreground border-primary'
+                      : 'bg-transparent border-border text-secondary-foreground hover:bg-muted hover:text-foreground'
+                  )}
                   onClick={() => setDemoLanguage(l)}
                 >
                   {l}
@@ -108,13 +113,18 @@ export function CodeBlockPage() {
               ))}
             </div>
           </div>
-          <div className={styles.controlGroup}>
-            <span className={styles.controlLabel}>Line Numbers</span>
-            <div className={styles.controlOptions}>
+          <div className="flex items-center gap-3">
+            <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground min-w-[100px]">Line Numbers</span>
+            <div className="flex items-center gap-1.5 flex-wrap">
               {(['on', 'off'] as DemoToggle[]).map((t) => (
                 <button
                   key={t}
-                  className={`${styles.chip} ${demoLineNumbers === t ? styles.chipActive : ''}`}
+                  className={cn(
+                    'px-2.5 py-1 text-xs font-medium rounded-md border cursor-pointer transition-colors',
+                    demoLineNumbers === t
+                      ? 'bg-primary text-primary-foreground border-primary'
+                      : 'bg-transparent border-border text-secondary-foreground hover:bg-muted hover:text-foreground'
+                  )}
                   onClick={() => setDemoLineNumbers(t)}
                 >
                   {t}
@@ -126,9 +136,9 @@ export function CodeBlockPage() {
       </section>
 
       {/* Basic Usage */}
-      <section className={styles.section}>
-        <h2 className={styles.heading}>Basic Usage</h2>
-        <p className={styles.sectionDescription}>
+      <section className="flex flex-col gap-5">
+        <h2 className="text-xl font-semibold text-foreground tracking-tight">Basic Usage</h2>
+        <p className="text-sm text-secondary-foreground leading-relaxed max-w-[600px]">
           Wrap <code>CodeBlockContent</code> in <code>CodeBlock</code>. A copy
           button appears automatically at the top right when the user hovers.
         </p>
@@ -144,9 +154,9 @@ console.log(greeting)\`}
       </section>
 
       {/* Syntax Highlighting */}
-      <section className={styles.section}>
-        <h2 className={styles.heading}>Syntax Highlighting</h2>
-        <p className={styles.sectionDescription}>
+      <section className="flex flex-col gap-5">
+        <h2 className="text-xl font-semibold text-foreground tracking-tight">Syntax Highlighting</h2>
+        <p className="text-sm text-secondary-foreground leading-relaxed max-w-[600px]">
           Pass a <code>language</code> prop to <code>CodeBlockContent</code> to
           enable syntax highlighting. Tokens are resolved from the active theme.
         </p>
@@ -163,9 +173,9 @@ console.log(greeting)\`}
       </section>
 
       {/* Line Numbers */}
-      <section className={styles.section}>
-        <h2 className={styles.heading}>Line Numbers</h2>
-        <p className={styles.sectionDescription}>
+      <section className="flex flex-col gap-5">
+        <h2 className="text-xl font-semibold text-foreground tracking-tight">Line Numbers</h2>
+        <p className="text-sm text-secondary-foreground leading-relaxed max-w-[600px]">
           Enable <code>showLineNumbers</code> for longer snippets where line
           references matter — for example, when an AI explains specific lines
           in generated code.
@@ -183,9 +193,9 @@ console.log(greeting)\`}
       </section>
 
       {/* In a Chat Message */}
-      <section className={styles.section}>
-        <h2 className={styles.heading}>In a Chat Message</h2>
-        <p className={styles.sectionDescription}>
+      <section className="flex flex-col gap-5">
+        <h2 className="text-xl font-semibold text-foreground tracking-tight">In a Chat Message</h2>
+        <p className="text-sm text-secondary-foreground leading-relaxed max-w-[600px]">
           Nest <code>CodeBlock</code> inside <code>ChatMessageContent</code> to
           render code as part of an AI response — just like ChatGPT or Claude
           would display code in a conversation.
@@ -195,7 +205,7 @@ console.log(greeting)\`}
             <SparkleIcon />
           </ChatMessageAvatar>
           <ChatMessageContent variant="plain">
-            <p className={styles.inlineText}>Here's how you can send a message to the API:</p>
+            <p className="m-0 text-sm leading-relaxed">Here's how you can send a message to the API:</p>
             <CodeBlock>
               <CodeBlockContent language="typescript">
                 {sampleShort}
@@ -219,32 +229,32 @@ console.log(greeting)\`}
       </section>
 
       {/* Props table */}
-      <section className={styles.section}>
-        <h2 className={styles.heading}>Props</h2>
+      <section className="flex flex-col gap-5">
+        <h2 className="text-xl font-semibold text-foreground tracking-tight">Props</h2>
 
-        <h3 className={styles.subHeading}>CodeBlockContent</h3>
-        <div className={styles.tableWrapper}>
-          <table className={styles.propsTable}>
+        <h3 className="text-base font-semibold text-foreground">CodeBlockContent</h3>
+        <div className="overflow-x-auto -mx-6 px-6">
+          <table className="w-full text-sm border-collapse">
             <thead>
               <tr>
-                <th>Prop</th>
-                <th>Type</th>
-                <th>Default</th>
-                <th>Description</th>
+                <th className="text-left px-3 py-2 border-b-2 border-border text-muted-foreground font-medium text-xs uppercase tracking-wider">Prop</th>
+                <th className="text-left px-3 py-2 border-b-2 border-border text-muted-foreground font-medium text-xs uppercase tracking-wider">Type</th>
+                <th className="text-left px-3 py-2 border-b-2 border-border text-muted-foreground font-medium text-xs uppercase tracking-wider">Default</th>
+                <th className="text-left px-3 py-2 border-b-2 border-border text-muted-foreground font-medium text-xs uppercase tracking-wider">Description</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td><code>language</code></td>
-                <td><code>string</code></td>
-                <td>—</td>
-                <td>Language identifier for syntax highlighting (e.g. <code>"typescript"</code>, <code>"python"</code>)</td>
+                <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top"><code className="font-mono text-[0.85em] bg-muted px-1.5 py-0.5 rounded-sm text-foreground">language</code></td>
+                <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top"><code className="font-mono text-[0.85em] bg-muted px-1.5 py-0.5 rounded-sm text-foreground">string</code></td>
+                <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top">—</td>
+                <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top">Language identifier for syntax highlighting (e.g. <code className="font-mono text-[0.85em] bg-muted px-1.5 py-0.5 rounded-sm text-foreground">"typescript"</code>, <code className="font-mono text-[0.85em] bg-muted px-1.5 py-0.5 rounded-sm text-foreground">"python"</code>)</td>
               </tr>
               <tr>
-                <td><code>showLineNumbers</code></td>
-                <td><code>boolean</code></td>
-                <td><code>false</code></td>
-                <td>Show line numbers in the gutter</td>
+                <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top"><code className="font-mono text-[0.85em] bg-muted px-1.5 py-0.5 rounded-sm text-foreground">showLineNumbers</code></td>
+                <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top"><code className="font-mono text-[0.85em] bg-muted px-1.5 py-0.5 rounded-sm text-foreground">boolean</code></td>
+                <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top"><code className="font-mono text-[0.85em] bg-muted px-1.5 py-0.5 rounded-sm text-foreground">false</code></td>
+                <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top">Show line numbers in the gutter</td>
               </tr>
             </tbody>
           </table>

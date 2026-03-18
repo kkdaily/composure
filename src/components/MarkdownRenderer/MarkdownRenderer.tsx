@@ -9,7 +9,7 @@ import {
 import Markdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { CodeBlock, CodeBlockContent } from '../CodeBlock/CodeBlock'
-import styles from './MarkdownRenderer.module.css'
+import { cn } from '@/lib/utils'
 
 /* ===========================
    Types
@@ -47,8 +47,6 @@ export function MarkdownRenderer({
   className,
   ...rest
 }: MarkdownRendererProps) {
-  const classNames = [styles.markdown, className].filter(Boolean).join(' ')
-
   const markdownComponents: import('react-markdown').Components = useMemo(() => ({
     pre({ children }) {
       const child = isValidElement(children) ? children : null
@@ -66,7 +64,7 @@ export function MarkdownRenderer({
         }
 
         return (
-          <div className={styles.codeBlockWrapper}>
+          <div className="mb-4 last:mb-0">
             <CodeBlock>
               <CodeBlockContent language={language}>
                 {codeString}
@@ -79,10 +77,13 @@ export function MarkdownRenderer({
       return <pre>{children}</pre>
     },
 
-    code({ className, children, ...codeRest }) {
+    code({ className: codeClassName, children, ...codeRest }) {
       return (
         <code
-          className={[styles.inlineCode, className].filter(Boolean).join(' ')}
+          className={cn(
+            'font-mono text-[0.9em] bg-muted px-1 rounded-sm text-foreground',
+            codeClassName
+          )}
           {...codeRest}
         >
           {children}
@@ -115,7 +116,20 @@ export function MarkdownRenderer({
 
   return (
     <div
-      className={classNames}
+      className={cn(
+        'prose dark:prose-invert max-w-none break-words',
+        'prose-headings:tracking-tight',
+        'prose-a:text-primary prose-a:underline prose-a:underline-offset-2 prose-a:transition-colors prose-a:duration-100 prose-a:ease-out prose-a:motion-reduce:transition-none',
+        'prose-blockquote:border-l-primary prose-blockquote:text-secondary-foreground',
+        'prose-strong:text-foreground',
+        'prose-th:text-secondary-foreground prose-th:text-xs prose-th:uppercase prose-th:tracking-wider prose-th:font-medium',
+        'prose-td:text-secondary-foreground',
+        'prose-img:rounded-md',
+        'prose-hr:border-border',
+        'prose-del:text-muted-foreground',
+        '[&_li>input[type=checkbox]]:mr-2 [&_li>input[type=checkbox]]:accent-primary',
+        className
+      )}
       aria-busy={streaming || undefined}
       {...rest}
     >

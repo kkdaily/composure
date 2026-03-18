@@ -1,7 +1,7 @@
 import { useState, useCallback, type ReactNode, type HTMLAttributes } from 'react'
 import { useHighlighter } from './useHighlighter'
 import { useTheme } from '../../context/theme'
-import styles from './CodeBlock.module.css'
+import { cn } from '@/lib/utils'
 
 /* ===========================
    Icons
@@ -33,12 +33,14 @@ export interface CodeBlockProps
 }
 
 export function CodeBlock({ className, children, ...rest }: CodeBlockProps) {
-  const classNames = [styles.codeBlock, className ?? '']
-    .filter(Boolean)
-    .join(' ')
-
   return (
-    <div className={classNames} {...rest}>
+    <div
+      className={cn(
+        'group/code bg-muted border border-border rounded-md overflow-hidden',
+        className
+      )}
+      {...rest}
+    >
       {children}
     </div>
   )
@@ -84,14 +86,6 @@ export function CodeBlockContent({
     lines.pop()
   }
 
-  const preClassNames = [
-    styles.pre,
-    showLineNumbers ? styles.withLineNumbers : '',
-    className ?? '',
-  ]
-    .filter(Boolean)
-    .join(' ')
-
   const renderLine = (lineIndex: number) => {
     if (ready && tokens[lineIndex]) {
       return tokens[lineIndex].map((token, j) => (
@@ -104,9 +98,20 @@ export function CodeBlockContent({
   }
 
   return (
-    <pre className={preClassNames} tabIndex={0} {...rest}>
+    <pre
+      className={cn(
+        'relative m-0 p-3 px-4 overflow-x-auto font-mono text-sm leading-relaxed text-foreground bg-transparent',
+        'focus-visible:outline-2 focus-visible:outline-primary focus-visible:-outline-offset-2 focus-visible:rounded-sm',
+        className
+      )}
+      tabIndex={0}
+      {...rest}
+    >
       <button
-        className={`${styles.copyButton} ${copied ? styles.copyButtonCopied : ''}`}
+        className={cn(
+          'absolute top-2 right-2 flex items-center justify-center w-7 h-7 p-0 bg-card border border-border rounded-sm text-secondary-foreground text-sm cursor-pointer opacity-0 group-hover/code:opacity-100 transition-all duration-100 ease-out hover:bg-background hover:text-foreground focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2 focus-visible:opacity-100 motion-reduce:transition-none',
+          copied && 'text-composure-success'
+        )}
         onClick={handleCopy}
         aria-label={copied ? 'Copied!' : 'Copy code'}
         title={copied ? 'Copied!' : 'Copy code'}
@@ -114,16 +119,19 @@ export function CodeBlockContent({
         {copied ? <CheckIcon /> : <CopyIcon />}
       </button>
       <code
-        className={styles.code}
+        className={cn(
+          'block whitespace-pre font-[inherit] text-[inherit] leading-[inherit] text-inherit',
+          showLineNumbers && '[display:table] w-full'
+        )}
         {...(language ? { 'data-language': language } : {})}
       >
         {showLineNumbers
           ? lines.map((_, i) => (
-              <span key={i} className={styles.line}>
-                <span className={styles.lineNumber} aria-hidden="true">
+              <span key={i} className="code-line">
+                <span className="code-line-number" aria-hidden="true">
                   {i + 1}
                 </span>
-                <span className={styles.lineContent}>
+                <span className="code-line-content">
                   {renderLine(i)}
                 </span>
               </span>

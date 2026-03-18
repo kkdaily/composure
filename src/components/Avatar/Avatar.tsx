@@ -6,7 +6,7 @@ import {
   type HTMLAttributes,
   type ImgHTMLAttributes,
 } from 'react'
-import styles from './Avatar.module.css'
+import { cn } from '@/lib/utils'
 
 /* ===========================
    Context
@@ -44,6 +44,12 @@ export interface AvatarProps
   children: ReactNode
 }
 
+const sizeClasses = {
+  sm: 'size-6',
+  md: 'size-8',
+  lg: 'size-12',
+} as const
+
 export function Avatar({
   size = 'md',
   className,
@@ -52,13 +58,16 @@ export function Avatar({
 }: AvatarProps) {
   const [hasImage, setHasImage] = useState(false)
 
-  const classNames = [styles.avatar, styles[size], className ?? '']
-    .filter(Boolean)
-    .join(' ')
-
   return (
     <AvatarContext.Provider value={{ size, hasImage, setHasImage }}>
-      <div className={classNames} {...rest}>
+      <div
+        className={cn(
+          'relative inline-flex items-center justify-center rounded-full overflow-hidden shrink-0 bg-muted text-muted-foreground motion-reduce:transition-none',
+          sizeClasses[size],
+          className
+        )}
+        {...rest}
+      >
         {children}
       </div>
     </AvatarContext.Provider>
@@ -89,19 +98,15 @@ export function AvatarImage({
 }: AvatarImageProps) {
   const { hasImage, setHasImage } = useAvatarContext()
 
-  const classNames = [
-    styles.image,
-    hasImage ? '' : styles.imageHidden,
-    className ?? '',
-  ]
-    .filter(Boolean)
-    .join(' ')
-
   return (
     <img
       src={src}
       alt={alt}
-      className={classNames}
+      className={cn(
+        'size-full object-cover',
+        !hasImage && 'absolute size-0 opacity-0',
+        className
+      )}
       onLoad={(e) => {
         setHasImage(true)
         onLoad?.(e)
@@ -127,21 +132,27 @@ export interface AvatarFallbackProps
   children: ReactNode
 }
 
+const fallbackSizeClasses = {
+  sm: 'text-xs',
+  md: 'text-sm',
+  lg: 'text-base',
+} as const
+
 export function AvatarFallback({ className, children, ...rest }: AvatarFallbackProps) {
   const { size, hasImage } = useAvatarContext()
 
   if (hasImage) return null
 
-  const sizeClass =
-    size === 'sm'
-      ? styles.fallbackSm
-      : size === 'lg'
-        ? styles.fallbackLg
-        : styles.fallbackMd
-
-  const classNames = [styles.fallback, sizeClass, className ?? '']
-    .filter(Boolean)
-    .join(' ')
-
-  return <span className={classNames} {...rest}>{children}</span>
+  return (
+    <span
+      className={cn(
+        'flex items-center justify-center size-full font-medium leading-none select-none',
+        fallbackSizeClasses[size],
+        className
+      )}
+      {...rest}
+    >
+      {children}
+    </span>
+  )
 }

@@ -5,7 +5,7 @@ import {
   ChatMessageContent,
 } from '../../components/ChatMessage/ChatMessage'
 import { CodeSnippet } from '../CodeSnippet'
-import styles from './ScrollAreaPage.module.css'
+import { cn } from '@/lib/utils'
 
 /* ===========================
    Icons
@@ -46,10 +46,6 @@ First, split your context into smaller, focused pieces. Instead of one monolithi
 Second, memoize your context values with useMemo so the value object only gets a new reference when the underlying data actually changes. Without this, every parent re-render triggers all consumers to re-render unnecessarily.
 
 Third, consider the Provider placement in your component tree. Place each Provider as close as possible to the subtree that needs it — mounting too high causes broader re-renders than necessary.`
-
-/* ===========================
-   Page
-   =========================== */
 
 /* ===========================
    Streaming hook
@@ -108,24 +104,24 @@ export function ScrollAreaPage() {
 
 
   return (
-    <div className={styles.page}>
-      <h1 className={styles.title}>ScrollArea</h1>
-      <p className={styles.subtitle}>
+    <div className="flex flex-col gap-10">
+      <h1 className="text-3xl font-bold text-foreground tracking-tight">ScrollArea</h1>
+      <p className="text-lg text-secondary-foreground leading-relaxed max-w-[540px]">
         A scrollable container with smart auto-scrolling — follows new content
         as tokens stream in, pauses when the user scrolls up, and provides an
         optional scroll-to-bottom indicator.
       </p>
 
       {/* Interactive demo */}
-      <section className={styles.section}>
-        <h2 className={styles.heading}>Demo</h2>
-        <div className={styles.demoArea}>
+      <section className="flex flex-col gap-5">
+        <h2 className="text-xl font-semibold text-foreground tracking-tight">Demo</h2>
+        <div className="flex flex-col items-start gap-4 p-6 bg-card border border-border rounded-lg">
           <ScrollArea
             mode={demoMode}
-            className={styles.scrollContainer}
+            className="w-full h-[300px] border border-border rounded-md bg-background"
             aria-label="Chat conversation"
           >
-            <div className={styles.conversation}>
+            <div className="flex flex-col gap-4 p-4">
               {demo.messages.map((msg) => (
                 <ChatMessage key={msg.id} role={msg.role}>
                   <ChatMessageContent>{msg.text}</ChatMessageContent>
@@ -142,21 +138,29 @@ export function ScrollAreaPage() {
             </ScrollAreaScrollToBottom>
           </ScrollArea>
           <button
-            className={styles.chip}
+            className={cn(
+              'px-2.5 py-1 text-xs font-medium rounded-md border cursor-pointer transition-colors',
+              'bg-transparent border-border text-secondary-foreground hover:bg-muted hover:text-foreground'
+            )}
             onClick={demo.startStreaming}
             disabled={demo.isStreaming}
           >
             {demo.isStreaming ? 'Streaming…' : 'Stream response'}
           </button>
         </div>
-        <div className={styles.controls}>
-          <div className={styles.controlGroup}>
-            <span className={styles.controlLabel}>Mode</span>
-            <div className={styles.controlOptions}>
+        <div className="flex flex-col gap-3">
+          <div className="flex items-center gap-3">
+            <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground min-w-[80px]">Mode</span>
+            <div className="flex items-center gap-1.5 flex-wrap">
               {(['auto', 'manual'] as DemoMode[]).map((m) => (
                 <button
                   key={m}
-                  className={`${styles.chip} ${demoMode === m ? styles.chipActive : ''}`}
+                  className={cn(
+                    'px-2.5 py-1 text-xs font-medium rounded-md border cursor-pointer transition-colors',
+                    demoMode === m
+                      ? 'bg-primary text-primary-foreground border-primary'
+                      : 'bg-transparent border-border text-secondary-foreground hover:bg-muted hover:text-foreground'
+                  )}
                   onClick={() => setDemoMode(m)}
                 >
                   {m}
@@ -168,9 +172,9 @@ export function ScrollAreaPage() {
       </section>
 
       {/* Basic Usage */}
-      <section className={styles.section}>
-        <h2 className={styles.heading}>Basic Usage</h2>
-        <p className={styles.sectionDescription}>
+      <section className="flex flex-col gap-5">
+        <h2 className="text-xl font-semibold text-foreground tracking-tight">Basic Usage</h2>
+        <p className="text-sm text-secondary-foreground leading-relaxed max-w-[600px]">
           Wrap your scrollable content in <code>ScrollArea</code> with{' '}
           <code>mode="auto"</code> to enable smart scrolling. New content
           arriving at the bottom will auto-scroll the container — unless the
@@ -186,9 +190,9 @@ export function ScrollAreaPage() {
       </section>
 
       {/* Mode */}
-      <section className={styles.section}>
-        <h2 className={styles.heading}>Mode</h2>
-        <p className={styles.sectionDescription}>
+      <section className="flex flex-col gap-5">
+        <h2 className="text-xl font-semibold text-foreground tracking-tight">Mode</h2>
+        <p className="text-sm text-secondary-foreground leading-relaxed max-w-[600px]">
           In <code>"auto"</code> mode, the container follows new content as it
           appears — ideal for streaming AI responses where tokens arrive
           incrementally. If the user scrolls up to read earlier messages,
@@ -207,9 +211,9 @@ export function ScrollAreaPage() {
       </section>
 
       {/* Scroll to Bottom */}
-      <section className={styles.section}>
-        <h2 className={styles.heading}>Scroll to Bottom Indicator</h2>
-        <p className={styles.sectionDescription}>
+      <section className="flex flex-col gap-5">
+        <h2 className="text-xl font-semibold text-foreground tracking-tight">Scroll to Bottom Indicator</h2>
+        <p className="text-sm text-secondary-foreground leading-relaxed max-w-[600px]">
           Add a <code>ScrollAreaScrollToBottom</code> sub-component to show a
           scroll-to-bottom trigger when the user has scrolled away from the
           bottom. It automatically hides when at the bottom and shows when
@@ -231,9 +235,9 @@ export function ScrollAreaPage() {
       </section>
 
       {/* Bottom Threshold */}
-      <section className={styles.section}>
-        <h2 className={styles.heading}>Bottom Threshold</h2>
-        <p className={styles.sectionDescription}>
+      <section className="flex flex-col gap-5">
+        <h2 className="text-xl font-semibold text-foreground tracking-tight">Bottom Threshold</h2>
+        <p className="text-sm text-secondary-foreground leading-relaxed max-w-[600px]">
           Set <code>bottomThreshold</code> to control how close to the bottom
           (in pixels) counts as "at bottom." A larger value makes the
           auto-scroll resume sooner as the user scrolls back down — useful when
@@ -247,32 +251,32 @@ export function ScrollAreaPage() {
       </section>
 
       {/* Props table */}
-      <section className={styles.section}>
-        <h2 className={styles.heading}>Props</h2>
+      <section className="flex flex-col gap-5">
+        <h2 className="text-xl font-semibold text-foreground tracking-tight">Props</h2>
 
-        <h3 className={styles.subHeading}>ScrollArea</h3>
-        <div className={styles.tableWrapper}>
-          <table className={styles.propsTable}>
+        <h3 className="text-base font-semibold text-foreground">ScrollArea</h3>
+        <div className="overflow-x-auto -mx-6 px-6">
+          <table className="w-full text-sm border-collapse">
             <thead>
               <tr>
-                <th>Prop</th>
-                <th>Type</th>
-                <th>Default</th>
-                <th>Description</th>
+                <th className="text-left px-3 py-2 border-b-2 border-border text-muted-foreground font-medium text-xs uppercase tracking-wider">Prop</th>
+                <th className="text-left px-3 py-2 border-b-2 border-border text-muted-foreground font-medium text-xs uppercase tracking-wider">Type</th>
+                <th className="text-left px-3 py-2 border-b-2 border-border text-muted-foreground font-medium text-xs uppercase tracking-wider">Default</th>
+                <th className="text-left px-3 py-2 border-b-2 border-border text-muted-foreground font-medium text-xs uppercase tracking-wider">Description</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td><code>mode</code></td>
-                <td><code>{`'auto' | 'manual'`}</code></td>
-                <td><code>'auto'</code></td>
-                <td>Auto-scroll behavior — auto follows new content, manual disables it</td>
+                <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top"><code className="font-mono text-[0.85em] bg-muted px-1.5 py-0.5 rounded-sm text-foreground">mode</code></td>
+                <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top"><code className="font-mono text-[0.85em] bg-muted px-1.5 py-0.5 rounded-sm text-foreground">{`'auto' | 'manual'`}</code></td>
+                <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top"><code className="font-mono text-[0.85em] bg-muted px-1.5 py-0.5 rounded-sm text-foreground">'auto'</code></td>
+                <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top">Auto-scroll behavior — auto follows new content, manual disables it</td>
               </tr>
               <tr>
-                <td><code>bottomThreshold</code></td>
-                <td><code>number</code></td>
-                <td><code>64</code></td>
-                <td>Pixel distance from the bottom to still count as "at bottom"</td>
+                <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top"><code className="font-mono text-[0.85em] bg-muted px-1.5 py-0.5 rounded-sm text-foreground">bottomThreshold</code></td>
+                <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top"><code className="font-mono text-[0.85em] bg-muted px-1.5 py-0.5 rounded-sm text-foreground">number</code></td>
+                <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top"><code className="font-mono text-[0.85em] bg-muted px-1.5 py-0.5 rounded-sm text-foreground">64</code></td>
+                <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top">Pixel distance from the bottom to still count as "at bottom"</td>
               </tr>
             </tbody>
           </table>

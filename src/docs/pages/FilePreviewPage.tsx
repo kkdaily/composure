@@ -10,7 +10,7 @@ import {
 } from '../../components/Composer/Composer'
 import { IconButton } from '../../components/IconButton/IconButton'
 import { CodeSnippet } from '../CodeSnippet'
-import styles from './FilePreviewPage.module.css'
+import { cn } from '@/lib/utils'
 
 /* ===========================
    Icons
@@ -61,18 +61,18 @@ export function FilePreviewPage() {
   ])
 
   return (
-    <div className={styles.page}>
-      <h1 className={styles.title}>FilePreview</h1>
-      <p className={styles.subtitle}>
+    <div className="flex flex-col gap-10">
+      <h1 className="text-3xl font-bold text-foreground tracking-tight">FilePreview</h1>
+      <p className="text-lg text-secondary-foreground leading-relaxed max-w-[540px]">
         A compact preview card for file attachments — auto-detects file type
         from extension and displays a colored icon, filename, and optional
         remove button.
       </p>
 
       {/* Interactive demo */}
-      <section className={styles.section}>
-        <h2 className={styles.heading}>Demo</h2>
-        <div className={styles.demoArea}>
+      <section className="flex flex-col gap-5">
+        <h2 className="text-xl font-semibold text-foreground tracking-tight">Demo</h2>
+        <div className="flex flex-col gap-4 p-6 bg-card border border-border rounded-lg items-start">
           <FilePreview
             name={demoFile.name}
             size={demoSize}
@@ -81,14 +81,19 @@ export function FilePreviewPage() {
             onRemove={demoRemove === 'on' ? () => {} : undefined}
           />
         </div>
-        <div className={styles.controls}>
-          <div className={styles.controlGroup}>
-            <span className={styles.controlLabel}>Type</span>
-            <div className={styles.controlOptions}>
+        <div className="flex flex-col gap-3">
+          <div className="flex items-center gap-3">
+            <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground min-w-[80px]">Type</span>
+            <div className="flex items-center gap-1.5 flex-wrap">
               {(['document', 'image', 'code', 'spreadsheet', 'generic'] as DemoType[]).map((t) => (
                 <button
                   key={t}
-                  className={`${styles.chip} ${demoType === t ? styles.chipActive : ''}`}
+                  className={cn(
+                    'px-2.5 py-1 text-xs font-medium rounded-md border cursor-pointer transition-colors',
+                    demoType === t
+                      ? 'bg-primary text-primary-foreground border-primary'
+                      : 'bg-transparent border-border text-secondary-foreground hover:bg-muted hover:text-foreground'
+                  )}
                   onClick={() => setDemoType(t)}
                 >
                   {t}
@@ -96,13 +101,18 @@ export function FilePreviewPage() {
               ))}
             </div>
           </div>
-          <div className={styles.controlGroup}>
-            <span className={styles.controlLabel}>Size</span>
-            <div className={styles.controlOptions}>
+          <div className="flex items-center gap-3">
+            <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground min-w-[80px]">Size</span>
+            <div className="flex items-center gap-1.5 flex-wrap">
               {(['sm', 'md', 'lg'] as DemoSize[]).map((s) => (
                 <button
                   key={s}
-                  className={`${styles.chip} ${demoSize === s ? styles.chipActive : ''}`}
+                  className={cn(
+                    'px-2.5 py-1 text-xs font-medium rounded-md border cursor-pointer transition-colors',
+                    demoSize === s
+                      ? 'bg-primary text-primary-foreground border-primary'
+                      : 'bg-transparent border-border text-secondary-foreground hover:bg-muted hover:text-foreground'
+                  )}
                   onClick={() => setDemoSize(s)}
                 >
                   {s}
@@ -110,13 +120,18 @@ export function FilePreviewPage() {
               ))}
             </div>
           </div>
-          <div className={styles.controlGroup}>
-            <span className={styles.controlLabel}>Remove</span>
-            <div className={styles.controlOptions}>
+          <div className="flex items-center gap-3">
+            <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground min-w-[80px]">Remove</span>
+            <div className="flex items-center gap-1.5 flex-wrap">
               {(['on', 'off'] as DemoRemove[]).map((r) => (
                 <button
                   key={r}
-                  className={`${styles.chip} ${demoRemove === r ? styles.chipActive : ''}`}
+                  className={cn(
+                    'px-2.5 py-1 text-xs font-medium rounded-md border cursor-pointer transition-colors',
+                    demoRemove === r
+                      ? 'bg-primary text-primary-foreground border-primary'
+                      : 'bg-transparent border-border text-secondary-foreground hover:bg-muted hover:text-foreground'
+                  )}
                   onClick={() => setDemoRemove(r)}
                 >
                   {r}
@@ -125,13 +140,18 @@ export function FilePreviewPage() {
             </div>
           </div>
           {demoType === 'image' && (
-            <div className={styles.controlGroup}>
-              <span className={styles.controlLabel}>Thumbnail</span>
-              <div className={styles.controlOptions}>
+            <div className="flex items-center gap-3">
+              <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground min-w-[80px]">Thumbnail</span>
+              <div className="flex items-center gap-1.5 flex-wrap">
                 {(['off', 'on'] as DemoThumbnail[]).map((t) => (
                   <button
                     key={t}
-                    className={`${styles.chip} ${demoThumbnail === t ? styles.chipActive : ''}`}
+                    className={cn(
+                      'px-2.5 py-1 text-xs font-medium rounded-md border cursor-pointer transition-colors',
+                      demoThumbnail === t
+                        ? 'bg-primary text-primary-foreground border-primary'
+                        : 'bg-transparent border-border text-secondary-foreground hover:bg-muted hover:text-foreground'
+                    )}
                     onClick={() => setDemoThumbnail(t)}
                   >
                     {t}
@@ -144,14 +164,14 @@ export function FilePreviewPage() {
       </section>
 
       {/* Basic Usage */}
-      <section className={styles.section}>
-        <h2 className={styles.heading}>Basic Usage</h2>
-        <p className={styles.sectionDescription}>
+      <section className="flex flex-col gap-5">
+        <h2 className="text-xl font-semibold text-foreground tracking-tight">Basic Usage</h2>
+        <p className="text-sm text-secondary-foreground leading-relaxed max-w-[600px]">
           Pass a <code>name</code> and the file type icon and color are
           auto-detected from the file extension — no manual type prop needed
           for common file formats.
         </p>
-        <div className={styles.previewRow}>
+        <div className="flex items-start gap-3 flex-wrap">
           <FilePreview name="report.pdf" />
           <FilePreview name="notes.txt" />
         </div>
@@ -160,14 +180,14 @@ export function FilePreviewPage() {
       </section>
 
       {/* Sizes */}
-      <section className={styles.section}>
-        <h2 className={styles.heading}>Sizes</h2>
-        <p className={styles.sectionDescription}>
+      <section className="flex flex-col gap-5">
+        <h2 className="text-xl font-semibold text-foreground tracking-tight">Sizes</h2>
+        <p className="text-sm text-secondary-foreground leading-relaxed max-w-[600px]">
           FilePreview supports <code>sm</code>, <code>md</code>, and{' '}
           <code>lg</code> sizes that match the height of the Button component
           at the same size — so they align naturally when placed side by side.
         </p>
-        <div className={styles.previewRow}>
+        <div className="flex items-start gap-3 flex-wrap">
           <FilePreview name="small.pdf" size="sm" />
           <FilePreview name="medium.pdf" size="md" />
           <FilePreview name="large.pdf" size="lg" />
@@ -178,14 +198,14 @@ export function FilePreviewPage() {
       </section>
 
       {/* File Types */}
-      <section className={styles.section}>
-        <h2 className={styles.heading}>File Types</h2>
-        <p className={styles.sectionDescription}>
+      <section className="flex flex-col gap-5">
+        <h2 className="text-xl font-semibold text-foreground tracking-tight">File Types</h2>
+        <p className="text-sm text-secondary-foreground leading-relaxed max-w-[600px]">
           Each file type gets a distinct icon and background color for quick
           visual identification. Types are auto-detected from the file
           extension, or you can set the <code>type</code> prop explicitly.
         </p>
-        <div className={styles.previewRow}>
+        <div className="flex items-start gap-3 flex-wrap">
           <FilePreview name="photo.png" />
           <FilePreview name="report.pdf" />
           <FilePreview name="data.csv" />
@@ -206,14 +226,14 @@ export function FilePreviewPage() {
       </section>
 
       {/* With Thumbnail */}
-      <section className={styles.section}>
-        <h2 className={styles.heading}>With Thumbnail</h2>
-        <p className={styles.sectionDescription}>
+      <section className="flex flex-col gap-5">
+        <h2 className="text-xl font-semibold text-foreground tracking-tight">With Thumbnail</h2>
+        <p className="text-sm text-secondary-foreground leading-relaxed max-w-[600px]">
           For image files, pass a <code>thumbnail</code> URL to show a visual
           preview instead of the file type icon. The thumbnail renders inside
           the same icon area with <code>object-fit: cover</code>.
         </p>
-        <div className={styles.previewRow}>
+        <div className="flex items-start gap-3 flex-wrap">
           <FilePreview
             name="landscape.jpg"
             thumbnail="https://picsum.photos/id/10/80/80"
@@ -230,14 +250,14 @@ export function FilePreviewPage() {
       </section>
 
       {/* With Remove Button */}
-      <section className={styles.section}>
-        <h2 className={styles.heading}>With Remove Button</h2>
-        <p className={styles.sectionDescription}>
+      <section className="flex flex-col gap-5">
+        <h2 className="text-xl font-semibold text-foreground tracking-tight">With Remove Button</h2>
+        <p className="text-sm text-secondary-foreground leading-relaxed max-w-[600px]">
           Pass an <code>onRemove</code> callback to show a remove button that
           appears on hover. Use this in the Composer to let users remove
           attached files before sending.
         </p>
-        <div className={styles.previewRow}>
+        <div className="flex items-start gap-3 flex-wrap">
           <FilePreview name="draft.docx" onRemove={() => {}} />
           <FilePreview name="styles.css" onRemove={() => {}} />
         </div>
@@ -248,9 +268,9 @@ export function FilePreviewPage() {
       </section>
 
       {/* In a Composer */}
-      <section className={styles.section}>
-        <h2 className={styles.heading}>In a Composer</h2>
-        <p className={styles.sectionDescription}>
+      <section className="flex flex-col gap-5">
+        <h2 className="text-xl font-semibold text-foreground tracking-tight">In a Composer</h2>
+        <p className="text-sm text-secondary-foreground leading-relaxed max-w-[600px]">
           Use <code>FilePreview</code> inside{' '}
           <code>ComposerHeader</code> to show attached files above the
           textarea. This is the primary use case — matching how ChatGPT and
@@ -311,48 +331,48 @@ export function FilePreviewPage() {
       </section>
 
       {/* Props table */}
-      <section className={styles.section}>
-        <h2 className={styles.heading}>Props</h2>
-        <div className={styles.tableWrapper}>
-          <table className={styles.propsTable}>
+      <section className="flex flex-col gap-5">
+        <h2 className="text-xl font-semibold text-foreground tracking-tight">Props</h2>
+        <div className="overflow-x-auto -mx-6 px-6">
+          <table className="w-full text-sm border-collapse">
             <thead>
               <tr>
-                <th>Prop</th>
-                <th>Type</th>
-                <th>Default</th>
-                <th>Description</th>
+                <th className="text-left px-3 py-2 border-b-2 border-border text-muted-foreground font-medium text-xs uppercase tracking-wider">Prop</th>
+                <th className="text-left px-3 py-2 border-b-2 border-border text-muted-foreground font-medium text-xs uppercase tracking-wider">Type</th>
+                <th className="text-left px-3 py-2 border-b-2 border-border text-muted-foreground font-medium text-xs uppercase tracking-wider">Default</th>
+                <th className="text-left px-3 py-2 border-b-2 border-border text-muted-foreground font-medium text-xs uppercase tracking-wider">Description</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td><code>name</code></td>
-                <td><code>string</code></td>
-                <td>—</td>
-                <td>File name to display</td>
+                <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top"><code className="font-mono text-[0.85em] bg-muted px-1.5 py-0.5 rounded-sm text-foreground">name</code></td>
+                <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top"><code className="font-mono text-[0.85em] bg-muted px-1.5 py-0.5 rounded-sm text-foreground">string</code></td>
+                <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top">—</td>
+                <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top">File name to display</td>
               </tr>
               <tr>
-                <td><code>size</code></td>
-                <td><code>{`'sm' | 'md' | 'lg'`}</code></td>
-                <td><code>'md'</code></td>
-                <td>Component size — matches Button heights at each size</td>
+                <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top"><code className="font-mono text-[0.85em] bg-muted px-1.5 py-0.5 rounded-sm text-foreground">size</code></td>
+                <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top"><code className="font-mono text-[0.85em] bg-muted px-1.5 py-0.5 rounded-sm text-foreground">{`'sm' | 'md' | 'lg'`}</code></td>
+                <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top"><code className="font-mono text-[0.85em] bg-muted px-1.5 py-0.5 rounded-sm text-foreground">'md'</code></td>
+                <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top">Component size — matches Button heights at each size</td>
               </tr>
               <tr>
-                <td><code>type</code></td>
-                <td><code>{`'image' | 'document' | 'spreadsheet' | 'code' | 'archive' | 'video' | 'audio' | 'generic'`}</code></td>
-                <td>auto</td>
-                <td>File type for icon selection — auto-detected from extension if omitted</td>
+                <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top"><code className="font-mono text-[0.85em] bg-muted px-1.5 py-0.5 rounded-sm text-foreground">type</code></td>
+                <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top"><code className="font-mono text-[0.85em] bg-muted px-1.5 py-0.5 rounded-sm text-foreground">{`'image' | 'document' | 'spreadsheet' | 'code' | 'archive' | 'video' | 'audio' | 'generic'`}</code></td>
+                <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top">auto</td>
+                <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top">File type for icon selection — auto-detected from extension if omitted</td>
               </tr>
               <tr>
-                <td><code>thumbnail</code></td>
-                <td><code>string</code></td>
-                <td>—</td>
-                <td>Image thumbnail URL — replaces the type icon with a visual preview</td>
+                <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top"><code className="font-mono text-[0.85em] bg-muted px-1.5 py-0.5 rounded-sm text-foreground">thumbnail</code></td>
+                <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top"><code className="font-mono text-[0.85em] bg-muted px-1.5 py-0.5 rounded-sm text-foreground">string</code></td>
+                <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top">—</td>
+                <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top">Image thumbnail URL — replaces the type icon with a visual preview</td>
               </tr>
               <tr>
-                <td><code>onRemove</code></td>
-                <td><code>{'() => void'}</code></td>
-                <td>—</td>
-                <td>Called when remove button is clicked — omit to hide the button</td>
+                <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top"><code className="font-mono text-[0.85em] bg-muted px-1.5 py-0.5 rounded-sm text-foreground">onRemove</code></td>
+                <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top"><code className="font-mono text-[0.85em] bg-muted px-1.5 py-0.5 rounded-sm text-foreground">{'() => void'}</code></td>
+                <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top">—</td>
+                <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top">Called when remove button is clicked — omit to hide the button</td>
               </tr>
             </tbody>
           </table>

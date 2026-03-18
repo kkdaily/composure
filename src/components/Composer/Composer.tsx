@@ -11,7 +11,7 @@ import {
   type FormEvent,
   type KeyboardEvent,
 } from 'react'
-import styles from './Composer.module.css'
+import { cn } from '@/lib/utils'
 
 /* ===========================
    Context
@@ -78,20 +78,16 @@ export function Composer({
     [handleSubmit]
   )
 
-  const classNames = [
-    styles.composer,
-    disabled ? styles.disabled : '',
-    className ?? '',
-  ]
-    .filter(Boolean)
-    .join(' ')
-
   return (
     <ComposerContext.Provider
       value={{ value, onChange, disabled, onSubmit: handleSubmit }}
     >
       <form
-        className={classNames}
+        className={cn(
+          'flex flex-wrap items-end gap-2 p-3 bg-card border border-border rounded-lg transition-colors duration-100 ease-out focus-within:border-primary motion-reduce:transition-none',
+          disabled && 'opacity-50 cursor-not-allowed',
+          className
+        )}
         onSubmit={handleFormSubmit}
         aria-label="Message composer"
         aria-disabled={disabled || undefined}
@@ -123,7 +119,7 @@ export interface ComposerInputProps
 }
 
 export function ComposerInput({
-  placeholder = 'Send a message…',
+  placeholder = 'Send a message\u2026',
   maxRows = 8,
   minRows = 1,
   className,
@@ -158,12 +154,14 @@ export function ComposerInput({
     [onSubmit]
   )
 
-  const classNames = [styles.input, className ?? ''].filter(Boolean).join(' ')
-
   return (
     <textarea
       ref={textareaRef}
-      className={classNames}
+      className={cn(
+        'flex-1 min-w-0 border-none bg-transparent resize-none outline-none font-sans text-sm text-foreground leading-relaxed py-2 m-0 placeholder:text-muted-foreground focus-visible:outline-none',
+        disabled && 'cursor-not-allowed',
+        className
+      )}
       value={value}
       onChange={(e) => onChange(e.target.value)}
       onKeyDown={handleKeyDown}
@@ -191,12 +189,18 @@ export interface ComposerFooterProps
 }
 
 export function ComposerFooter({ bordered = true, className, children, ...rest }: ComposerFooterProps) {
-  const classNames = [
-    styles.footer,
-    bordered ? '' : styles.footerBorderless,
-    className ?? '',
-  ].filter(Boolean).join(' ')
-  return <div className={classNames} {...rest}>{children}</div>
+  return (
+    <div
+      className={cn(
+        'basis-full flex items-center gap-2 pt-2',
+        bordered ? 'border-t border-border' : '',
+        className
+      )}
+      {...rest}
+    >
+      {children}
+    </div>
+  )
 }
 
 /* ===========================
@@ -216,10 +220,11 @@ export function ComposerFooterStart({
   children,
   ...rest
 }: ComposerFooterStartProps) {
-  const classNames = [styles.footerStart, className ?? '']
-    .filter(Boolean)
-    .join(' ')
-  return <div className={classNames} {...rest}>{children}</div>
+  return (
+    <div className={cn('flex items-center gap-2', className)} {...rest}>
+      {children}
+    </div>
+  )
 }
 
 /* ===========================
@@ -249,12 +254,18 @@ export interface ComposerHeaderProps
 }
 
 export function ComposerHeader({ bordered = false, className, children, ...rest }: ComposerHeaderProps) {
-  const classNames = [
-    styles.header,
-    bordered ? styles.headerBordered : '',
-    className ?? '',
-  ].filter(Boolean).join(' ')
-  return <div className={classNames} {...rest}>{children}</div>
+  return (
+    <div
+      className={cn(
+        'basis-full flex items-center gap-2 pb-2 -order-1',
+        bordered && 'border-b border-border',
+        className
+      )}
+      {...rest}
+    >
+      {children}
+    </div>
+  )
 }
 
 /* ===========================
@@ -274,10 +285,11 @@ export function ComposerHeaderStart({
   children,
   ...rest
 }: ComposerHeaderStartProps) {
-  const classNames = [styles.headerStart, className ?? '']
-    .filter(Boolean)
-    .join(' ')
-  return <div className={classNames} {...rest}>{children}</div>
+  return (
+    <div className={cn('flex items-center gap-2 flex-wrap', className)} {...rest}>
+      {children}
+    </div>
+  )
 }
 
 /* ===========================
@@ -297,10 +309,11 @@ export function ComposerHeaderEnd({
   children,
   ...rest
 }: ComposerHeaderEndProps) {
-  const classNames = [styles.headerEnd, className ?? '']
-    .filter(Boolean)
-    .join(' ')
-  return <div className={classNames} {...rest}>{children}</div>
+  return (
+    <div className={cn('flex items-center gap-2 ml-auto', className)} {...rest}>
+      {children}
+    </div>
+  )
 }
 
 export function ComposerFooterEnd({
@@ -308,8 +321,9 @@ export function ComposerFooterEnd({
   children,
   ...rest
 }: ComposerFooterEndProps) {
-  const classNames = [styles.footerEnd, className ?? '']
-    .filter(Boolean)
-    .join(' ')
-  return <div className={classNames} {...rest}>{children}</div>
+  return (
+    <div className={cn('flex items-center gap-2 ml-auto', className)} {...rest}>
+      {children}
+    </div>
+  )
 }

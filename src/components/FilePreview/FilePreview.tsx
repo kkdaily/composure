@@ -1,5 +1,5 @@
 import { type HTMLAttributes, type JSX } from 'react'
-import styles from './FilePreview.module.css'
+import { cn } from '@/lib/utils'
 
 /* ===========================
    File type detection
@@ -157,6 +157,37 @@ function CloseIcon() {
 }
 
 /* ===========================
+   File type color classes
+   =========================== */
+
+const fileTypeClasses: Record<FileType, string> = {
+  image: 'bg-filetype-image-bg text-filetype-image-fg',
+  document: 'bg-filetype-document-bg text-filetype-document-fg',
+  spreadsheet: 'bg-filetype-spreadsheet-bg text-filetype-spreadsheet-fg',
+  code: 'bg-filetype-code-bg text-filetype-code-fg',
+  archive: 'bg-filetype-archive-bg text-filetype-archive-fg',
+  video: 'bg-filetype-video-bg text-filetype-video-fg',
+  audio: 'bg-filetype-audio-bg text-filetype-audio-fg',
+  generic: 'bg-muted text-muted-foreground',
+}
+
+/* ===========================
+   Size classes
+   =========================== */
+
+const sizeClasses = {
+  sm: 'h-7',
+  md: 'h-9',
+  lg: 'h-11',
+} as const
+
+const iconAreaSizeClasses = {
+  sm: 'w-5 h-5 text-xs',
+  md: 'w-7 h-7 text-base',
+  lg: 'w-9 h-9 text-lg',
+} as const
+
+/* ===========================
    FilePreview
    =========================== */
 
@@ -188,28 +219,44 @@ export function FilePreview({
   const resolvedType = type ?? detectFileType(name)
   const Icon = iconsByType[resolvedType]
 
-  const classNames = [styles.filePreview, styles[size], className ?? '']
-    .filter(Boolean)
-    .join(' ')
-
   return (
-    <div className={classNames} {...rest}>
-      <div className={`${styles.iconArea} ${styles[`icon-${resolvedType}`]}`}>
+    <div
+      className={cn(
+        'group/file relative inline-flex items-center gap-2 pl-1 pr-3 bg-card border border-border rounded-md max-w-[220px] cursor-default transition-colors duration-100 ease-out hover:bg-muted motion-reduce:transition-none',
+        sizeClasses[size],
+        className
+      )}
+      {...rest}
+    >
+      <div
+        className={cn(
+          'flex items-center justify-center shrink-0 rounded-sm overflow-hidden',
+          iconAreaSizeClasses[size],
+          fileTypeClasses[resolvedType]
+        )}
+      >
         {thumbnail ? (
           <img
             src={thumbnail}
             alt=""
-            className={styles.thumbnail}
+            className="w-full h-full object-cover"
           />
         ) : (
           <Icon />
         )}
       </div>
-      <span className={styles.name}>{name}</span>
+      <span
+        className={cn(
+          'text-xs font-medium text-foreground leading-tight whitespace-nowrap overflow-hidden text-ellipsis min-w-0',
+          size === 'lg' && 'text-sm'
+        )}
+      >
+        {name}
+      </span>
       {onRemove && (
         <button
           type="button"
-          className={styles.removeButton}
+          className="absolute -top-1 -right-1 flex items-center justify-center w-[18px] h-[18px] p-0 border border-border rounded-full bg-card text-muted-foreground text-[10px] cursor-pointer opacity-0 transition-all duration-100 ease-out group-hover/file:opacity-100 hover:text-foreground hover:bg-muted focus-visible:opacity-100 focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2 motion-reduce:transition-none"
           onClick={onRemove}
           aria-label={`Remove ${name}`}
         >

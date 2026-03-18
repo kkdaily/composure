@@ -1,5 +1,5 @@
 import { useId, useRef, useEffect, type SelectHTMLAttributes } from 'react'
-import styles from './Select.module.css'
+import { cn } from '@/lib/utils'
 
 /* ===========================
    Types
@@ -49,6 +49,12 @@ const FONT_SIZE: Record<string, string> = {
   lg: 'var(--text-base)',
 }
 
+const sizeClasses = {
+  sm: 'h-7 text-xs pl-3 pr-8',
+  md: 'h-9 text-sm pl-4 pr-10',
+  lg: 'h-11 text-base pl-5 pr-12',
+} as const
+
 export function Select({
   value,
   onChange,
@@ -82,26 +88,20 @@ export function Select({
     select.style.width = `${ruler.offsetWidth + extra}px`
   }, [value, size, options])
 
-  const selectClassNames = [
-    styles.select,
-    styles[size],
-    variant === 'ghost' ? styles.ghost : '',
-    className ?? '',
-  ]
-    .filter(Boolean)
-    .join(' ')
-
   return (
-    <div className={styles.wrapper}>
+    <div className="inline-flex flex-col gap-1">
       {label && (
-        <label className={styles.label} htmlFor={selectId}>
+        <label
+          className="text-sm font-medium text-foreground"
+          htmlFor={selectId}
+        >
           {label}
         </label>
       )}
-      <div className={styles.selectWrapper}>
+      <div className="relative inline-flex">
         <span
           ref={rulerRef}
-          className={styles.ruler}
+          className="absolute -top-[9999px] -left-[9999px] invisible whitespace-nowrap pointer-events-none font-sans font-normal"
           style={{ fontSize: FONT_SIZE[size] }}
           aria-hidden="true"
         >
@@ -110,7 +110,17 @@ export function Select({
         <select
           ref={selectRef}
           id={selectId}
-          className={selectClassNames}
+          className={cn(
+            'appearance-none w-full bg-background text-foreground border border-border rounded-md font-sans font-normal leading-none cursor-pointer transition-colors duration-[120ms] ease-out',
+            'hover:not-disabled:border-muted-foreground',
+            'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring',
+            'disabled:cursor-not-allowed disabled:opacity-50',
+            'motion-reduce:transition-none',
+            sizeClasses[size],
+            variant === 'ghost' &&
+              'bg-transparent border-transparent text-muted-foreground hover:not-disabled:border-transparent hover:not-disabled:bg-muted hover:not-disabled:text-foreground',
+            className
+          )}
           value={value}
           onChange={(e) => onChange(e.target.value)}
           disabled={disabled}
@@ -127,7 +137,10 @@ export function Select({
             </option>
           ))}
         </select>
-        <span className={styles.chevron} aria-hidden="true">
+        <span
+          className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none flex items-center text-muted-foreground text-sm"
+          aria-hidden="true"
+        >
           <svg
             width="1em"
             height="1em"

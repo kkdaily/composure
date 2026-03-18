@@ -1,0 +1,382 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+/* Class-based dark mode (shadcn pattern) */
+@custom-variant dark (&:is(.dark, .dark *));
+
+/* ===========================
+   Theme — maps CSS vars to Tailwind utilities
+   e.g. --color-primary → bg-primary, text-primary, border-primary
+   =========================== */
+
+@theme inline {
+  /* shadcn standard colors */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  /* AI-specific (composure) */
+  --color-composure-assistant-bubble: var(--composure-assistant-bubble);
+  --color-composure-user-bubble: var(--composure-user-bubble);
+  --color-composure-user-bubble-text: var(--composure-user-bubble-text);
+  --color-composure-success: var(--composure-success);
+
+  /* File-type colors */
+  --color-filetype-image-bg: var(--composure-filetype-image-bg);
+  --color-filetype-image-fg: var(--composure-filetype-image-fg);
+  --color-filetype-document-bg: var(--composure-filetype-document-bg);
+  --color-filetype-document-fg: var(--composure-filetype-document-fg);
+  --color-filetype-spreadsheet-bg: var(--composure-filetype-spreadsheet-bg);
+  --color-filetype-spreadsheet-fg: var(--composure-filetype-spreadsheet-fg);
+  --color-filetype-code-bg: var(--composure-filetype-code-bg);
+  --color-filetype-code-fg: var(--composure-filetype-code-fg);
+  --color-filetype-archive-bg: var(--composure-filetype-archive-bg);
+  --color-filetype-archive-fg: var(--composure-filetype-archive-fg);
+  --color-filetype-video-bg: var(--composure-filetype-video-bg);
+  --color-filetype-video-fg: var(--composure-filetype-video-fg);
+  --color-filetype-audio-bg: var(--composure-filetype-audio-bg);
+  --color-filetype-audio-fg: var(--composure-filetype-audio-fg);
+
+  /* Border radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+
+  /* Font families */
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
+  --font-mono: 'SF Mono', 'Fira Code', 'Fira Mono', 'Roboto Mono', monospace;
+}
+
+/* ===========================
+   Light Mode (default)
+   =========================== */
+
+:root {
+  /* shadcn standard */
+  --background: #ffffff;
+  --foreground: #111111;
+  --card: #f8f8f8;
+  --card-foreground: #111111;
+  --muted: #f0f0f0;
+  --muted-foreground: #646464;
+  --primary: #7c3aed;
+  --primary-foreground: #ffffff;
+  --secondary: #f8f8f8;
+  --secondary-foreground: #555555;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: #e5e5e5;
+  --ring: #7c3aed;
+  --input: #e5e5e5;
+  --accent: #f0f0f0;
+  --accent-foreground: #111111;
+
+  /* AI-specific */
+  --composure-assistant-bubble: #f0f0f0;
+  --composure-user-bubble: #7c3aed;
+  --composure-user-bubble-text: #ffffff;
+  --composure-success: #16a34a;
+
+  /* File-type colors */
+  --composure-filetype-image-bg: #dbeafe;
+  --composure-filetype-image-fg: #2563eb;
+  --composure-filetype-document-bg: #fee2e2;
+  --composure-filetype-document-fg: #dc2626;
+  --composure-filetype-spreadsheet-bg: #dcfce7;
+  --composure-filetype-spreadsheet-fg: #16a34a;
+  --composure-filetype-code-bg: #f3e8ff;
+  --composure-filetype-code-fg: #9333ea;
+  --composure-filetype-archive-bg: #fef9c3;
+  --composure-filetype-archive-fg: #ca8a04;
+  --composure-filetype-video-bg: #fce7f3;
+  --composure-filetype-video-fg: #db2777;
+  --composure-filetype-audio-bg: #ffedd5;
+  --composure-filetype-audio-fg: #ea580c;
+}
+
+/* ===========================
+   Dark Mode
+   =========================== */
+
+.dark {
+  --background: #0a0a0a;
+  --foreground: #f0f0f0;
+  --card: #141414;
+  --card-foreground: #f0f0f0;
+  --muted: #1e1e1e;
+  --muted-foreground: #8a8a8a;
+  --primary: #818cf8;
+  --primary-foreground: #111111;
+  --secondary: #141414;
+  --secondary-foreground: #a0a0a0;
+  --destructive: #f87171;
+  --destructive-foreground: #111111;
+  --border: #2a2a2a;
+  --ring: #818cf8;
+  --input: #2a2a2a;
+  --accent: #1e1e1e;
+  --accent-foreground: #f0f0f0;
+
+  /* AI-specific */
+  --composure-assistant-bubble: #1e1e1e;
+  --composure-user-bubble: #818cf8;
+  --composure-user-bubble-text: #111111;
+  --composure-success: #4ade80;
+
+  /* File-type colors */
+  --composure-filetype-image-bg: #1e3a5f;
+  --composure-filetype-image-fg: #60a5fa;
+  --composure-filetype-document-bg: #4c1d1d;
+  --composure-filetype-document-fg: #f87171;
+  --composure-filetype-spreadsheet-bg: #14532d;
+  --composure-filetype-spreadsheet-fg: #4ade80;
+  --composure-filetype-code-bg: #3b1764;
+  --composure-filetype-code-fg: #c084fc;
+  --composure-filetype-archive-bg: #422d08;
+  --composure-filetype-archive-fg: #facc15;
+  --composure-filetype-video-bg: #4a1035;
+  --composure-filetype-video-fg: #f472b6;
+  --composure-filetype-audio-bg: #431e07;
+  --composure-filetype-audio-fg: #fb923c;
+}
+
+/* ===========================
+   Accent Color Palettes
+   =========================== */
+
+/* Indigo */
+[data-accent='indigo'] {
+  --primary: #5f61ee;
+  --primary-foreground: #ffffff;
+  --ring: #5f61ee;
+  --composure-user-bubble: #5f61ee;
+  --composure-user-bubble-text: #ffffff;
+}
+.dark[data-accent='indigo'],
+.dark [data-accent='indigo'] {
+  --primary: #818cf8;
+  --primary-foreground: #111111;
+  --ring: #818cf8;
+  --composure-user-bubble: #818cf8;
+  --composure-user-bubble-text: #111111;
+}
+
+/* Violet */
+[data-accent='violet'] {
+  --primary: #7c3aed;
+  --primary-foreground: #ffffff;
+  --ring: #7c3aed;
+  --composure-user-bubble: #7c3aed;
+  --composure-user-bubble-text: #ffffff;
+}
+.dark[data-accent='violet'],
+.dark [data-accent='violet'] {
+  --primary: #a78bfa;
+  --primary-foreground: #111111;
+  --ring: #a78bfa;
+  --composure-user-bubble: #7c3aed;
+  --composure-user-bubble-text: #ffffff;
+}
+
+/* Blue */
+[data-accent='blue'] {
+  --primary: #2563eb;
+  --primary-foreground: #ffffff;
+  --ring: #2563eb;
+  --composure-user-bubble: #2563eb;
+  --composure-user-bubble-text: #ffffff;
+}
+.dark[data-accent='blue'],
+.dark [data-accent='blue'] {
+  --primary: #60a5fa;
+  --primary-foreground: #111111;
+  --ring: #60a5fa;
+  --composure-user-bubble: #2563eb;
+  --composure-user-bubble-text: #ffffff;
+}
+
+/* Teal */
+[data-accent='teal'] {
+  --primary: #0d9488;
+  --primary-foreground: #111111;
+  --ring: #0d9488;
+  --composure-user-bubble: #0d9488;
+  --composure-user-bubble-text: #111111;
+}
+.dark[data-accent='teal'],
+.dark [data-accent='teal'] {
+  --primary: #2dd4bf;
+  --primary-foreground: #111111;
+  --ring: #2dd4bf;
+  --composure-user-bubble: #2dd4bf;
+  --composure-user-bubble-text: #111111;
+}
+
+/* Green */
+[data-accent='green'] {
+  --primary: #16a34a;
+  --primary-foreground: #111111;
+  --ring: #16a34a;
+  --composure-user-bubble: #16a34a;
+  --composure-user-bubble-text: #111111;
+}
+.dark[data-accent='green'],
+.dark [data-accent='green'] {
+  --primary: #4ade80;
+  --primary-foreground: #111111;
+  --ring: #4ade80;
+  --composure-user-bubble: #4ade80;
+  --composure-user-bubble-text: #111111;
+}
+
+/* Orange */
+[data-accent='orange'] {
+  --primary: #ea580c;
+  --primary-foreground: #111111;
+  --ring: #ea580c;
+  --composure-user-bubble: #ea580c;
+  --composure-user-bubble-text: #111111;
+}
+.dark[data-accent='orange'],
+.dark [data-accent='orange'] {
+  --primary: #fb923c;
+  --primary-foreground: #111111;
+  --ring: #fb923c;
+  --composure-user-bubble: #fb923c;
+  --composure-user-bubble-text: #111111;
+}
+
+/* Red */
+[data-accent='red'] {
+  --primary: #dc2626;
+  --primary-foreground: #ffffff;
+  --ring: #dc2626;
+  --composure-user-bubble: #dc2626;
+  --composure-user-bubble-text: #ffffff;
+}
+.dark[data-accent='red'],
+.dark [data-accent='red'] {
+  --primary: #f87171;
+  --primary-foreground: #111111;
+  --ring: #f87171;
+  --composure-user-bubble: #dc2626;
+  --composure-user-bubble-text: #ffffff;
+}
+
+/* Crimson */
+[data-accent='crimson'] {
+  --primary: #e11d48;
+  --primary-foreground: #ffffff;
+  --ring: #e11d48;
+  --composure-user-bubble: #e11d48;
+  --composure-user-bubble-text: #ffffff;
+}
+.dark[data-accent='crimson'],
+.dark [data-accent='crimson'] {
+  --primary: #fb7185;
+  --primary-foreground: #111111;
+  --ring: #fb7185;
+  --composure-user-bubble: #e11d48;
+  --composure-user-bubble-text: #ffffff;
+}
+
+/* ===========================
+   Base styles
+   =========================== */
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.5;
+    color: var(--foreground);
+    background-color: var(--background);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  a {
+    color: var(--primary);
+    text-decoration: none;
+  }
+
+  code {
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+  }
+}
+
+/* ===========================
+   Code block line numbers (no Tailwind equivalent for display:table)
+   =========================== */
+
+@layer components {
+  .code-line {
+    display: table-row;
+  }
+
+  .code-line-number {
+    display: table-cell;
+    width: 1%;
+    padding-right: 16px;
+    text-align: right;
+    user-select: none;
+    white-space: nowrap;
+    color: var(--muted-foreground);
+    opacity: 0.5;
+  }
+
+  .code-line-content {
+    display: table-cell;
+  }
+}
+
+/* ===========================
+   Animations
+   =========================== */
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes message-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

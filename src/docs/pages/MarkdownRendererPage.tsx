@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { MarkdownRenderer } from '../../components/MarkdownRenderer/MarkdownRenderer'
 import { CodeSnippet } from '../CodeSnippet'
-import styles from './MarkdownRendererPage.module.css'
+import { cn } from '@/lib/utils'
 
 /* ===========================
    Demo content strings
@@ -244,31 +244,36 @@ export function MarkdownRendererPage() {
   const demoContent = isSimulating ? streamedContent : CONTENT_MAP[contentType]
 
   return (
-    <div className={styles.page}>
-      <h1 className={styles.title}>MarkdownRenderer</h1>
-      <p className={styles.subtitle}>
+    <div className="flex flex-col gap-10">
+      <h1 className="text-3xl font-bold text-foreground tracking-tight">MarkdownRenderer</h1>
+      <p className="text-lg text-secondary-foreground leading-relaxed max-w-[540px]">
         Renders markdown content with full formatting, syntax-highlighted code
         blocks, and streaming support — designed for AI chat responses.
       </p>
 
       {/* ===== Demo ===== */}
-      <div className={styles.section}>
-        <h2 className={styles.heading}>Demo</h2>
-        <div className={styles.demoArea}>
+      <div className="flex flex-col gap-5">
+        <h2 className="text-xl font-semibold text-foreground tracking-tight">Demo</h2>
+        <div className="p-6 bg-card border border-border rounded-lg">
           <MarkdownRenderer
             content={demoContent}
             streaming={demoStreaming}
           />
         </div>
 
-        <div className={styles.controls}>
-          <div className={styles.controlGroup}>
-            <span className={styles.controlLabel}>CONTENT</span>
-            <div className={styles.controlOptions}>
+        <div className="flex flex-col gap-3">
+          <div className="flex items-center gap-3">
+            <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground min-w-[80px]">CONTENT</span>
+            <div className="flex items-center gap-1.5 flex-wrap">
               {(['simple', 'rich', 'code-heavy', 'plain text'] as ContentType[]).map((t) => (
                 <button
                   key={t}
-                  className={`${styles.chip} ${contentType === t && !isSimulating ? styles.chipActive : ''}`}
+                  className={cn(
+                    'px-2.5 py-1 text-xs font-medium rounded-md border cursor-pointer transition-colors',
+                    contentType === t && !isSimulating
+                      ? 'bg-primary text-primary-foreground border-primary'
+                      : 'bg-transparent border-border text-secondary-foreground hover:bg-muted hover:text-foreground'
+                  )}
                   onClick={() => {
                     if (intervalRef.current) window.clearInterval(intervalRef.current)
                     setIsSimulating(false)
@@ -281,11 +286,16 @@ export function MarkdownRendererPage() {
               ))}
             </div>
           </div>
-          <div className={styles.controlGroup}>
-            <span className={styles.controlLabel}>STREAMING</span>
-            <div className={styles.controlOptions}>
+          <div className="flex items-center gap-3">
+            <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground min-w-[80px]">STREAMING</span>
+            <div className="flex items-center gap-1.5 flex-wrap">
               <button
-                className={`${styles.chip} ${isSimulating ? styles.chipActive : ''}`}
+                className={cn(
+                  'px-2.5 py-1 text-xs font-medium rounded-md border cursor-pointer transition-colors',
+                  isSimulating
+                    ? 'bg-primary text-primary-foreground border-primary'
+                    : 'bg-transparent border-border text-secondary-foreground hover:bg-muted hover:text-foreground'
+                )}
                 onClick={startStreaming}
               >
                 simulate
@@ -296,14 +306,14 @@ export function MarkdownRendererPage() {
       </div>
 
       {/* ===== Content ===== */}
-      <div className={styles.section}>
-        <h2 className={styles.heading}>Content</h2>
-        <p className={styles.sectionDescription}>
+      <div className="flex flex-col gap-5">
+        <h2 className="text-xl font-semibold text-foreground tracking-tight">Content</h2>
+        <p className="text-sm text-secondary-foreground leading-relaxed max-w-[600px]">
           Pass any markdown string to the <code>content</code> prop. Plain text
           renders cleanly as prose without unwanted formatting — no special
           handling needed.
         </p>
-        <div className={styles.demoArea}>
+        <div className="p-6 bg-card border border-border rounded-lg">
           <MarkdownRenderer content={PLAIN_TEXT_CONTENT} />
         </div>
         <CodeSnippet>{`<MarkdownRenderer
@@ -312,13 +322,13 @@ export function MarkdownRendererPage() {
       </div>
 
       {/* ===== Headings and Structure ===== */}
-      <div className={styles.section}>
-        <h2 className={styles.heading}>Headings and Structure</h2>
-        <p className={styles.sectionDescription}>
+      <div className="flex flex-col gap-5">
+        <h2 className="text-xl font-semibold text-foreground tracking-tight">Headings and Structure</h2>
+        <p className="text-sm text-secondary-foreground leading-relaxed max-w-[600px]">
           Standard markdown headings and horizontal rules are fully supported,
           with typography scaled using design tokens.
         </p>
-        <div className={styles.demoArea}>
+        <div className="p-6 bg-card border border-border rounded-lg">
           <MarkdownRenderer content={HEADINGS_EXAMPLE} />
         </div>
         <CodeSnippet>{`<MarkdownRenderer content={\`## Getting Started
@@ -331,14 +341,14 @@ Run the install command to get started.\`} />`}</CodeSnippet>
       </div>
 
       {/* ===== Code Blocks ===== */}
-      <div className={styles.section}>
-        <h2 className={styles.heading}>Code Blocks</h2>
-        <p className={styles.sectionDescription}>
+      <div className="flex flex-col gap-5">
+        <h2 className="text-xl font-semibold text-foreground tracking-tight">Code Blocks</h2>
+        <p className="text-sm text-secondary-foreground leading-relaxed max-w-[600px]">
           Fenced code blocks render with syntax highlighting via the built-in{' '}
           <code>CodeBlock</code> component. Inline code like{' '}
           <code>setState()</code> uses a subtle background treatment.
         </p>
-        <div className={styles.demoArea}>
+        <div className="p-6 bg-card border border-border rounded-lg">
           <MarkdownRenderer content={CODE_HEAVY_CONTENT} />
         </div>
         <CodeSnippet>{`<MarkdownRenderer content={\`Here's how to set up the client:
@@ -351,13 +361,13 @@ The \\\`timeout\\\` option is in milliseconds.\`} />`}</CodeSnippet>
       </div>
 
       {/* ===== Lists ===== */}
-      <div className={styles.section}>
-        <h2 className={styles.heading}>Lists</h2>
-        <p className={styles.sectionDescription}>
+      <div className="flex flex-col gap-5">
+        <h2 className="text-xl font-semibold text-foreground tracking-tight">Lists</h2>
+        <p className="text-sm text-secondary-foreground leading-relaxed max-w-[600px]">
           All list types including GFM task lists are supported, with proper
           nesting and spacing.
         </p>
-        <div className={styles.demoArea}>
+        <div className="p-6 bg-card border border-border rounded-lg">
           <MarkdownRenderer content={LISTS_EXAMPLE} />
         </div>
         <CodeSnippet>{`<MarkdownRenderer content={\`- [x] Design the API schema
@@ -366,13 +376,13 @@ The \\\`timeout\\\` option is in milliseconds.\`} />`}</CodeSnippet>
       </div>
 
       {/* ===== Tables ===== */}
-      <div className={styles.section}>
-        <h2 className={styles.heading}>Tables</h2>
-        <p className={styles.sectionDescription}>
+      <div className="flex flex-col gap-5">
+        <h2 className="text-xl font-semibold text-foreground tracking-tight">Tables</h2>
+        <p className="text-sm text-secondary-foreground leading-relaxed max-w-[600px]">
           GitHub-flavored markdown tables render with clean borders and header
           styling consistent with the design system.
         </p>
-        <div className={styles.demoArea}>
+        <div className="p-6 bg-card border border-border rounded-lg">
           <MarkdownRenderer content={TABLE_EXAMPLE} />
         </div>
         <CodeSnippet>{`<MarkdownRenderer content={\`| Method | Endpoint | Description |
@@ -382,13 +392,13 @@ The \\\`timeout\\\` option is in milliseconds.\`} />`}</CodeSnippet>
       </div>
 
       {/* ===== Blockquotes ===== */}
-      <div className={styles.section}>
-        <h2 className={styles.heading}>Blockquotes</h2>
-        <p className={styles.sectionDescription}>
+      <div className="flex flex-col gap-5">
+        <h2 className="text-xl font-semibold text-foreground tracking-tight">Blockquotes</h2>
+        <p className="text-sm text-secondary-foreground leading-relaxed max-w-[600px]">
           Blockquotes use the accent color for the left border, making them
           visually distinct for quoted content or callouts in AI responses.
         </p>
-        <div className={styles.demoArea}>
+        <div className="p-6 bg-card border border-border rounded-lg">
           <MarkdownRenderer content={BLOCKQUOTE_EXAMPLE} />
         </div>
         <CodeSnippet>{`<MarkdownRenderer content={\`> Use composition over inheritance. Prefer small, focused interfaces
@@ -396,39 +406,44 @@ The \\\`timeout\\\` option is in milliseconds.\`} />`}</CodeSnippet>
       </div>
 
       {/* ===== Links ===== */}
-      <div className={styles.section}>
-        <h2 className={styles.heading}>Links</h2>
-        <p className={styles.sectionDescription}>
+      <div className="flex flex-col gap-5">
+        <h2 className="text-xl font-semibold text-foreground tracking-tight">Links</h2>
+        <p className="text-sm text-secondary-foreground leading-relaxed max-w-[600px]">
           Links open in new tabs by default with{' '}
           <code>target=&quot;_blank&quot;</code> and{' '}
           <code>rel=&quot;noopener noreferrer&quot;</code> for security.
           Override via the <code>components.a</code> prop.
         </p>
-        <div className={styles.demoArea}>
+        <div className="p-6 bg-card border border-border rounded-lg">
           <MarkdownRenderer content={LINKS_EXAMPLE} />
         </div>
         <CodeSnippet>{`<MarkdownRenderer content={\`Check out the [documentation](https://example.com) for more details.\`} />`}</CodeSnippet>
       </div>
 
       {/* ===== Streaming ===== */}
-      <div className={styles.section}>
-        <h2 className={styles.heading}>Streaming</h2>
-        <p className={styles.sectionDescription}>
+      <div className="flex flex-col gap-5">
+        <h2 className="text-xl font-semibold text-foreground tracking-tight">Streaming</h2>
+        <p className="text-sm text-secondary-foreground leading-relaxed max-w-[600px]">
           Use <code>streaming</code> when rendering an AI response that is still
           being generated. Sets <code>aria-busy</code> for accessibility.
         </p>
-        <div className={styles.demoArea}>
+        <div className="p-6 bg-card border border-border rounded-lg">
           <MarkdownRenderer
             content={sectionStreamContent || 'Press "start" to simulate streaming...'}
             streaming={sectionStreaming}
           />
         </div>
-        <div className={styles.controls}>
-          <div className={styles.controlGroup}>
-            <span className={styles.controlLabel}>ACTION</span>
-            <div className={styles.controlOptions}>
+        <div className="flex flex-col gap-3">
+          <div className="flex items-center gap-3">
+            <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground min-w-[80px]">ACTION</span>
+            <div className="flex items-center gap-1.5 flex-wrap">
               <button
-                className={`${styles.chip} ${sectionStreaming ? styles.chipActive : ''}`}
+                className={cn(
+                  'px-2.5 py-1 text-xs font-medium rounded-md border cursor-pointer transition-colors',
+                  sectionStreaming
+                    ? 'bg-primary text-primary-foreground border-primary'
+                    : 'bg-transparent border-border text-secondary-foreground hover:bg-muted hover:text-foreground'
+                )}
                 onClick={startSectionStreaming}
                 disabled={sectionStreaming}
               >
@@ -444,14 +459,14 @@ The \\\`timeout\\\` option is in milliseconds.\`} />`}</CodeSnippet>
       </div>
 
       {/* ===== Custom Components ===== */}
-      <div className={styles.section}>
-        <h2 className={styles.heading}>Custom Components</h2>
-        <p className={styles.sectionDescription}>
+      <div className="flex flex-col gap-5">
+        <h2 className="text-xl font-semibold text-foreground tracking-tight">Custom Components</h2>
+        <p className="text-sm text-secondary-foreground leading-relaxed max-w-[600px]">
           Override default element renderers via the <code>components</code>{' '}
           prop. The <code>code</code> override replaces fenced code blocks,{' '}
           <code>a</code> replaces links, and <code>img</code> replaces images.
         </p>
-        <div className={styles.demoArea}>
+        <div className="p-6 bg-card border border-border rounded-lg">
           <MarkdownRenderer
             content={CUSTOM_COMPONENT_EXAMPLE}
             components={{
@@ -490,36 +505,36 @@ The \\\`timeout\\\` option is in milliseconds.\`} />`}</CodeSnippet>
       </div>
 
       {/* ===== Props Table ===== */}
-      <div className={styles.section}>
-        <h2 className={styles.heading}>Props</h2>
-        <div className={styles.tableWrapper}>
-          <table className={styles.propsTable}>
+      <div className="flex flex-col gap-5">
+        <h2 className="text-xl font-semibold text-foreground tracking-tight">Props</h2>
+        <div className="overflow-x-auto -mx-6 px-6">
+          <table className="w-full text-sm border-collapse">
             <thead>
               <tr>
-                <th>Prop</th>
-                <th>Type</th>
-                <th>Default</th>
-                <th>Description</th>
+                <th className="text-left px-3 py-2 border-b-2 border-border text-muted-foreground font-medium text-xs uppercase tracking-wider">Prop</th>
+                <th className="text-left px-3 py-2 border-b-2 border-border text-muted-foreground font-medium text-xs uppercase tracking-wider">Type</th>
+                <th className="text-left px-3 py-2 border-b-2 border-border text-muted-foreground font-medium text-xs uppercase tracking-wider">Default</th>
+                <th className="text-left px-3 py-2 border-b-2 border-border text-muted-foreground font-medium text-xs uppercase tracking-wider">Description</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td><code>content</code></td>
-                <td><code>string</code></td>
-                <td>—</td>
-                <td>Markdown string to render</td>
+                <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top"><code className="font-mono text-[0.85em] bg-muted px-1.5 py-0.5 rounded-sm text-foreground">content</code></td>
+                <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top"><code className="font-mono text-[0.85em] bg-muted px-1.5 py-0.5 rounded-sm text-foreground">string</code></td>
+                <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top">—</td>
+                <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top">Markdown string to render</td>
               </tr>
               <tr>
-                <td><code>streaming</code></td>
-                <td><code>boolean</code></td>
-                <td><code>false</code></td>
-                <td>Sets <code>aria-busy</code> for assistive technology</td>
+                <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top"><code className="font-mono text-[0.85em] bg-muted px-1.5 py-0.5 rounded-sm text-foreground">streaming</code></td>
+                <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top"><code className="font-mono text-[0.85em] bg-muted px-1.5 py-0.5 rounded-sm text-foreground">boolean</code></td>
+                <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top"><code className="font-mono text-[0.85em] bg-muted px-1.5 py-0.5 rounded-sm text-foreground">false</code></td>
+                <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top">Sets <code className="font-mono text-[0.85em] bg-muted px-1.5 py-0.5 rounded-sm text-foreground">aria-busy</code> for assistive technology</td>
               </tr>
               <tr>
-                <td><code>components</code></td>
-                <td><code>{'Partial<MarkdownComponents>'}</code></td>
-                <td>—</td>
-                <td>Override default renderers for code blocks, links, and images</td>
+                <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top"><code className="font-mono text-[0.85em] bg-muted px-1.5 py-0.5 rounded-sm text-foreground">components</code></td>
+                <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top"><code className="font-mono text-[0.85em] bg-muted px-1.5 py-0.5 rounded-sm text-foreground">{'Partial<MarkdownComponents>'}</code></td>
+                <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top">—</td>
+                <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top">Override default renderers for code blocks, links, and images</td>
               </tr>
             </tbody>
           </table>

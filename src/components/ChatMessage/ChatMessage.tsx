@@ -4,7 +4,7 @@ import {
   type ReactNode,
   type HTMLAttributes,
 } from 'react'
-import styles from './ChatMessage.module.css'
+import { cn } from '@/lib/utils'
 
 /* ===========================
    Context
@@ -49,18 +49,20 @@ export function ChatMessage({
   children,
   ...rest
 }: ChatMessageProps) {
-  const classNames = [
-    styles.chatMessage,
-    role === 'user' ? styles.user : '',
-    showActionsOnHover ? styles.actionsOnHover : '',
-    className ?? '',
-  ]
-    .filter(Boolean)
-    .join(' ')
-
   return (
     <ChatMessageContext.Provider value={{ role }}>
-      <div className={classNames} {...rest}>
+      <div
+        className={cn(
+          'group/message grid items-start gap-x-3 gap-y-1 max-w-full',
+          role === 'user'
+            ? 'grid-cols-[1fr_auto]'
+            : 'grid-cols-[auto_1fr]',
+          showActionsOnHover &&
+            '[&_.chat-actions]:opacity-0 [&_.chat-actions]:transition-opacity [&_.chat-actions]:duration-150 [&_.chat-actions]:ease-linear hover:[&_.chat-actions]:opacity-100 focus-within:[&_.chat-actions]:opacity-100 [&_.chat-actions]:motion-reduce:transition-none',
+          className
+        )}
+        {...rest}
+      >
         {children}
       </div>
     </ChatMessageContext.Provider>
@@ -84,9 +86,19 @@ export function ChatMessageAvatar({
   children,
   ...rest
 }: ChatMessageAvatarProps) {
-  useChatMessageContext() // validate we're inside ChatMessage
-  const classNames = [styles.avatar, className ?? ''].filter(Boolean).join(' ')
-  return <div className={classNames} {...rest}>{children}</div>
+  const { role } = useChatMessageContext()
+  return (
+    <div
+      className={cn(
+        'row-span-full w-8 h-8 rounded-full overflow-hidden shrink-0 flex items-center justify-center bg-muted text-muted-foreground text-sm',
+        role === 'user' ? 'col-start-2' : 'col-start-1',
+        className
+      )}
+      {...rest}
+    >
+      {children}
+    </div>
+  )
 }
 
 /* ===========================
@@ -111,18 +123,23 @@ export function ChatMessageContent({
 }: ChatMessageContentProps) {
   const { role } = useChatMessageContext()
 
-  const variantClass =
-    variant === 'plain'
-      ? styles.contentPlain
-      : role === 'assistant'
-        ? styles.contentAssistant
-        : styles.contentUser
-
-  const classNames = [styles.content, variantClass, className ?? '']
-    .filter(Boolean)
-    .join(' ')
-
-  return <div className={classNames} {...rest}>{children}</div>
+  return (
+    <div
+      className={cn(
+        'py-3 px-4 rounded-lg text-sm leading-relaxed max-w-[85%] min-w-0 break-words',
+        role === 'user' ? 'col-start-1 justify-self-end' : 'col-start-2',
+        variant === 'plain'
+          ? 'bg-transparent text-foreground px-0'
+          : role === 'assistant'
+            ? 'bg-composure-assistant-bubble text-foreground'
+            : 'bg-composure-user-bubble text-composure-user-bubble-text justify-self-end',
+        className
+      )}
+      {...rest}
+    >
+      {children}
+    </div>
+  )
 }
 
 /* ===========================
@@ -142,10 +159,18 @@ export function ChatMessageActions({
   children,
   ...rest
 }: ChatMessageActionsProps) {
-  useChatMessageContext() // validate we're inside ChatMessage
-  const classNames = [styles.actions, className ?? '']
-    .filter(Boolean)
-    .join(' ')
+  const { role } = useChatMessageContext()
 
-  return <div className={classNames} {...rest}>{children}</div>
+  return (
+    <div
+      className={cn(
+        'chat-actions flex gap-1 items-center pt-1',
+        role === 'user' ? 'col-start-1 justify-self-end' : 'col-start-2',
+        className
+      )}
+      {...rest}
+    >
+      {children}
+    </div>
+  )
 }

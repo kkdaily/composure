@@ -23,7 +23,7 @@ import { MarkdownRenderer } from '../../components/MarkdownRenderer/MarkdownRend
 import { IconButton } from '../../components/IconButton/IconButton'
 import { FilePreview } from '../../components/FilePreview/FilePreview'
 import { CodeSnippet } from '../CodeSnippet'
-import styles from './OverviewPage.module.css'
+import { cn } from '@/lib/utils'
 
 /* ===========================
    Icons
@@ -334,26 +334,33 @@ export function OverviewPage() {
   }, [])
 
   return (
-    <div className={styles.page}>
+    <div className="flex flex-col gap-16">
 
       {/* ---- Hero ---- */}
-      <section className={styles.hero}>
-        <span className={styles.badge}>v0.1.0</span>
-        <h1 className={styles.title}>Composure</h1>
-        <p className={styles.subtitle}>
+      <section className="flex flex-col gap-4 pb-8 border-b border-border">
+        <span className="inline-flex items-center gap-2 font-mono text-xs text-primary bg-primary/10 border border-primary/25 rounded-full px-3 py-[3px] w-fit">
+          v0.1.0
+        </span>
+        <h1 className="text-[2.5rem] font-bold text-foreground tracking-tighter leading-tight max-sm:text-[2rem]">
+          Composure
+        </h1>
+        <p className="text-lg text-secondary-foreground leading-relaxed max-w-[540px]">
           React components for building AI chat interfaces — purpose-built for
           streaming, auto-scroll, code highlighting, and the patterns every AI
           app needs.
         </p>
-        <div className={styles.heroActions}>
-          <NavLink to="/components/composer" className={styles.btnPrimary}>
+        <div className="flex items-center gap-3 mt-2">
+          <NavLink
+            to="/components/composer"
+            className="inline-flex items-center gap-2 bg-primary text-primary-foreground rounded-md px-5 py-2 text-sm font-semibold no-underline cursor-pointer transition-opacity duration-100 hover:opacity-88 motion-reduce:transition-none"
+          >
             Browse components
           </NavLink>
           <a
             href="https://github.com/kkdaily/composure"
             target="_blank"
             rel="noreferrer"
-            className={styles.btnSecondary}
+            className="inline-flex items-center gap-2 bg-transparent text-secondary-foreground border border-border rounded-md px-5 py-2 text-sm font-medium no-underline cursor-pointer transition-[border-color,color] duration-100 hover:border-muted-foreground hover:text-foreground motion-reduce:transition-none"
           >
             GitHub
           </a>
@@ -361,25 +368,37 @@ export function OverviewPage() {
       </section>
 
       {/* ---- Live Demo ---- */}
-      <section className={styles.demoSection}>
-        <span className={styles.demoLabel}>Live demo</span>
-        <div className={styles.chatWindow}>
-          <ScrollArea className={styles.chatScrollArea} mode="auto">
-            <div className={styles.messageList}>
+      <section className="flex flex-col gap-3">
+        <span className="text-xs font-semibold tracking-widest uppercase text-primary">
+          Live demo
+        </span>
+        <div className="flex flex-col h-[540px] border border-border rounded-lg overflow-hidden bg-background shadow-sm dark:shadow-[0_4px_16px_rgba(0,0,0,0.2)] max-sm:h-[460px]">
+          <ScrollArea className="flex-1 min-h-0" mode="auto">
+            <div className="flex flex-col gap-5 p-5">
               {messages.map(msg => (
-                <div key={msg.id} className={styles.messageIn}>
+                <div
+                  key={msg.id}
+                  className="animate-[message-slide-in_220ms_cubic-bezier(0.16,1,0.3,1)_both] motion-reduce:animate-none"
+                >
                   <ChatMessage
                     role={msg.role}
                     showActionsOnHover={msg.role === 'assistant'}
                   >
                     <ChatMessageAvatar>
-                      <span className={msg.role === 'assistant' ? styles.assistantAvatar : styles.userAvatar}>
+                      <span
+                        className={cn(
+                          'flex items-center justify-center w-full h-full rounded-full',
+                          msg.role === 'assistant'
+                            ? 'bg-primary/15 text-primary'
+                            : 'bg-muted text-muted-foreground'
+                        )}
+                      >
                         {msg.role === 'assistant' ? <SparkleIcon /> : <UserIcon />}
                       </span>
                     </ChatMessageAvatar>
                     <ChatMessageContent variant={msg.role === 'assistant' ? 'plain' : 'filled'}>
                       {msg.role === 'assistant'
-                        ? <MarkdownRenderer content={msg.content} className={styles.demoMarkdown} />
+                        ? <MarkdownRenderer content={msg.content} className="text-sm" />
                         : msg.content
                       }
                     </ChatMessageContent>
@@ -398,10 +417,10 @@ export function OverviewPage() {
               ))}
 
               {streamingContent !== null && (
-                <div className={styles.messageIn}>
+                <div className="animate-[message-slide-in_220ms_cubic-bezier(0.16,1,0.3,1)_both] motion-reduce:animate-none">
                   <ChatMessage role="assistant">
                     <ChatMessageAvatar>
-                      <span className={styles.assistantAvatar}>
+                      <span className="flex items-center justify-center w-full h-full rounded-full bg-primary/15 text-primary">
                         <SparkleIcon />
                       </span>
                     </ChatMessageAvatar>
@@ -409,7 +428,7 @@ export function OverviewPage() {
                       <MarkdownRenderer
                         content={streamingContent || '\u200B'}
                         streaming
-                        className={styles.demoMarkdown}
+                        className="text-sm"
                       />
                     </ChatMessageContent>
                   </ChatMessage>
@@ -422,7 +441,7 @@ export function OverviewPage() {
             </ScrollAreaScrollToBottom>
           </ScrollArea>
 
-          <div className={styles.composerWrapper}>
+          <div className="p-3 border-t border-border bg-card">
             <Composer
               value={composerValue}
               onChange={setComposerValue}
@@ -469,52 +488,62 @@ export function OverviewPage() {
             </Composer>
           </div>
         </div>
-        <p className={styles.demoHint}>
+        <p className="text-sm text-muted-foreground text-center">
           Type a message and press Enter — the demo is fully interactive
         </p>
       </section>
 
       {/* ---- Highlights ---- */}
-      <section className={styles.section}>
-        <div className={styles.sectionHeader}>
-          <h2 className={styles.heading}>Built for the hard parts</h2>
-          <p className={styles.body}>
+      <section className="flex flex-col gap-5">
+        <div className="flex flex-col gap-2">
+          <h2 className="text-xl font-semibold text-foreground tracking-tight">
+            Built for the hard parts
+          </h2>
+          <p className="text-base text-secondary-foreground leading-relaxed max-w-[600px]">
             Every AI chat app rebuilds the same complex UI patterns. Composure
             extracts them into composable, accessible, theme-aware components
             for the shadcn ecosystem.
           </p>
         </div>
 
-        <div className={styles.highlightGrid}>
-          <div className={styles.highlightCard}>
-            <span className={styles.highlightIcon}><ScrollHighlightIcon /></span>
-            <h3 className={styles.highlightTitle}>Scroll intent detection</h3>
-            <p className={styles.highlightDesc}>
+        <div className="grid grid-cols-2 gap-3 max-sm:grid-cols-1">
+          <div className="flex flex-col gap-2 p-5 bg-card border border-border rounded-md">
+            <span className="flex items-center justify-center size-9 rounded-md bg-primary/10 text-primary">
+              <ScrollHighlightIcon />
+            </span>
+            <h3 className="text-sm font-semibold text-foreground">Scroll intent detection</h3>
+            <p className="text-sm text-secondary-foreground leading-relaxed">
               Distinguishes user scrolls from programmatic ones using
               wheel/touch events — streaming auto-scrolls without hijacking
               reading.
             </p>
           </div>
-          <div className={styles.highlightCard}>
-            <span className={styles.highlightIcon}><StreamHighlightIcon /></span>
-            <h3 className={styles.highlightTitle}>Streaming-safe highlighting</h3>
-            <p className={styles.highlightDesc}>
+          <div className="flex flex-col gap-2 p-5 bg-card border border-border rounded-md">
+            <span className="flex items-center justify-center size-9 rounded-md bg-primary/10 text-primary">
+              <StreamHighlightIcon />
+            </span>
+            <h3 className="text-sm font-semibold text-foreground">Streaming-safe highlighting</h3>
+            <p className="text-sm text-secondary-foreground leading-relaxed">
               Lazy-loads Shiki grammars with a sync fast-path to avoid flashes
               during character-by-character code rendering.
             </p>
           </div>
-          <div className={styles.highlightCard}>
-            <span className={styles.highlightIcon}><PuzzleHighlightIcon /></span>
-            <h3 className={styles.highlightTitle}>Composable primitives</h3>
-            <p className={styles.highlightDesc}>
+          <div className="flex flex-col gap-2 p-5 bg-card border border-border rounded-md">
+            <span className="flex items-center justify-center size-9 rounded-md bg-primary/10 text-primary">
+              <PuzzleHighlightIcon />
+            </span>
+            <h3 className="text-sm font-semibold text-foreground">Composable primitives</h3>
+            <p className="text-sm text-secondary-foreground leading-relaxed">
               Sub-components share state via context. Named exports for
               tree-shaking. Mix and match in any layout.
             </p>
           </div>
-          <div className={styles.highlightCard}>
-            <span className={styles.highlightIcon}><PaletteHighlightIcon /></span>
-            <h3 className={styles.highlightTitle}>Built for shadcn</h3>
-            <p className={styles.highlightDesc}>
+          <div className="flex flex-col gap-2 p-5 bg-card border border-border rounded-md">
+            <span className="flex items-center justify-center size-9 rounded-md bg-primary/10 text-primary">
+              <PaletteHighlightIcon />
+            </span>
+            <h3 className="text-sm font-semibold text-foreground">Built for shadcn</h3>
+            <p className="text-sm text-secondary-foreground leading-relaxed">
               Designed for the shadcn registry. Works with your existing theme
               tokens, dark mode, and primitives like Button and Avatar.
             </p>
@@ -523,10 +552,12 @@ export function OverviewPage() {
       </section>
 
       {/* ---- What's included ---- */}
-      <section className={styles.section}>
-        <div className={styles.sectionHeader}>
-          <h2 className={styles.heading}>What's included</h2>
-          <p className={styles.body}>
+      <section className="flex flex-col gap-5">
+        <div className="flex flex-col gap-2">
+          <h2 className="text-xl font-semibold text-foreground tracking-tight">
+            What's included
+          </h2>
+          <p className="text-base text-secondary-foreground leading-relaxed max-w-[600px]">
             Six components purpose-built for AI chat interfaces: Composer,
             ChatMessage, CodeBlock, ScrollArea, MarkdownRenderer, and
             FilePreview. Designed for the shadcn registry — they work alongside
@@ -536,10 +567,12 @@ export function OverviewPage() {
       </section>
 
       {/* ---- Quick start ---- */}
-      <section className={styles.section}>
-        <div className={styles.sectionHeader}>
-          <h2 className={styles.heading}>Quick start</h2>
-          <p className={styles.body}>
+      <section className="flex flex-col gap-5">
+        <div className="flex flex-col gap-2">
+          <h2 className="text-xl font-semibold text-foreground tracking-tight">
+            Quick start
+          </h2>
+          <p className="text-base text-secondary-foreground leading-relaxed max-w-[600px]">
             Import components as named exports. Complex components like Composer
             expose sub-components as separate named exports so you can compose
             them however your layout requires.
