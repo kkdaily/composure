@@ -135,27 +135,6 @@
   padding: var(--space-4);
 }
 
-.scrollToBottomButton {
-  background-color: var(--color-bg-2);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-full);
-  padding: var(--space-2);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--color-text-secondary);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  transition:
-    background-color var(--speed-fast) var(--ease-out),
-    color var(--speed-fast) var(--ease-out);
-}
-
-.scrollToBottomButton:hover {
-  background-color: var(--color-bg-3);
-  color: var(--color-text-primary);
-}
-
 /* Props table */
 .tableWrapper {
   overflow-x: auto;
@@ -196,8 +175,7 @@
 
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  .chip,
-  .scrollToBottomButton {
+  .chip {
     transition: none;
   }
 }

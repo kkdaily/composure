@@ -1,6 +1,5 @@
 import { useEffect } from 'react'
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
-import { Sidebar } from './docs/Sidebar'
 import { DocsLayout } from './docs/DocsLayout'
 import { OverviewPage } from './docs/pages/OverviewPage'
 import { TokensPage } from './docs/pages/TokensPage'
@@ -32,7 +31,7 @@ function ScrollToTop() {
 
 function App() {
   return (
-    <DocsLayout sidebar={<Sidebar />}>
+    <DocsLayout>
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<OverviewPage />} />

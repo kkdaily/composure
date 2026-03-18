@@ -177,13 +177,16 @@ export function ScrollArea({
 
 export interface ScrollAreaScrollToBottomProps
   extends Omit<HTMLAttributes<HTMLDivElement>, 'className'> {
+  /** Required accessible label for the scroll-to-bottom button */
+  label: string
   /** Additional CSS class for external overrides */
   className?: string
-  /** The scroll-to-bottom trigger — typically an IconButton */
+  /** The scroll-to-bottom trigger — typically an icon */
   children: ReactNode
 }
 
 export function ScrollAreaScrollToBottom({
+  label,
   className,
   children,
   ...rest
@@ -201,11 +204,17 @@ export function ScrollAreaScrollToBottom({
   return (
     <div
       className={classNames}
-      onClick={scrollToBottom}
       aria-hidden={isAtBottom || undefined}
       {...rest}
     >
-      {children}
+      <button
+        className={styles.scrollToBottomButton}
+        onClick={scrollToBottom}
+        aria-label={label}
+        tabIndex={isAtBottom ? -1 : 0}
+      >
+        {children}
+      </button>
     </div>
   )
 }

@@ -71,6 +71,18 @@
   height: 20px;
 }
 
+/* --- Hamburger (mobile only) --- */
+
+.hamburger {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .hamburger {
+    display: flex;
+  }
+}
+
 /* ===========================
    Accent picker
    =========================== */

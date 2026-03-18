@@ -164,7 +164,21 @@ function AccentPicker() {
   )
 }
 
-export function Navbar() {
+function MenuIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+      <line x1="3" y1="6" x2="21" y2="6" />
+      <line x1="3" y1="12" x2="21" y2="12" />
+      <line x1="3" y1="18" x2="21" y2="18" />
+    </svg>
+  )
+}
+
+export interface NavbarProps {
+  onMenuToggle?: () => void
+}
+
+export function Navbar({ onMenuToggle }: NavbarProps) {
   const { theme, setTheme } = useTheme()
 
   function cycleTheme() {
@@ -200,6 +214,13 @@ export function Navbar() {
         >
           <GitHubIcon />
         </a>
+        <button
+          onClick={onMenuToggle}
+          className={`${styles.iconButton} ${styles.hamburger}`}
+          aria-label="Toggle navigation menu"
+        >
+          <MenuIcon />
+        </button>
       </div>
     </header>
   )

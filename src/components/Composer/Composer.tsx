@@ -5,6 +5,8 @@ import {
   useEffect,
   useCallback,
   type ReactNode,
+  type HTMLAttributes,
+  type FormHTMLAttributes,
   type TextareaHTMLAttributes,
   type FormEvent,
   type KeyboardEvent,
@@ -38,7 +40,8 @@ function useComposerContext() {
    Composer (root)
    =========================== */
 
-export interface ComposerProps {
+export interface ComposerProps
+  extends Omit<FormHTMLAttributes<HTMLFormElement>, 'className' | 'onSubmit' | 'onChange'> {
   /** Current value of the input (controlled) */
   value: string
   /** Called when the input value changes */
@@ -60,6 +63,7 @@ export function Composer({
   disabled = false,
   className,
   children,
+  ...rest
 }: ComposerProps) {
   const handleSubmit = useCallback(() => {
     if (disabled || !value.trim()) return
@@ -91,6 +95,7 @@ export function Composer({
         onSubmit={handleFormSubmit}
         aria-label="Message composer"
         aria-disabled={disabled || undefined}
+        {...rest}
       >
         {children}
       </form>
@@ -175,7 +180,8 @@ export function ComposerInput({
    ComposerFooter
    =========================== */
 
-export interface ComposerFooterProps {
+export interface ComposerFooterProps
+  extends Omit<HTMLAttributes<HTMLDivElement>, 'className'> {
   /** Whether to show a border between the footer and the input area */
   bordered?: boolean
   /** Additional CSS class for external overrides */
@@ -184,20 +190,21 @@ export interface ComposerFooterProps {
   children: ReactNode
 }
 
-export function ComposerFooter({ bordered = true, className, children }: ComposerFooterProps) {
+export function ComposerFooter({ bordered = true, className, children, ...rest }: ComposerFooterProps) {
   const classNames = [
     styles.footer,
     bordered ? '' : styles.footerBorderless,
     className ?? '',
   ].filter(Boolean).join(' ')
-  return <div className={classNames}>{children}</div>
+  return <div className={classNames} {...rest}>{children}</div>
 }
 
 /* ===========================
    ComposerFooterStart
    =========================== */
 
-export interface ComposerFooterStartProps {
+export interface ComposerFooterStartProps
+  extends Omit<HTMLAttributes<HTMLDivElement>, 'className'> {
   /** Additional CSS class for external overrides */
   className?: string
   /** Left-aligned footer items */
@@ -207,18 +214,20 @@ export interface ComposerFooterStartProps {
 export function ComposerFooterStart({
   className,
   children,
+  ...rest
 }: ComposerFooterStartProps) {
   const classNames = [styles.footerStart, className ?? '']
     .filter(Boolean)
     .join(' ')
-  return <div className={classNames}>{children}</div>
+  return <div className={classNames} {...rest}>{children}</div>
 }
 
 /* ===========================
    ComposerFooterEnd
    =========================== */
 
-export interface ComposerFooterEndProps {
+export interface ComposerFooterEndProps
+  extends Omit<HTMLAttributes<HTMLDivElement>, 'className'> {
   /** Additional CSS class for external overrides */
   className?: string
   /** Right-aligned footer items */
@@ -229,7 +238,8 @@ export interface ComposerFooterEndProps {
    ComposerHeader
    =========================== */
 
-export interface ComposerHeaderProps {
+export interface ComposerHeaderProps
+  extends Omit<HTMLAttributes<HTMLDivElement>, 'className'> {
   /** Whether to show a border between the header and the input area */
   bordered?: boolean
   /** Additional CSS class for external overrides */
@@ -238,20 +248,21 @@ export interface ComposerHeaderProps {
   children: ReactNode
 }
 
-export function ComposerHeader({ bordered = false, className, children }: ComposerHeaderProps) {
+export function ComposerHeader({ bordered = false, className, children, ...rest }: ComposerHeaderProps) {
   const classNames = [
     styles.header,
     bordered ? styles.headerBordered : '',
     className ?? '',
   ].filter(Boolean).join(' ')
-  return <div className={classNames}>{children}</div>
+  return <div className={classNames} {...rest}>{children}</div>
 }
 
 /* ===========================
    ComposerHeaderStart
    =========================== */
 
-export interface ComposerHeaderStartProps {
+export interface ComposerHeaderStartProps
+  extends Omit<HTMLAttributes<HTMLDivElement>, 'className'> {
   /** Additional CSS class for external overrides */
   className?: string
   /** Left-aligned header items */
@@ -261,18 +272,20 @@ export interface ComposerHeaderStartProps {
 export function ComposerHeaderStart({
   className,
   children,
+  ...rest
 }: ComposerHeaderStartProps) {
   const classNames = [styles.headerStart, className ?? '']
     .filter(Boolean)
     .join(' ')
-  return <div className={classNames}>{children}</div>
+  return <div className={classNames} {...rest}>{children}</div>
 }
 
 /* ===========================
    ComposerHeaderEnd
    =========================== */
 
-export interface ComposerHeaderEndProps {
+export interface ComposerHeaderEndProps
+  extends Omit<HTMLAttributes<HTMLDivElement>, 'className'> {
   /** Additional CSS class for external overrides */
   className?: string
   /** Right-aligned header items */
@@ -282,19 +295,21 @@ export interface ComposerHeaderEndProps {
 export function ComposerHeaderEnd({
   className,
   children,
+  ...rest
 }: ComposerHeaderEndProps) {
   const classNames = [styles.headerEnd, className ?? '']
     .filter(Boolean)
     .join(' ')
-  return <div className={classNames}>{children}</div>
+  return <div className={classNames} {...rest}>{children}</div>
 }
 
 export function ComposerFooterEnd({
   className,
   children,
+  ...rest
 }: ComposerFooterEndProps) {
   const classNames = [styles.footerEnd, className ?? '']
     .filter(Boolean)
     .join(' ')
-  return <div className={classNames}>{children}</div>
+  return <div className={classNames} {...rest}>{children}</div>
 }

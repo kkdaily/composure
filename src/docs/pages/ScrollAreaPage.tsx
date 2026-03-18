@@ -137,10 +137,8 @@ export function ScrollAreaPage() {
                 </ChatMessage>
               )}
             </div>
-            <ScrollAreaScrollToBottom>
-              <button className={styles.scrollToBottomButton} aria-label="Scroll to bottom">
-                <ArrowDownIcon />
-              </button>
+            <ScrollAreaScrollToBottom label="Scroll to bottom">
+              <ArrowDownIcon />
             </ScrollAreaScrollToBottom>
           </ScrollArea>
           <button

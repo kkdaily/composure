@@ -1,4 +1,5 @@
-import { NavLink } from 'react-router-dom'
+import { NavLink, useLocation } from 'react-router-dom'
+import { useEffect } from 'react'
 import styles from './Sidebar.module.css'
 
 export type PageId =
@@ -66,12 +67,29 @@ const sections: { heading: string; items: SidebarItem[] }[] = [
 ]
 
 export interface SidebarProps {
+  open?: boolean
+  onClose?: () => void
   className?: string
 }
 
-export function Sidebar({ className }: SidebarProps) {
+export function Sidebar({ open, onClose, className }: SidebarProps) {
+  const location = useLocation()
+
+  // Close sidebar on navigation (mobile)
+  useEffect(() => {
+    onClose?.()
+  }, [location.pathname]) // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
-    <nav className={`${styles.sidebar} ${className ?? ''}`}>
+    <nav
+      className={[
+        styles.sidebar,
+        open ? styles.sidebarOpen : '',
+        className ?? '',
+      ]
+        .filter(Boolean)
+        .join(' ')}
+    >
       {sections.map((section) => (
         <div key={section.heading} className={styles.section}>
           <h3 className={styles.sectionHeading}>{section.heading}</h3>
