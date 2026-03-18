@@ -8,8 +8,6 @@ const speeds = [
   { variable: '--speed-stream', value: '30ms',  ms: 30,  desc: 'Token-by-token text streaming' },
 ]
 
-const MAX_MS = 220
-
 export function AnimationPage() {
   return (
     <div className={styles.page}>

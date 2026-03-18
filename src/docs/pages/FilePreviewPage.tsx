@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { FilePreview, type FileType } from '../../components/FilePreview/FilePreview'
+import { FilePreview } from '../../components/FilePreview/FilePreview'
 import {
   Composer,
   ComposerInput,
