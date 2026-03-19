@@ -185,7 +185,20 @@ export function MarkdownRendererPage() {
   const [isSimulating, setIsSimulating] = useState(false)
   const intervalRef = useRef<number | null>(null)
 
+  const stopStreaming = useCallback(() => {
+    if (intervalRef.current) window.clearInterval(intervalRef.current)
+    intervalRef.current = null
+    setIsSimulating(false)
+    setDemoStreaming(false)
+    setStreamedContent('')
+  }, [])
+
   const startStreaming = useCallback(() => {
+    if (isSimulating) {
+      stopStreaming()
+      return
+    }
+
     const fullContent = CONTENT_MAP[contentType]
     setStreamedContent('')
     setIsSimulating(true)
@@ -205,7 +218,7 @@ export function MarkdownRendererPage() {
         setStreamedContent(fullContent.slice(0, index))
       }
     }, 30)
-  }, [contentType])
+  }, [contentType, isSimulating, stopStreaming])
 
   useEffect(() => {
     return () => {
@@ -271,7 +284,7 @@ export function MarkdownRendererPage() {
                   key={t}
                   className={cn(
                     'px-2.5 py-1 text-xs font-medium rounded-md border cursor-pointer transition-colors',
-                    contentType === t && !isSimulating
+                    contentType === t
                       ? 'bg-primary text-primary-foreground border-primary'
                       : 'bg-transparent border-border text-secondary-foreground hover:bg-muted hover:text-foreground'
                   )}
@@ -299,7 +312,7 @@ export function MarkdownRendererPage() {
                 )}
                 onClick={startStreaming}
               >
-                simulate
+                {isSimulating ? 'stop' : 'simulate'}
               </button>
             </div>
           </div>

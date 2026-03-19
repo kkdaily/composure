@@ -1,8 +1,10 @@
-import { useState, useCallback, type ReactNode, type HTMLAttributes } from 'react'
+import { useState, useEffect, useCallback, type ReactNode, type HTMLAttributes } from 'react'
 import { Copy, Check } from 'lucide-react'
 import { useHighlighter } from './useHighlighter'
 import { useTheme } from '../../context/theme'
 import { cn } from '@/lib/utils'
+
+const COPY_FEEDBACK_MS = 1500
 
 /* ===========================
    CodeBlock (root)
@@ -57,11 +59,15 @@ export function CodeBlockContent({
   const { tokens, ready } = useHighlighter(children, language, resolvedTheme)
   const [copied, setCopied] = useState(false)
 
+  // Auto-reset copied state with proper cleanup on unmount
+  useEffect(() => {
+    if (!copied) return
+    const timer = setTimeout(() => setCopied(false), COPY_FEEDBACK_MS)
+    return () => clearTimeout(timer)
+  }, [copied])
+
   const handleCopy = useCallback(() => {
-    navigator.clipboard.writeText(children).then(() => {
-      setCopied(true)
-      setTimeout(() => setCopied(false), 1500)
-    })
+    navigator.clipboard.writeText(children).then(() => setCopied(true))
   }, [children])
 
   const lines = children.split('\n')

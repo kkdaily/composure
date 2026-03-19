@@ -143,6 +143,9 @@ export function ChatMessageContent({
   )
 }
 
+/** Stagger delay (ms) between each thinking dot animation */
+const DOT_STAGGER_MS = 160
+
 /* ===========================
    ChatMessageLoading
    =========================== */
@@ -171,7 +174,7 @@ export function ChatMessageLoading({
         <span
           key={i}
           className="thinking-dot block w-2 h-2 rounded-full bg-muted-foreground animate-[thinking-dot_1.4s_ease-in-out_infinite] motion-reduce:animate-none motion-reduce:opacity-50"
-          style={{ animationDelay: `${i * 160}ms` }}
+          style={{ animationDelay: `${i * DOT_STAGGER_MS}ms` }}
           aria-hidden="true"
         />
       ))}

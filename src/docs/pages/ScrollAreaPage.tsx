@@ -51,8 +51,25 @@ function useStreamingDemo(fullText: string, speed = 12) {
   const thinkingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const indexRef = useRef(0)
 
+  const stopStreaming = useCallback(() => {
+    if (intervalRef.current) clearInterval(intervalRef.current)
+    if (thinkingTimerRef.current) clearTimeout(thinkingTimerRef.current)
+    intervalRef.current = null
+    thinkingTimerRef.current = null
+    setIsStreaming(false)
+    setIsThinking(false)
+    setStreamedText('')
+    setMessages(initialMessages)
+    indexRef.current = 0
+  }, [])
+
   const startStreaming = useCallback(() => {
-    // Reset first if already streaming or has previous results
+    if (isStreaming || isThinking) {
+      stopStreaming()
+      return
+    }
+
+    // Reset first
     if (intervalRef.current) clearInterval(intervalRef.current)
     if (thinkingTimerRef.current) clearTimeout(thinkingTimerRef.current)
     setStreamedText('')
@@ -73,7 +90,7 @@ function useStreamingDemo(fullText: string, speed = 12) {
         setIsStreaming(true)
       }, 1000)
     }, 400)
-  }, [])
+  }, [isStreaming, isThinking, stopStreaming])
 
   useEffect(() => {
     if (!isStreaming) return
@@ -146,16 +163,6 @@ export function ScrollAreaPage() {
               <ArrowDown className="size-4" />
             </ScrollAreaScrollToBottom>
           </ScrollArea>
-          <button
-            className={cn(
-              'px-2.5 py-1 text-xs font-medium rounded-md border cursor-pointer transition-colors',
-              'bg-transparent border-border text-secondary-foreground hover:bg-muted hover:text-foreground'
-            )}
-            onClick={demo.startStreaming}
-            disabled={demo.isStreaming || demo.isThinking}
-          >
-            {demo.isThinking ? 'Thinking…' : demo.isStreaming ? 'Streaming…' : 'Stream response'}
-          </button>
         </div>
         <div className="flex flex-col gap-3">
           <div className="flex items-center gap-3">
@@ -175,6 +182,22 @@ export function ScrollAreaPage() {
                   {m}
                 </button>
               ))}
+            </div>
+          </div>
+          <div className="flex items-center gap-3">
+            <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground min-w-[80px]">Streaming</span>
+            <div className="flex items-center gap-1.5 flex-wrap">
+              <button
+                className={cn(
+                  'px-2.5 py-1 text-xs font-medium rounded-md border cursor-pointer transition-colors',
+                  (demo.isStreaming || demo.isThinking)
+                    ? 'bg-primary text-primary-foreground border-primary'
+                    : 'bg-transparent border-border text-secondary-foreground hover:bg-muted hover:text-foreground'
+                )}
+                onClick={demo.startStreaming}
+              >
+                {(demo.isThinking || demo.isStreaming) ? 'stop' : 'simulate'}
+              </button>
             </div>
           </div>
         </div>

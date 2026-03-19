@@ -196,22 +196,26 @@ export function OverviewPage() {
   }, [])
 
   const handleStop = useCallback(() => {
-    if (!isStreaming) return
+    if (!isStreaming && !isThinking) return
     clearInterval(streamIntervalRef.current)
-    const partial = streamingContentRef.current
-    if (partial) {
-      const msgId = `msg-stream-${++msgIdCounter.current}`
-      streamedMsgIds.current.add(msgId)
-      setMessages(prev => [...prev, {
-        id: msgId,
-        role: 'assistant',
-        content: partial,
-      }])
+    timersRef.current.forEach(clearTimeout)
+    if (isStreaming) {
+      const partial = streamingContentRef.current
+      if (partial) {
+        const msgId = `msg-stream-${++msgIdCounter.current}`
+        streamedMsgIds.current.add(msgId)
+        setMessages(prev => [...prev, {
+          id: msgId,
+          role: 'assistant',
+          content: partial,
+        }])
+      }
     }
     setStreamingContent(null)
     streamingContentRef.current = ''
     setIsStreaming(false)
-  }, [isStreaming])
+    setIsThinking(false)
+  }, [isStreaming, isThinking])
 
   // Auto-play demo on mount
   useEffect(() => {
@@ -309,12 +313,12 @@ export function OverviewPage() {
           app needs.
         </p>
         <div className="flex items-center gap-3 mt-2">
-          <NavLink
-            to="/components/composer"
+          <a
+            href="#installation"
             className="inline-flex items-center gap-2 bg-primary text-primary-foreground rounded-md px-5 py-2 text-sm font-semibold no-underline cursor-pointer transition-opacity duration-100 hover:opacity-88 motion-reduce:transition-none"
           >
-            Browse components
-          </NavLink>
+            Get started
+          </a>
           <a
             href="https://github.com/kkdaily/composure"
             target="_blank"
@@ -418,7 +422,7 @@ export function OverviewPage() {
             <Composer
               value={composerValue}
               onChange={setComposerValue}
-              onSubmit={isStreaming ? handleStop : handleSend}
+              onSubmit={(isStreaming || isThinking) ? handleStop : handleSend}
             >
               {files.length > 0 && (
                 <ComposerHeader>
@@ -459,12 +463,13 @@ export function OverviewPage() {
                       <SelectItem value="gpt-4o">GPT-4o</SelectItem>
                     </SelectContent>
                   </Select>
-                  {isStreaming ? (
+                  {(isStreaming || isThinking) ? (
                     <Button
                       variant="default"
                       size="icon-sm"
                       aria-label="Stop generating"
-                      type="submit"
+                      type="button"
+                      onClick={handleStop}
                     >
                       <Square className="size-3.5 fill-current" />
                     </Button>
@@ -474,6 +479,7 @@ export function OverviewPage() {
                       size="icon-sm"
                       aria-label="Send"
                       type="submit"
+                      disabled={!composerValue.trim()}
                     >
                       <ArrowUp className="size-4" />
                     </Button>
@@ -544,7 +550,7 @@ export function OverviewPage() {
       </section>
 
       {/* ---- Installation ---- */}
-      <section className="flex flex-col gap-5">
+      <section id="installation" className="flex flex-col gap-5 scroll-mt-20">
         <div className="flex flex-col gap-2">
           <h2 className="text-xl font-semibold text-foreground tracking-tight">
             Installation

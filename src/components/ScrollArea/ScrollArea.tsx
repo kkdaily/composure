@@ -12,6 +12,15 @@ import {
 } from 'react'
 import { cn } from '@/lib/utils'
 
+/** Lerp easing factor — each frame moves this fraction of remaining distance */
+const LERP_FACTOR = 0.15
+/** Minimum distance (px) before snapping to target */
+const LERP_SNAP_THRESHOLD = 0.5
+/** Delay (ms) before re-showing scrollbar after scroll settles */
+const SCROLLBAR_SETTLE_DELAY = 50
+/** Fallback timeout (ms) if scrollend event doesn't fire */
+const SCROLLBAR_FALLBACK_TIMEOUT = 500
+
 /* ===========================
    Context
    =========================== */
@@ -105,14 +114,14 @@ export function ScrollArea({
       const target = el.scrollHeight - el.clientHeight
       const distance = target - el.scrollTop
 
-      if (distance <= 0.5) {
+      if (distance <= LERP_SNAP_THRESHOLD) {
         // Close enough — snap and stop
         el.scrollTop = target
         setIsAutoScrolling(false)
         return
       }
 
-      el.scrollTop += distance * 0.15
+      el.scrollTop += distance * LERP_FACTOR
       lerpFrameRef.current = requestAnimationFrame(tick)
     }
 
@@ -132,14 +141,14 @@ export function ScrollArea({
       autoScrollTimeoutRef.current = setTimeout(() => {
         setIsAutoScrolling(false)
         el.removeEventListener('scrollend', onScrollEnd)
-      }, 50)
+      }, SCROLLBAR_SETTLE_DELAY)
     }
     el.addEventListener('scrollend', onScrollEnd, { once: true })
     // Fallback in case scrollend doesn't fire (e.g. already at target)
     autoScrollTimeoutRef.current = setTimeout(() => {
       setIsAutoScrolling(false)
       el.removeEventListener('scrollend', onScrollEnd)
-    }, 500)
+    }, SCROLLBAR_FALLBACK_TIMEOUT)
   }, [])
 
   const scrollToBottom = useCallback(() => {
