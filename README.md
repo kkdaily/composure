@@ -2,7 +2,7 @@
 
 React components for building AI chat interfaces, purpose-built for streaming, auto-scroll, code highlighting, and file attachments. Installable via the shadcn CLI.
 
-**[Live docs](https://composureui.com)** · **[GitHub](https://github.com/kkdaily/composure)**
+**[composureui.com](https://composureui.com)**
 
 ## Components
 
