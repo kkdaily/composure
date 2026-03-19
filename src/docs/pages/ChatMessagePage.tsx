@@ -37,6 +37,7 @@ export function ChatMessagePage() {
         A composable chat message for AI conversations — avatar, content bubble,
         and action buttons arranged with role-aware styling.
       </p>
+      <CodeSnippet language="bash">{`pnpm dlx shadcn@latest add https://composureui.com/r/chat-message.json`}</CodeSnippet>
 
       {/* Interactive demo */}
       <section className="flex flex-col gap-5">

@@ -334,7 +334,7 @@ export function OverviewPage() {
           Live demo
         </span>
         <div className="flex flex-col h-[540px] border border-border rounded-lg overflow-hidden bg-background shadow-sm dark:shadow-[0_4px_16px_rgba(0,0,0,0.2)] max-sm:h-[460px]">
-          <ScrollArea className="flex-1 min-h-0" mode="auto">
+          <ScrollArea className="flex-1 min-h-0" mode="manual">
             <div className="flex flex-col gap-5 p-5">
               {messages.map(msg => (
                 <div

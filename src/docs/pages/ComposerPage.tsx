@@ -146,6 +146,7 @@ export function ComposerPage() {
         A composable message input for AI chat interfaces — auto-resizing
         textarea with send and stop controls.
       </p>
+      <CodeSnippet language="bash">{`pnpm dlx shadcn@latest add https://composureui.com/r/composer.json`}</CodeSnippet>
 
       {/* Interactive demo */}
       <section className="flex flex-col gap-5">

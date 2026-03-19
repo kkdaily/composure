@@ -43,6 +43,8 @@ export interface ScrollAreaProps
   mode?: 'auto' | 'manual'
   /** Pixel distance from the bottom to still count as "at bottom" */
   bottomThreshold?: number
+  /** Disable smart auto-scrolling entirely — ScrollArea becomes a plain overflow container */
+  smartScroll?: boolean
   /** Additional CSS class for external overrides */
   className?: string
   /** Content and optional ScrollAreaScrollToBottom */
@@ -52,17 +54,23 @@ export interface ScrollAreaProps
 export function ScrollArea({
   mode = 'auto',
   bottomThreshold = 64,
+  smartScroll = true,
   className,
   children,
   ...rest
 }: ScrollAreaProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [isAtBottom, setIsAtBottom] = useState(true)
+  const [isAutoScrolling, setIsAutoScrolling] = useState(false)
   const isUserScrollingRef = useRef(false)
+  const autoScrollTimeoutRef = useRef<ReturnType<typeof setTimeout>>()
+  const lerpFrameRef = useRef<number>()
   // Ref mirrors the mode prop so MutationObserver callbacks always read the
   // latest value instead of a stale useEffect closure.
   const modeRef = useRef(mode)
   modeRef.current = mode
+  const smartScrollRef = useRef(smartScroll)
+  smartScrollRef.current = smartScroll
 
   const checkIsAtBottom = useCallback(() => {
     const el = containerRef.current
@@ -70,18 +78,80 @@ export function ScrollArea({
     return el.scrollHeight - el.scrollTop - el.clientHeight <= bottomThreshold
   }, [bottomThreshold])
 
+  // Lerp-based smooth scroll — glides toward target at 60fps instead of
+  // using browser `behavior: 'smooth'` which stutters when called rapidly
+  // during streaming. The easing factor (0.15) controls how quickly it
+  // catches up: each frame moves 15% of the remaining distance.
+  const lerpToBottom = useCallback(() => {
+    const el = containerRef.current
+    if (!el) return
+
+    setIsAutoScrolling(true)
+
+    const tick = () => {
+      if (!el) return
+      const target = el.scrollHeight - el.clientHeight
+      const distance = target - el.scrollTop
+
+      if (distance <= 0.5) {
+        // Close enough — snap and stop
+        el.scrollTop = target
+        setIsAutoScrolling(false)
+        return
+      }
+
+      el.scrollTop += distance * 0.15
+      lerpFrameRef.current = requestAnimationFrame(tick)
+    }
+
+    // Cancel any running lerp before starting a new one
+    if (lerpFrameRef.current) cancelAnimationFrame(lerpFrameRef.current)
+    lerpFrameRef.current = requestAnimationFrame(tick)
+  }, [])
+
+  const hideScrollbarDuring = useCallback((scrollFn: () => void) => {
+    const el = containerRef.current
+    if (!el) return
+    setIsAutoScrolling(true)
+    clearTimeout(autoScrollTimeoutRef.current)
+    scrollFn()
+    // Keep scrollbar hidden until scroll settles
+    const onScrollEnd = () => {
+      autoScrollTimeoutRef.current = setTimeout(() => {
+        setIsAutoScrolling(false)
+        el.removeEventListener('scrollend', onScrollEnd)
+      }, 50)
+    }
+    el.addEventListener('scrollend', onScrollEnd, { once: true })
+    // Fallback in case scrollend doesn't fire (e.g. already at target)
+    autoScrollTimeoutRef.current = setTimeout(() => {
+      setIsAutoScrolling(false)
+      el.removeEventListener('scrollend', onScrollEnd)
+    }, 500)
+  }, [])
+
   const scrollToBottom = useCallback(() => {
     const el = containerRef.current
     if (!el) return
-    el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' })
+    hideScrollbarDuring(() => {
+      el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' })
+    })
     isUserScrollingRef.current = false
     setIsAtBottom(true)
-  }, [])
+  }, [hideScrollbarDuring])
 
   // Reset user-scrolling state when mode changes
   useEffect(() => {
     isUserScrollingRef.current = false
   }, [mode])
+
+  // Clean up timeout and animation frame on unmount
+  useEffect(() => {
+    return () => {
+      clearTimeout(autoScrollTimeoutRef.current)
+      if (lerpFrameRef.current) cancelAnimationFrame(lerpFrameRef.current)
+    }
+  }, [])
 
   // Manage isUserScrollingRef exclusively via wheel/touch events.
   // These only fire from real user input, never from programmatic scrollTo.
@@ -142,10 +212,39 @@ export function ScrollArea({
     const el = containerRef.current
     if (!el) return
 
-    const observer = new MutationObserver(() => {
+    const observer = new MutationObserver((mutations) => {
+      if (!smartScrollRef.current) {
+        setIsAtBottom(checkIsAtBottom())
+        return
+      }
+
       if (modeRef.current === 'auto' && !isUserScrollingRef.current) {
-        el.scrollTo({ top: el.scrollHeight })
+        // Auto mode: lerp smoothly toward bottom at 60fps
+        lerpToBottom()
         setIsAtBottom(true)
+      } else if (modeRef.current === 'manual') {
+        // Manual mode: check for new elements with data-scroll-anchor="start"
+        for (const mutation of mutations) {
+          if (mutation.type !== 'childList') continue
+          for (const node of mutation.addedNodes) {
+            if (!(node instanceof HTMLElement)) continue
+            const anchor =
+              node.dataset?.scrollAnchor === 'start'
+                ? node
+                : node.querySelector?.('[data-scroll-anchor="start"]')
+            if (anchor && anchor instanceof HTMLElement) {
+              hideScrollbarDuring(() => {
+                anchor.scrollIntoView({ block: 'start', behavior: 'smooth' })
+              })
+              // Add a small top offset so the message isn't flush against the edge
+              requestAnimationFrame(() => {
+                el.scrollTop = Math.max(0, el.scrollTop - 16)
+              })
+              return
+            }
+          }
+        }
+        setIsAtBottom(checkIsAtBottom())
       } else {
         setIsAtBottom(checkIsAtBottom())
       }
@@ -158,7 +257,7 @@ export function ScrollArea({
     })
 
     return () => observer.disconnect()
-  }, [checkIsAtBottom])
+  }, [checkIsAtBottom, hideScrollbarDuring])
 
   // Separate ScrollAreaScrollToBottom from scrollable content so it can be
   // positioned absolutely on the outer wrapper, outside the overflow container.
@@ -180,7 +279,10 @@ export function ScrollArea({
         {...rest}
       >
         <div
-          className="h-full overflow-y-auto overflow-x-hidden [overflow-anchor:none]"
+          className={cn(
+            'h-full overflow-y-auto overflow-x-hidden [overflow-anchor:none]',
+            isAutoScrolling && '[scrollbar-width:none] [&::-webkit-scrollbar]:hidden'
+          )}
           ref={containerRef}
         >
           {scrollContent}

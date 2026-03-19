@@ -70,6 +70,7 @@ export function CodeBlockPage() {
         A styled code display for AI chat responses — syntax highlighting, line
         numbers, and a hover copy button built in.
       </p>
+      <CodeSnippet language="bash">{`pnpm dlx shadcn@latest add https://composureui.com/r/code-block.json`}</CodeSnippet>
 
       {/* Interactive demo */}
       <section className="flex flex-col gap-5">

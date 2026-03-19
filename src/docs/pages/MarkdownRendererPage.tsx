@@ -250,6 +250,7 @@ export function MarkdownRendererPage() {
         Renders markdown content with full formatting, syntax-highlighted code
         blocks, and streaming support — designed for AI chat responses.
       </p>
+      <CodeSnippet language="bash">{`pnpm dlx shadcn@latest add https://composureui.com/r/markdown-renderer.json`}</CodeSnippet>
 
       {/* ===== Demo ===== */}
       <div className="flex flex-col gap-5">

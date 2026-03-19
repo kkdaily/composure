@@ -61,6 +61,7 @@ export function ChatMessage({
             '[&_.chat-actions]:opacity-0 [&_.chat-actions]:transition-opacity [&_.chat-actions]:duration-150 [&_.chat-actions]:ease-linear hover:[&_.chat-actions]:opacity-100 [&:has(:focus-visible)_.chat-actions]:opacity-100 [&_.chat-actions]:motion-reduce:transition-none',
           className
         )}
+        {...(role === 'user' ? { 'data-scroll-anchor': 'start' } : {})}
         {...rest}
       >
         {children}

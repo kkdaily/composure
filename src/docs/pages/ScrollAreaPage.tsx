@@ -101,6 +101,7 @@ export function ScrollAreaPage() {
         as tokens stream in, pauses when the user scrolls up, and provides an
         optional scroll-to-bottom indicator.
       </p>
+      <CodeSnippet language="bash">{`pnpm dlx shadcn@latest add https://composureui.com/r/scroll-area.json`}</CodeSnippet>
 
       {/* Interactive demo */}
       <section className="flex flex-col gap-5">

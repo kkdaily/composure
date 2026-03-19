@@ -61,6 +61,7 @@ export function FilePreviewPage() {
         from extension and displays a colored icon, filename, and optional
         remove button.
       </p>
+      <CodeSnippet language="bash">{`pnpm dlx shadcn@latest add https://composureui.com/r/file-preview.json`}</CodeSnippet>
 
       {/* Interactive demo */}
       <section className="flex flex-col gap-5">
