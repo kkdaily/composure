@@ -72,8 +72,8 @@ export function ScrollArea({
   const [isAtBottom, setIsAtBottom] = useState(true)
   const [isAutoScrolling, setIsAutoScrolling] = useState(false)
   const isUserScrollingRef = useRef(false)
-  const autoScrollTimeoutRef = useRef<ReturnType<typeof setTimeout>>()
-  const lerpFrameRef = useRef<number>()
+  const autoScrollTimeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined)
+  const lerpFrameRef = useRef<number>(undefined)
   // Ref mirrors the mode prop so MutationObserver callbacks always read the
   // latest value instead of a stale useEffect closure.
   const modeRef = useRef(mode)

@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback } from 'react'
+import { useState, useRef, useCallback } from 'react'
 import { ArrowUp, Square, Sparkles, Plus } from 'lucide-react'
 import {
   Composer,
@@ -16,22 +16,9 @@ import { CodeSnippet } from '../CodeSnippet'
 import { cn } from '@/lib/utils'
 
 
-type DemoState = 'idle' | 'streaming'
 type DemoHeader = 'none' | 'plain' | 'bordered'
 type DemoFooter = 'none' | 'bordered' | 'borderless'
 type DemoSendPosition = 'inline' | 'footer'
-
-interface DemoMessage {
-  role: 'user' | 'assistant'
-  content: string
-}
-
-const AI_RESPONSES = [
-  'That\'s a great question! Let me think about that for a moment.',
-  'Here\'s what I found — the key insight is that simplicity often wins.',
-  'I can help with that. There are a few approaches worth considering.',
-  'Interesting! Based on my analysis, I\'d recommend starting with the basics.',
-]
 
 const MODEL_OPTIONS = [
   { value: 'gpt-5.4', label: 'GPT-5.4' },
@@ -41,19 +28,12 @@ const MODEL_OPTIONS = [
 
 export function ComposerPage() {
   const [demoValue, setDemoValue] = useState('')
-  const [demoState, setDemoState] = useState<DemoState>('idle')
   const [demoHeader, setDemoHeader] = useState<DemoHeader>('none')
   const [demoFooter, setDemoFooter] = useState<DemoFooter>('borderless')
   const [demoSendPosition, setDemoSendPosition] = useState<DemoSendPosition>('footer')
   const [demoModel, setDemoModel] = useState('gpt-5.4')
   const [demoFiles, setDemoFiles] = useState<{ file: File; preview?: string }[]>([])
   const demoFileInputRef = useRef<HTMLInputElement>(null)
-  const [messages, setMessages] = useState<DemoMessage[]>([])
-  const [streamingText, setStreamingText] = useState('')
-  const streamRef = useRef<number | null>(null)
-  const responseIndexRef = useRef(0)
-  const messageLogRef = useRef<HTMLDivElement>(null)
-
   const handleDemoAddFile = useCallback(() => {
     demoFileInputRef.current?.click()
   }, [])
@@ -83,25 +63,6 @@ export function ComposerPage() {
       return prev.filter(f => f.file.name !== name)
     })
   }, [])
-
-  // Auto-scroll message log
-  useEffect(() => {
-    if (messageLogRef.current) {
-      messageLogRef.current.scrollTop = messageLogRef.current.scrollHeight
-    }
-  }, [messages, streamingText])
-
-  const stopStreaming = useCallback(() => {
-    if (streamRef.current) {
-      clearInterval(streamRef.current)
-      streamRef.current = null
-    }
-    if (streamingText) {
-      setMessages((prev) => [...prev, { role: 'assistant', content: streamingText }])
-      setStreamingText('')
-    }
-    setDemoState('idle')
-  }, [streamingText])
 
   const handleDemoSubmit = useCallback((_value: string) => {
     setDemoValue('')
@@ -169,15 +130,9 @@ export function ComposerPage() {
             )}
             <ComposerInput placeholder="Ask anything…" />
             {demoSendPosition === 'inline' && (
-              demoState === 'streaming' ? (
-                <Button variant="destructive" size="icon" aria-label="Stop generating" onClick={stopStreaming}>
-                  <Square className="size-[1em]" />
-                </Button>
-              ) : (
-                <Button variant="default" size="icon" aria-label="Send message" disabled={!demoValue.trim()} onClick={() => handleDemoSubmit(demoValue)}>
-                  <ArrowUp className="size-[1em]" />
-                </Button>
-              )
+              <Button variant="default" size="icon" aria-label="Send message" disabled={!demoValue.trim()} onClick={() => handleDemoSubmit(demoValue)}>
+                <ArrowUp className="size-[1em]" />
+              </Button>
             )}
             {demoFooter !== 'none' && (
               <ComposerFooter bordered={demoFooter === 'bordered'}>
@@ -198,15 +153,9 @@ export function ComposerPage() {
                     </SelectContent>
                   </Select>
                   {demoSendPosition === 'footer' && (
-                    demoState === 'streaming' ? (
-                      <Button variant="destructive" size="icon" aria-label="Stop generating" onClick={stopStreaming}>
-                        <Square className="size-[1em]" />
-                      </Button>
-                    ) : (
-                      <Button variant="default" size="icon" aria-label="Send message" disabled={!demoValue.trim()} onClick={() => handleDemoSubmit(demoValue)}>
-                        <ArrowUp className="size-[1em]" />
-                      </Button>
-                    )
+                    <Button variant="default" size="icon" aria-label="Send message" disabled={!demoValue.trim()} onClick={() => handleDemoSubmit(demoValue)}>
+                      <ArrowUp className="size-[1em]" />
+                    </Button>
                   )}
                 </ComposerFooterEnd>
               </ComposerFooter>

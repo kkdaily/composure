@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { NavLink } from 'react-router-dom'
 import {
   Sparkles, User, ArrowDown, ArrowUp, Copy, Plus, RotateCw, ThumbsUp, ThumbsDown,
   ScrollText, Zap, Puzzle, Palette, Square,
@@ -71,35 +70,6 @@ The output only updates once the input stops changing for the given duration —
   },
 ]
 
-const AUTO_PLAY_USER_MSG: DemoMessage = {
-  id: 'msg-3',
-  role: 'user',
-  content: 'Show me how to use it with a search input',
-}
-
-const AUTO_PLAY_RESPONSE = `Here's a search component using the hook:
-
-\`\`\`tsx
-function Search() {
-  const [query, setQuery] = useState('')
-  const debounced = useDebounce(query, 300)
-
-  useEffect(() => {
-    if (debounced) fetchResults(debounced)
-  }, [debounced])
-
-  return (
-    <input
-      value={query}
-      onChange={e => setQuery(e.target.value)}
-      placeholder="Search..."
-    />
-  )
-}
-\`\`\`
-
-The search only fires after 300ms of inactivity, reducing API calls while the user types.`
-
 const CANNED_RESPONSES = [
   `You can extend it with a loading indicator:
 
@@ -160,7 +130,7 @@ export function OverviewPage() {
 
   const responseIndexRef = useRef(0)
   const msgIdCounter = useRef(0)
-  const streamIntervalRef = useRef<ReturnType<typeof setInterval>>()
+  const streamIntervalRef = useRef<ReturnType<typeof setInterval>>(undefined)
   const streamingContentRef = useRef<string>('')
   const timersRef = useRef<ReturnType<typeof setTimeout>[]>([])
 
