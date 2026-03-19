@@ -215,12 +215,12 @@ export function OverviewPage() {
 
   // Auto-play demo on mount
   useEffect(() => {
-    // Step 1: Show first user message after 2s
+    // Step 1: Show first user message after 0.5s
     const t1 = setTimeout(() => {
       setMessages([INITIAL_MESSAGES[0]])
-    }, 2000)
+    }, 500)
 
-    // Step 2: Show thinking indicator after 3.2s
+    // Step 2: Show thinking indicator after 1.3s
     const t2 = setTimeout(() => {
       setIsThinking(true)
       // Step 2b: Start streaming after a brief thinking delay
@@ -229,7 +229,7 @@ export function OverviewPage() {
         startStream(INITIAL_MESSAGES[1].content)
       }, 1000)
       timersRef.current.push(t2b)
-    }, 3200)
+    }, 1300)
 
     timersRef.current = [t1, t2]
 
@@ -328,9 +328,6 @@ export function OverviewPage() {
 
       {/* ---- Live Demo ---- */}
       <section className="flex flex-col gap-3">
-        <span className="text-xs font-semibold tracking-widest uppercase text-primary">
-          Live demo
-        </span>
         <div className="flex flex-col h-[540px] border border-border rounded-lg overflow-hidden bg-background shadow-sm dark:shadow-[0_4px_16px_rgba(0,0,0,0.2)] max-sm:h-[460px]">
           <ScrollArea className="flex-1 min-h-0" mode="auto">
             <div className="flex flex-col gap-5 p-5">
@@ -486,9 +483,6 @@ export function OverviewPage() {
             </Composer>
           </div>
         </div>
-        <p className="text-sm text-muted-foreground text-center">
-          Type a message and press Enter — the demo is fully interactive
-        </p>
       </section>
 
       {/* ---- Highlights ---- */}
