@@ -53,7 +53,6 @@ export function Navbar({ onMenuToggle }: NavbarProps) {
     <header className="fixed top-0 left-0 right-0 z-[100] h-14 flex items-center justify-between px-6 bg-background border-b border-border">
       <NavLink to="/" className="flex items-center gap-3 no-underline text-foreground hover:opacity-80">
         <LogoMark />
-        <span className="text-base font-semibold tracking-tight text-foreground">Composure</span>
       </NavLink>
       <div className="flex items-center gap-3">
         <button

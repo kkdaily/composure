@@ -83,8 +83,8 @@ export function ComposerPage() {
     <div className="flex flex-col gap-10">
       <h1 className="text-3xl font-bold text-foreground tracking-tight">Composer</h1>
       <p className="text-lg text-secondary-foreground leading-relaxed max-w-[540px]">
-        A composable message input for AI chat interfaces — auto-resizing
-        textarea with send and stop controls.
+        A composable message input for AI chat interfaces with an auto-resizing
+        textarea and send/stop controls.
       </p>
       <CodeSnippet language="bash">{`pnpm dlx shadcn@latest add https://composureui.com/r/composer.json`}</CodeSnippet>
 
@@ -237,7 +237,7 @@ export function ComposerPage() {
       <section className="flex flex-col gap-5">
         <h2 className="text-xl font-semibold text-foreground tracking-tight">Basic Usage</h2>
         <p className="text-sm text-secondary-foreground leading-relaxed max-w-[600px]">
-          The minimal configuration — a <code>Composer</code> root with
+          The minimal configuration: a <code>Composer</code> root with
           a <code>ComposerInput</code> and your own send button. The
           parent controls the input value and handles submission.
         </p>
@@ -273,7 +273,7 @@ export function ComposerPage() {
         <h2 className="text-xl font-semibold text-foreground tracking-tight">With Stop Button</h2>
         <p className="text-sm text-secondary-foreground leading-relaxed max-w-[600px]">
           Swap the send button for a stop button while the AI is generating a
-          response. This lets the user cancel mid-stream — a standard pattern
+          response. This lets the user cancel mid-stream, a standard pattern
           in ChatGPT, Claude, and similar interfaces.
         </p>
         <Composer
@@ -314,7 +314,7 @@ export function ComposerPage() {
         <p className="text-sm text-secondary-foreground leading-relaxed max-w-[600px]">
           <code>ComposerInput</code> grows with content up
           to <code>maxRows</code>, then becomes scrollable. Set{' '}
-          <code>minRows</code> to start taller — useful for prompt-heavy
+          <code>minRows</code> to start taller, useful for prompt-heavy
           interfaces where users routinely write multi-line messages.
         </p>
         <Composer
@@ -365,7 +365,7 @@ export function ComposerPage() {
         <h2 className="text-xl font-semibold text-foreground tracking-tight">With Footer</h2>
         <p className="text-sm text-secondary-foreground leading-relaxed max-w-[600px]">
           Use <code>ComposerFooter</code> to add a row of controls below the
-          textarea — model pickers, file attachments, token counts, or any
+          textarea: model pickers, file attachments, token counts, or any
           other metadata. <code>ComposerFooterStart</code> groups items on the
           left; <code>ComposerFooterEnd</code> pushes items to the right. Both
           are optional.
@@ -413,9 +413,9 @@ export function ComposerPage() {
         <h2 className="text-xl font-semibold text-foreground tracking-tight">Borderless Footer</h2>
         <p className="text-sm text-secondary-foreground leading-relaxed max-w-[600px]">
           Set <code>bordered=&#123;false&#125;</code> on <code>ComposerFooter</code> to
-          remove the separator line between the input and footer — useful for a
-          more minimal, compact look where the footer feels like part of the
-          input area rather than a distinct zone.
+          remove the separator line between the input and footer for a more
+          minimal, compact look where the footer feels like part of the input
+          area rather than a distinct zone.
         </p>
         <Composer
           value={borderlessValue}
@@ -454,7 +454,7 @@ export function ComposerPage() {
         <h2 className="text-xl font-semibold text-foreground tracking-tight">With Header</h2>
         <p className="text-sm text-secondary-foreground leading-relaxed max-w-[600px]">
           Use <code>ComposerHeader</code> to add a row of content above the
-          textarea — file attachments, selected tools, or context indicators.{' '}
+          textarea: file attachments, selected tools, or context indicators.{' '}
           <code>ComposerHeaderStart</code> groups items on the left;{' '}
           <code>ComposerHeaderEnd</code> pushes items to the right. Both are
           optional. The header always renders above the input regardless of DOM
@@ -495,7 +495,7 @@ export function ComposerPage() {
         <h2 className="text-xl font-semibold text-foreground tracking-tight">Footer with Send Button</h2>
         <p className="text-sm text-secondary-foreground leading-relaxed max-w-[600px]">
           Place the send button inside <code>ComposerFooterEnd</code> to
-          move it into the footer row — matching layouts like
+          move it into the footer row, matching layouts like
           ChatGPT where the action button sits alongside other footer controls
           rather than floating next to the textarea.
         </p>

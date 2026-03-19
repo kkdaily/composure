@@ -67,8 +67,8 @@ export function CodeBlockPage() {
     <div className="flex flex-col gap-10">
       <h1 className="text-3xl font-bold text-foreground tracking-tight">CodeBlock</h1>
       <p className="text-lg text-secondary-foreground leading-relaxed max-w-[540px]">
-        A styled code display for AI chat responses — syntax highlighting, line
-        numbers, and a hover copy button built in.
+        A styled code display for AI chat responses with syntax highlighting,
+        line numbers, and a hover copy button built in.
       </p>
       <CodeSnippet language="bash">{`pnpm dlx shadcn@latest add https://composureui.com/r/code-block.json`}</CodeSnippet>
 
@@ -169,7 +169,7 @@ console.log(greeting)\`}
         <h2 className="text-xl font-semibold text-foreground tracking-tight">Line Numbers</h2>
         <p className="text-sm text-secondary-foreground leading-relaxed max-w-[600px]">
           Enable <code>showLineNumbers</code> for longer snippets where line
-          references matter — for example, when an AI explains specific lines
+          references matter. For example, when an AI explains specific lines
           in generated code.
         </p>
         <CodeBlock>
@@ -189,7 +189,7 @@ console.log(greeting)\`}
         <h2 className="text-xl font-semibold text-foreground tracking-tight">In a Chat Message</h2>
         <p className="text-sm text-secondary-foreground leading-relaxed max-w-[600px]">
           Nest <code>CodeBlock</code> inside <code>ChatMessageContent</code> to
-          render code as part of an AI response — just like ChatGPT or Claude
+          render code as part of an AI response, just like ChatGPT or Claude
           would display code in a conversation.
         </p>
         <ChatMessage role="assistant">

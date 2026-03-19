@@ -127,9 +127,9 @@ export function ScrollAreaPage() {
     <div className="flex flex-col gap-10">
       <h1 className="text-3xl font-bold text-foreground tracking-tight">ScrollArea</h1>
       <p className="text-lg text-secondary-foreground leading-relaxed max-w-[540px]">
-        A scrollable container with smart auto-scrolling — follows new content
-        as tokens stream in, pauses when the user scrolls up, and provides an
-        optional scroll-to-bottom indicator.
+        A scrollable container with smart auto-scrolling that follows new
+        content as tokens stream in, pauses when the user scrolls up, and
+        provides an optional scroll-to-bottom indicator.
       </p>
       <CodeSnippet language="bash">{`pnpm dlx shadcn@latest add https://composureui.com/r/scroll-area.json`}</CodeSnippet>
 
@@ -209,7 +209,7 @@ export function ScrollAreaPage() {
         <p className="text-sm text-secondary-foreground leading-relaxed max-w-[600px]">
           Wrap your scrollable content in <code>ScrollArea</code> with{' '}
           <code>mode="auto"</code> to enable smart scrolling. New content
-          arriving at the bottom will auto-scroll the container — unless the
+          arriving at the bottom will auto-scroll the container, unless the
           user has scrolled up to read earlier messages.
         </p>
         <CodeSnippet>{`<ScrollArea mode="auto" className={styles.chatContainer}>
@@ -226,7 +226,7 @@ export function ScrollAreaPage() {
         <h2 className="text-xl font-semibold text-foreground tracking-tight">Mode</h2>
         <p className="text-sm text-secondary-foreground leading-relaxed max-w-[600px]">
           In <code>"auto"</code> mode, the container follows new content as it
-          appears — ideal for streaming AI responses where tokens arrive
+          appears. Ideal for streaming AI responses where tokens arrive
           incrementally. If the user scrolls up to read earlier messages,
           auto-scrolling pauses until they return to the bottom. Set{' '}
           <code>"manual"</code> to disable auto-scrolling entirely.
@@ -248,9 +248,9 @@ export function ScrollAreaPage() {
         <p className="text-sm text-secondary-foreground leading-relaxed max-w-[600px]">
           Add a <code>ScrollAreaScrollToBottom</code> sub-component to show a
           scroll-to-bottom trigger when the user has scrolled away from the
-          bottom. It automatically hides when at the bottom and shows when
-          scrolled up. Pass any element as children — the component handles
-          visibility and wires up the click-to-scroll behavior.
+          bottom. It automatically hides when at the bottom and reappears when
+          scrolled up. Pass any element as children and the component handles
+          visibility and click-to-scroll behavior.
         </p>
         <CodeSnippet>{`<ScrollArea mode="auto" className={styles.chatContainer}>
   {messages.map((msg) => (
@@ -272,7 +272,7 @@ export function ScrollAreaPage() {
         <p className="text-sm text-secondary-foreground leading-relaxed max-w-[600px]">
           Set <code>bottomThreshold</code> to control how close to the bottom
           (in pixels) counts as "at bottom." A larger value makes the
-          auto-scroll resume sooner as the user scrolls back down — useful when
+          auto-scroll resume sooner as the user scrolls back down, useful when
           messages have extra padding or action rows that add height below the
           last visible content.
         </p>
@@ -302,7 +302,7 @@ export function ScrollAreaPage() {
                 <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top"><code className="font-mono text-[0.85em] bg-muted px-1.5 py-0.5 rounded-sm text-foreground">mode</code></td>
                 <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top"><code className="font-mono text-[0.85em] bg-muted px-1.5 py-0.5 rounded-sm text-foreground">{`'auto' | 'manual'`}</code></td>
                 <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top"><code className="font-mono text-[0.85em] bg-muted px-1.5 py-0.5 rounded-sm text-foreground">'auto'</code></td>
-                <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top">Auto-scroll behavior — auto follows new content, manual disables it</td>
+                <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top">Auto-scroll behavior. Auto follows new content, manual disables it</td>
               </tr>
               <tr>
                 <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top"><code className="font-mono text-[0.85em] bg-muted px-1.5 py-0.5 rounded-sm text-foreground">bottomThreshold</code></td>

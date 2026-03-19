@@ -261,7 +261,7 @@ export function MarkdownRendererPage() {
       <h1 className="text-3xl font-bold text-foreground tracking-tight">MarkdownRenderer</h1>
       <p className="text-lg text-secondary-foreground leading-relaxed max-w-[540px]">
         Renders markdown content with full formatting, syntax-highlighted code
-        blocks, and streaming support — designed for AI chat responses.
+        blocks, and streaming support, designed for AI chat responses.
       </p>
       <CodeSnippet language="bash">{`pnpm dlx shadcn@latest add https://composureui.com/r/markdown-renderer.json`}</CodeSnippet>
 
@@ -324,8 +324,8 @@ export function MarkdownRendererPage() {
         <h2 className="text-xl font-semibold text-foreground tracking-tight">Content</h2>
         <p className="text-sm text-secondary-foreground leading-relaxed max-w-[600px]">
           Pass any markdown string to the <code>content</code> prop. Plain text
-          renders cleanly as prose without unwanted formatting — no special
-          handling needed.
+          renders as clean prose without extra formatting and no special handling
+          is needed.
         </p>
         <div className="p-6 bg-card border border-border rounded-lg">
           <MarkdownRenderer content={PLAIN_TEXT_CONTENT} />

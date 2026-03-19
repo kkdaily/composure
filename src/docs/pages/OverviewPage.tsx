@@ -278,9 +278,8 @@ export function OverviewPage() {
           Composure
         </h1>
         <p className="text-lg text-secondary-foreground leading-relaxed max-w-[540px]">
-          React components for building AI chat interfaces — purpose-built for
-          streaming, auto-scroll, code highlighting, and the patterns every AI
-          app needs.
+          React components for building AI chat interfaces, purpose-built for
+          streaming, auto-scroll, code highlighting, and file attachments.
         </p>
         <div className="flex items-center gap-3 mt-2">
           <a
@@ -319,7 +318,7 @@ export function OverviewPage() {
                         className={cn(
                           'flex items-center justify-center w-full h-full rounded-full',
                           msg.role === 'assistant'
-                            ? 'bg-primary/15 text-primary'
+                            ? 'bg-muted text-foreground'
                             : 'bg-muted text-muted-foreground'
                         )}
                       >
@@ -356,7 +355,7 @@ export function OverviewPage() {
                 <div className="animate-[message-slide-in_220ms_cubic-bezier(0.16,1,0.3,1)_both] motion-reduce:animate-none">
                   <ChatMessage role="assistant" showActionsOnHover>
                     <ChatMessageAvatar>
-                      <span className="flex items-center justify-center w-full h-full rounded-full bg-primary/15 text-primary">
+                      <span className="flex items-center justify-center w-full h-full rounded-full bg-muted text-foreground">
                         <Sparkles className="size-4" />
                       </span>
                     </ChatMessageAvatar>
@@ -469,8 +468,8 @@ export function OverviewPage() {
           </h2>
           <p className="text-base text-secondary-foreground leading-relaxed max-w-[600px]">
             Every AI chat app rebuilds the same complex UI patterns. Composure
-            extracts them into composable, accessible, theme-aware components
-            for the shadcn ecosystem.
+            solves them once: composable, accessible, and built for the shadcn
+            ecosystem.
           </p>
         </div>
 
@@ -482,7 +481,7 @@ export function OverviewPage() {
             <h3 className="text-sm font-semibold text-foreground">Scroll intent detection</h3>
             <p className="text-sm text-secondary-foreground leading-relaxed">
               Distinguishes user scrolls from programmatic ones using
-              wheel/touch events — streaming auto-scrolls without hijacking
+              wheel/touch events, so streaming auto-scrolls without hijacking
               reading.
             </p>
           </div>
@@ -502,8 +501,8 @@ export function OverviewPage() {
             </span>
             <h3 className="text-sm font-semibold text-foreground">Composable primitives</h3>
             <p className="text-sm text-secondary-foreground leading-relaxed">
-              Sub-components share state via context. Named exports for
-              tree-shaking. Mix and match in any layout.
+              Build any layout with independently importable sub-components.
+              No rigid structure: compose what you need.
             </p>
           </div>
           <div className="flex flex-col gap-2 p-5 bg-card border border-border rounded-md">
@@ -526,8 +525,9 @@ export function OverviewPage() {
             Installation
           </h2>
           <p className="text-base text-secondary-foreground leading-relaxed max-w-[600px]">
-            Composure components are available on the shadcn registry. Add them
-            to any project that has shadcn/ui set up.
+            Composure components are installable via the shadcn CLI into any
+            project that has shadcn/ui set up. Full TypeScript support with
+            exported prop interfaces and WCAG 2.1 AA compliance.
           </p>
         </div>
 
@@ -552,19 +552,53 @@ pnpm dlx shadcn@latest add https://composureui.com/r/file-preview.json`}</CodeSn
               Step 2
             </span>
             <p className="text-sm text-secondary-foreground">
-              Add the composure CSS variables to your globals.css for AI-specific
-              tokens (chat bubbles, file type colors):
+              Add the Composure CSS variables to your globals.css. These control
+              chat bubble colors, success states, and file-type icon colors.
             </p>
             <CodeSnippet language="css">{`:root {
+  /* Chat bubbles */
   --composure-assistant-bubble: #f0f0f0;
-  --composure-user-bubble: #7c3aed;
-  --composure-user-bubble-text: #ffffff;
+  --composure-user-bubble: #f0f0f0;
+  --composure-user-bubble-text: #111111;
+  --composure-success: #16a34a;
+
+  /* File-type colors (used by FilePreview) */
+  --composure-filetype-image-bg: #dbeafe;
+  --composure-filetype-image-fg: #2563eb;
+  --composure-filetype-document-bg: #fee2e2;
+  --composure-filetype-document-fg: #dc2626;
+  --composure-filetype-spreadsheet-bg: #dcfce7;
+  --composure-filetype-spreadsheet-fg: #16a34a;
+  --composure-filetype-code-bg: #f3e8ff;
+  --composure-filetype-code-fg: #9333ea;
+  --composure-filetype-archive-bg: #fef9c3;
+  --composure-filetype-archive-fg: #ca8a04;
+  --composure-filetype-video-bg: #fce7f3;
+  --composure-filetype-video-fg: #db2777;
+  --composure-filetype-audio-bg: #ffedd5;
+  --composure-filetype-audio-fg: #ea580c;
 }
 
 .dark {
   --composure-assistant-bubble: #1e1e1e;
-  --composure-user-bubble: #818cf8;
-  --composure-user-bubble-text: #111111;
+  --composure-user-bubble: #1e1e1e;
+  --composure-user-bubble-text: #f0f0f0;
+  --composure-success: #4ade80;
+
+  --composure-filetype-image-bg: #1e3a5f;
+  --composure-filetype-image-fg: #60a5fa;
+  --composure-filetype-document-bg: #4c1d1d;
+  --composure-filetype-document-fg: #f87171;
+  --composure-filetype-spreadsheet-bg: #14532d;
+  --composure-filetype-spreadsheet-fg: #4ade80;
+  --composure-filetype-code-bg: #3b1764;
+  --composure-filetype-code-fg: #c084fc;
+  --composure-filetype-archive-bg: #422d08;
+  --composure-filetype-archive-fg: #facc15;
+  --composure-filetype-video-bg: #4a1035;
+  --composure-filetype-video-fg: #f472b6;
+  --composure-filetype-audio-bg: #431e07;
+  --composure-filetype-audio-fg: #fb923c;
 }`}</CodeSnippet>
           </div>
 
@@ -573,8 +607,8 @@ pnpm dlx shadcn@latest add https://composureui.com/r/file-preview.json`}</CodeSn
               Step 3
             </span>
             <p className="text-sm text-secondary-foreground">
-              Import and compose. Each component exports sub-components as
-              separate named exports — mix and match in any layout.
+              Import and compose. Sub-components are separate named exports.
+              Use only what you need.
             </p>
             <CodeSnippet language="tsx">{`import { ScrollArea } from '@/components/ui/scroll-area'
 import { ChatMessage, ChatMessageContent } from '@/components/ui/chat-message'

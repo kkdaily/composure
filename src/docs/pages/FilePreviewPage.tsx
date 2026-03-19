@@ -57,8 +57,8 @@ export function FilePreviewPage() {
     <div className="flex flex-col gap-10">
       <h1 className="text-3xl font-bold text-foreground tracking-tight">FilePreview</h1>
       <p className="text-lg text-secondary-foreground leading-relaxed max-w-[540px]">
-        A compact preview card for file attachments — auto-detects file type
-        from extension and displays a colored icon, filename, and optional
+        A compact preview card for file attachments that auto-detects file type
+        from the extension and displays a colored icon, filename, and optional
         remove button.
       </p>
       <CodeSnippet language="bash">{`pnpm dlx shadcn@latest add https://composureui.com/r/file-preview.json`}</CodeSnippet>
@@ -182,7 +182,7 @@ export function FilePreviewPage() {
         <h2 className="text-xl font-semibold text-foreground tracking-tight">Basic Usage</h2>
         <p className="text-sm text-secondary-foreground leading-relaxed max-w-[600px]">
           Pass a <code>name</code> and the file type icon and color are
-          auto-detected from the file extension — no manual type prop needed
+          auto-detected from the extension, so no manual type prop is needed
           for common file formats.
         </p>
         <div className="flex items-start gap-3 flex-wrap">
@@ -200,7 +200,7 @@ export function FilePreviewPage() {
           Use <code>compact</code> for inline chips in tight spaces like
           composer headers or message footers. Use <code>card</code> for a
           more prominent display with a larger icon area and file type
-          subtitle — matching the style used in Claude's composer.
+          subtitle, matching the style used in Claude's composer.
         </p>
         <div className="flex items-start gap-3 flex-wrap">
           <FilePreview name="report.pdf" variant="compact" />
@@ -220,10 +220,10 @@ export function FilePreviewPage() {
             onRemove={() => {}}
           />
         </div>
-        <CodeSnippet>{`{/* Compact — inline chip style */}
+        <CodeSnippet>{`{/* Compact: inline chip style */}
 <FilePreview name="report.pdf" variant="compact" />
 
-{/* Card — larger card with file type subtitle */}
+{/* Card: larger card with file type subtitle */}
 <FilePreview name="report.pdf" variant="card" />
 
 {/* Card with thumbnail */}
@@ -241,7 +241,7 @@ export function FilePreviewPage() {
         <p className="text-sm text-secondary-foreground leading-relaxed max-w-[600px]">
           FilePreview supports <code>sm</code>, <code>md</code>, and{' '}
           <code>lg</code> sizes that match the height of the Button component
-          at the same size — so they align naturally when placed side by side.
+          at the same size, so they align naturally when placed side by side.
         </p>
         <div className="flex items-start gap-3 flex-wrap">
           <FilePreview name="small.pdf" size="sm" />
@@ -329,7 +329,7 @@ export function FilePreviewPage() {
         <p className="text-sm text-secondary-foreground leading-relaxed max-w-[600px]">
           Use <code>FilePreview</code> inside{' '}
           <code>ComposerHeader</code> to show attached files above the
-          textarea. This is the primary use case — matching how ChatGPT and
+          textarea. This is the primary use case, matching how ChatGPT and
           Claude display file attachments in their composers.
         </p>
         <Composer
@@ -410,31 +410,31 @@ export function FilePreviewPage() {
                 <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top"><code className="font-mono text-[0.85em] bg-muted px-1.5 py-0.5 rounded-sm text-foreground">variant</code></td>
                 <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top"><code className="font-mono text-[0.85em] bg-muted px-1.5 py-0.5 rounded-sm text-foreground">{`'compact' | 'card'`}</code></td>
                 <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top"><code className="font-mono text-[0.85em] bg-muted px-1.5 py-0.5 rounded-sm text-foreground">'compact'</code></td>
-                <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top">Visual style — compact is a single-row chip, card is a taller card with file type subtitle</td>
+                <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top">Visual style. Compact is a single-row chip, card is a taller card with file type subtitle</td>
               </tr>
               <tr>
                 <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top"><code className="font-mono text-[0.85em] bg-muted px-1.5 py-0.5 rounded-sm text-foreground">size</code></td>
                 <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top"><code className="font-mono text-[0.85em] bg-muted px-1.5 py-0.5 rounded-sm text-foreground">{`'sm' | 'md' | 'lg'`}</code></td>
                 <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top"><code className="font-mono text-[0.85em] bg-muted px-1.5 py-0.5 rounded-sm text-foreground">'md'</code></td>
-                <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top">Component size — matches Button heights at each size</td>
+                <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top">Component size. Matches Button heights at each size</td>
               </tr>
               <tr>
                 <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top"><code className="font-mono text-[0.85em] bg-muted px-1.5 py-0.5 rounded-sm text-foreground">type</code></td>
                 <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top"><code className="font-mono text-[0.85em] bg-muted px-1.5 py-0.5 rounded-sm text-foreground">{`'image' | 'document' | 'spreadsheet' | 'code' | 'archive' | 'video' | 'audio' | 'generic'`}</code></td>
                 <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top">auto</td>
-                <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top">File type for icon selection — auto-detected from extension if omitted</td>
+                <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top">File type for icon selection. Auto-detected from extension if omitted</td>
               </tr>
               <tr>
                 <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top"><code className="font-mono text-[0.85em] bg-muted px-1.5 py-0.5 rounded-sm text-foreground">thumbnail</code></td>
                 <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top"><code className="font-mono text-[0.85em] bg-muted px-1.5 py-0.5 rounded-sm text-foreground">string</code></td>
                 <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top">—</td>
-                <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top">Image thumbnail URL — replaces the type icon with a visual preview</td>
+                <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top">Image thumbnail URL. Replaces the type icon with a visual preview</td>
               </tr>
               <tr>
                 <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top"><code className="font-mono text-[0.85em] bg-muted px-1.5 py-0.5 rounded-sm text-foreground">onRemove</code></td>
                 <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top"><code className="font-mono text-[0.85em] bg-muted px-1.5 py-0.5 rounded-sm text-foreground">{'() => void'}</code></td>
                 <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top">—</td>
-                <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top">Called when remove button is clicked — omit to hide the button</td>
+                <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top">Called when remove button is clicked. Omit to hide the button</td>
               </tr>
             </tbody>
           </table>

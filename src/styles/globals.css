@@ -1,4 +1,11 @@
 @import "tailwindcss";
+@import "@fontsource/geist-sans/400.css";
+@import "@fontsource/geist-sans/500.css";
+@import "@fontsource/geist-sans/600.css";
+@import "@fontsource/geist-sans/700.css";
+@import "@fontsource/geist-mono/400.css";
+@import "@fontsource/geist-mono/500.css";
+@import "@fontsource/geist-mono/600.css";
 @plugin "@tailwindcss/typography";
 
 /* Class-based dark mode (shadcn pattern) */
@@ -59,9 +66,9 @@
   --radius-lg: 12px;
 
   /* Font families */
-  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+  --font-sans: 'Geist Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
     'Helvetica Neue', Arial, sans-serif;
-  --font-mono: 'SF Mono', 'Fira Code', 'Fira Mono', 'Roboto Mono', monospace;
+  --font-mono: 'Geist Mono', 'SF Mono', 'Fira Code', 'Fira Mono', 'Roboto Mono', monospace;
 }
 
 /* ===========================
@@ -72,18 +79,18 @@
   /* shadcn standard */
   --background: #ffffff;
   --foreground: #111111;
-  --card: #f8f8f8;
+  --card: #ffffff;
   --card-foreground: #111111;
   --muted: #f0f0f0;
   --muted-foreground: #646464;
-  --primary: #7c3aed;
-  --primary-foreground: #ffffff;
+  --primary: #0a0a0a;
+  --primary-foreground: #fafafa;
   --secondary: #f8f8f8;
   --secondary-foreground: #555555;
   --destructive: #ef4444;
   --destructive-foreground: #ffffff;
   --border: #e5e5e5;
-  --ring: #7c3aed;
+  --ring: #0a0a0a;
   --input: #e5e5e5;
   --accent: #f0f0f0;
   --accent-foreground: #111111;
@@ -92,8 +99,8 @@
 
   /* AI-specific */
   --composure-assistant-bubble: #f0f0f0;
-  --composure-user-bubble: #7c3aed;
-  --composure-user-bubble-text: #ffffff;
+  --composure-user-bubble: #f0f0f0;
+  --composure-user-bubble-text: #111111;
   --composure-success: #16a34a;
 
   /* File-type colors */
@@ -124,14 +131,14 @@
   --card-foreground: #f0f0f0;
   --muted: #1e1e1e;
   --muted-foreground: #8a8a8a;
-  --primary: #818cf8;
-  --primary-foreground: #111111;
+  --primary: #fafafa;
+  --primary-foreground: #0a0a0a;
   --secondary: #141414;
   --secondary-foreground: #a0a0a0;
   --destructive: #f87171;
   --destructive-foreground: #111111;
   --border: #2a2a2a;
-  --ring: #818cf8;
+  --ring: #fafafa;
   --input: #2a2a2a;
   --accent: #1e1e1e;
   --accent-foreground: #f0f0f0;
@@ -140,8 +147,8 @@
 
   /* AI-specific */
   --composure-assistant-bubble: #1e1e1e;
-  --composure-user-bubble: #818cf8;
-  --composure-user-bubble-text: #111111;
+  --composure-user-bubble: #1e1e1e;
+  --composure-user-bubble-text: #f0f0f0;
   --composure-success: #4ade80;
 
   /* File-type colors */

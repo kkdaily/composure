@@ -36,8 +36,8 @@ export function ChatMessagePage() {
     <div className="flex flex-col gap-10">
       <h1 className="text-3xl font-bold text-foreground tracking-tight">ChatMessage</h1>
       <p className="text-lg text-secondary-foreground leading-relaxed max-w-[540px]">
-        A composable chat message for AI conversations — avatar, content bubble,
-        and action buttons arranged with role-aware styling.
+        A composable chat message for AI conversations with avatar, content
+        bubble, and action buttons arranged in a role-aware layout.
       </p>
       <CodeSnippet language="bash">{`pnpm dlx shadcn@latest add https://composureui.com/r/chat-message.json`}</CodeSnippet>
 
@@ -198,7 +198,7 @@ export function ChatMessagePage() {
       <section className="flex flex-col gap-5">
         <h2 className="text-xl font-semibold text-foreground tracking-tight">Basic Usage</h2>
         <p className="text-sm text-secondary-foreground leading-relaxed max-w-[600px]">
-          The simplest configuration — a <code>ChatMessage</code> with just{' '}
+          The simplest configuration: a <code>ChatMessage</code> with just{' '}
           <code>ChatMessageContent</code>. Useful for compact layouts or when
           avatars and actions aren't needed.
         </p>
@@ -221,7 +221,7 @@ export function ChatMessagePage() {
         <h2 className="text-xl font-semibold text-foreground tracking-tight">With Avatar</h2>
         <p className="text-sm text-secondary-foreground leading-relaxed max-w-[600px]">
           Add a <code>ChatMessageAvatar</code> to show who sent the message.
-          Pass any element as children — an <code>img</code>, SVG icon, or text
+          Pass any element as children: an <code>img</code>, SVG icon, or text
           initials.
         </p>
         <div className="flex flex-col gap-4">
@@ -266,7 +266,7 @@ export function ChatMessagePage() {
         <h2 className="text-xl font-semibold text-foreground tracking-tight">With Actions</h2>
         <p className="text-sm text-secondary-foreground leading-relaxed max-w-[600px]">
           Use <code>ChatMessageActions</code> to add action buttons below the
-          message bubble — copy, regenerate, thumbs up/down, or any controls
+          message bubble: copy, regenerate, thumbs up/down, or any controls
           relevant to your AI interface.
         </p>
         <div className="flex flex-col gap-4">
@@ -349,8 +349,8 @@ export function ChatMessagePage() {
         <h2 className="text-xl font-semibold text-foreground tracking-tight">User Messages</h2>
         <p className="text-sm text-secondary-foreground leading-relaxed max-w-[600px]">
           Set <code>role</code> to <code>"user"</code> for right-aligned
-          messages with accent-colored bubbles. The layout automatically mirrors
-          — the avatar moves to the right and content aligns to the end.
+          messages with accent-colored bubbles. The layout automatically
+          mirrors: the avatar moves to the right and content aligns to the end.
         </p>
         <div className="flex flex-col gap-4">
           <ChatMessage role="user">
@@ -441,7 +441,7 @@ export function ChatMessagePage() {
         <h2 className="text-xl font-semibold text-foreground tracking-tight">Variant</h2>
         <p className="text-sm text-secondary-foreground leading-relaxed max-w-[600px]">
           Use <code>variant="plain"</code> on <code>ChatMessageContent</code> to
-          remove the bubble background — useful for assistant messages in
+          remove the bubble background, useful for assistant messages in
           interfaces like Claude where responses appear as plain text rather than
           inside a colored bubble.
         </p>
@@ -487,8 +487,8 @@ export function ChatMessagePage() {
       <section className="flex flex-col gap-5">
         <h2 className="text-xl font-semibold text-foreground tracking-tight">Without Avatar</h2>
         <p className="text-sm text-secondary-foreground leading-relaxed max-w-[600px]">
-          All sub-components are optional and work in any combination. Here,
-          actions are shown without an avatar — useful for minimal layouts that
+          All sub-components are optional and work in any combination. Here
+          actions are shown without an avatar, useful for minimal layouts that
           still need interactive controls.
         </p>
         <div className="flex flex-col gap-4">
@@ -601,7 +601,7 @@ export function ChatMessagePage() {
                 <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top"><code className="font-mono text-[0.85em] bg-muted px-1.5 py-0.5 rounded-sm text-foreground">variant</code></td>
                 <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top"><code className="font-mono text-[0.85em] bg-muted px-1.5 py-0.5 rounded-sm text-foreground">{`'filled' | 'plain'`}</code></td>
                 <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top"><code className="font-mono text-[0.85em] bg-muted px-1.5 py-0.5 rounded-sm text-foreground">'filled'</code></td>
-                <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top">Background style — filled shows a colored bubble, plain removes it</td>
+                <td className="px-3 py-2 border-b border-border text-secondary-foreground align-top">Background style. Filled shows a colored bubble, plain removes it</td>
               </tr>
             </tbody>
           </table>
