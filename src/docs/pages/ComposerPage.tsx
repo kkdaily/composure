@@ -41,7 +41,6 @@ const MODEL_OPTIONS = [
 
 export function ComposerPage() {
   const [demoValue, setDemoValue] = useState('')
-  const [demoDisabled, setDemoDisabled] = useState(false)
   const [demoState, setDemoState] = useState<DemoState>('idle')
   const [demoHeader, setDemoHeader] = useState<DemoHeader>('none')
   const [demoFooter, setDemoFooter] = useState<DemoFooter>('borderless')
@@ -142,15 +141,6 @@ export function ComposerPage() {
 
   return (
     <div className="flex flex-col gap-10">
-      <style>{`
-        @keyframes blink {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0; }
-        }
-        @media (prefers-reduced-motion: reduce) {
-          .composer-demo-cursor { animation: none; }
-        }
-      `}</style>
       <h1 className="text-3xl font-bold text-foreground tracking-tight">Composer</h1>
       <p className="text-lg text-secondary-foreground leading-relaxed max-w-[540px]">
         A composable message input for AI chat interfaces — auto-resizing
@@ -174,20 +164,16 @@ export function ComposerPage() {
                     className={cn(
                       'text-sm px-3 py-2 rounded-md max-w-[80%] leading-relaxed',
                       msg.role === 'user'
-                        ? 'text-primary-foreground bg-[var(--color-user-bubble)] self-end'
-                        : 'text-foreground bg-[var(--color-assistant-bubble)] self-start'
+                        ? 'text-[var(--color-composure-user-bubble-text)] bg-[var(--color-composure-user-bubble)] self-end'
+                        : 'text-foreground bg-[var(--color-composure-assistant-bubble)] self-start'
                     )}
                   >
                     {msg.content}
                   </div>
                 ))}
                 {streamingText && (
-                  <div className="text-sm px-3 py-2 rounded-md max-w-[80%] leading-relaxed text-foreground bg-[var(--color-assistant-bubble)] self-start">
+                  <div className="text-sm px-3 py-2 rounded-md max-w-[80%] leading-relaxed text-foreground bg-[var(--color-composure-assistant-bubble)] self-start">
                     {streamingText}
-                    <span
-                      className="composer-demo-cursor inline-block w-0.5 h-[1em] bg-foreground ml-px align-text-bottom"
-                      style={{ animation: 'blink 220ms step-end infinite' }}
-                    />
                   </div>
                 )}
               </>
@@ -204,7 +190,7 @@ export function ComposerPage() {
             value={demoValue}
             onChange={setDemoValue}
             onSubmit={handleDemoSubmit}
-            disabled={demoDisabled}
+
           >
             {demoHeader !== 'none' && (
               <ComposerHeader bordered={demoHeader === 'bordered'}>
@@ -249,7 +235,7 @@ export function ComposerPage() {
                   </Button>
                 </ComposerFooterStart>
                 <ComposerFooterEnd>
-                  <Select value={demoModel} onValueChange={setDemoModel} disabled={demoDisabled}>
+                  <Select value={demoModel} onValueChange={setDemoModel}>
                     <SelectTrigger className="h-8 border-none shadow-none text-xs">
                       <SelectValue />
                     </SelectTrigger>
@@ -339,25 +325,6 @@ export function ComposerPage() {
                   }}
                 >
                   {p}
-                </button>
-              ))}
-            </div>
-          </div>
-          <div className="flex items-center gap-3">
-            <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground min-w-[80px]">Disabled</span>
-            <div className="flex items-center gap-1.5 flex-wrap">
-              {(['off', 'on'] as const).map((t) => (
-                <button
-                  key={t}
-                  className={cn(
-                    'px-2.5 py-1 text-xs font-medium rounded-md border cursor-pointer transition-colors',
-                    demoDisabled === (t === 'on')
-                      ? 'bg-primary text-primary-foreground border-primary'
-                      : 'bg-transparent border-border text-secondary-foreground hover:bg-muted hover:text-foreground'
-                  )}
-                  onClick={() => setDemoDisabled(t === 'on')}
-                >
-                  {t}
                 </button>
               ))}
             </div>
@@ -670,15 +637,6 @@ export function ComposerPage() {
       {/* Props tables */}
       <section className="flex flex-col gap-5">
         <h2 className="text-xl font-semibold text-foreground tracking-tight">Props</h2>
-
-        <h3 className="text-base font-semibold text-foreground">Composer</h3>
-        <div className="overflow-x-auto -mx-6 px-6">
-          <PropsTable
-            rows={[
-              ['disabled', 'boolean', 'false', 'Disables the entire composer'],
-            ]}
-          />
-        </div>
 
         <h3 className="text-base font-semibold text-foreground">ComposerInput</h3>
         <div className="overflow-x-auto -mx-6 px-6">

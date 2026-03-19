@@ -254,7 +254,7 @@ export function MarkdownRendererPage() {
       {/* ===== Demo ===== */}
       <div className="flex flex-col gap-5">
         <h2 className="text-xl font-semibold text-foreground tracking-tight">Demo</h2>
-        <div className="p-6 bg-card border border-border rounded-lg">
+        <div className="p-6 bg-card border border-border rounded-lg h-[400px] overflow-y-auto">
           <MarkdownRenderer
             content={demoContent}
             streaming={demoStreaming}
@@ -471,19 +471,8 @@ The \\\`timeout\\\` option is in milliseconds.\`} />`}</CodeSnippet>
             content={CUSTOM_COMPONENT_EXAMPLE}
             components={{
               code: ({ language, children }) => (
-                <pre
-                  style={{
-                    padding: 'var(--space-4)',
-                    background: 'var(--color-bg-3)',
-                    borderRadius: 'var(--radius-md)',
-                    border: '2px dashed var(--color-accent)',
-                    fontFamily: 'var(--font-mono)',
-                    fontSize: 'var(--text-sm)',
-                    whiteSpace: 'pre',
-                    overflowX: 'auto',
-                  }}
-                >
-                  <div style={{ fontSize: 'var(--text-xs)', color: 'var(--color-accent)', marginBottom: 'var(--space-2)' }}>
+                <pre className="p-4 bg-muted rounded-lg border-2 border-dashed border-primary font-mono text-sm text-foreground whitespace-pre overflow-x-auto">
+                  <div className="text-xs text-primary mb-2">
                     {language ? `Custom renderer — ${language}` : 'Custom renderer'}
                   </div>
                   {children}

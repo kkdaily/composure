@@ -20,7 +20,6 @@ import { cn } from '@/lib/utils'
 interface ComposerContextValue {
   value: string
   onChange: (value: string) => void
-  disabled: boolean
   onSubmit: () => void
 }
 
@@ -48,8 +47,6 @@ export interface ComposerProps
   onChange: (value: string) => void
   /** Called when the user submits (Enter or send button) */
   onSubmit?: (value: string) => void
-  /** Disables the entire composer */
-  disabled?: boolean
   /** Additional CSS class for external overrides */
   className?: string
   /** Composer sub-components */
@@ -60,15 +57,14 @@ export function Composer({
   value,
   onChange,
   onSubmit,
-  disabled = false,
   className,
   children,
   ...rest
 }: ComposerProps) {
   const handleSubmit = useCallback(() => {
-    if (disabled || !value.trim()) return
+    if (!value.trim()) return
     onSubmit?.(value)
-  }, [disabled, value, onSubmit])
+  }, [value, onSubmit])
 
   const handleFormSubmit = useCallback(
     (e: FormEvent) => {
@@ -80,17 +76,15 @@ export function Composer({
 
   return (
     <ComposerContext.Provider
-      value={{ value, onChange, disabled, onSubmit: handleSubmit }}
+      value={{ value, onChange, onSubmit: handleSubmit }}
     >
       <form
         className={cn(
           'flex flex-wrap items-end gap-2 p-3 bg-card border border-border rounded-lg transition-colors duration-100 ease-out focus-within:border-primary motion-reduce:transition-none',
-          disabled && 'opacity-50 cursor-not-allowed',
           className
         )}
         onSubmit={handleFormSubmit}
         aria-label="Message composer"
-        aria-disabled={disabled || undefined}
         {...rest}
       >
         {children}
@@ -106,7 +100,7 @@ export function Composer({
 export interface ComposerInputProps
   extends Omit<
     TextareaHTMLAttributes<HTMLTextAreaElement>,
-    'className' | 'value' | 'onChange' | 'disabled'
+    'className' | 'value' | 'onChange'
   > {
   /** Placeholder text */
   placeholder?: string
@@ -125,7 +119,7 @@ export function ComposerInput({
   className,
   ...rest
 }: ComposerInputProps) {
-  const { value, onChange, disabled, onSubmit } = useComposerContext()
+  const { value, onChange, onSubmit } = useComposerContext()
   const textareaRef = useRef<HTMLTextAreaElement>(null)
 
   // Auto-resize textarea
@@ -159,14 +153,12 @@ export function ComposerInput({
       ref={textareaRef}
       className={cn(
         'flex-1 min-w-0 border-none bg-transparent resize-none outline-none font-sans text-sm text-foreground leading-relaxed py-2 m-0 placeholder:text-muted-foreground focus-visible:outline-none',
-        disabled && 'cursor-not-allowed',
         className
       )}
       value={value}
       onChange={(e) => onChange(e.target.value)}
       onKeyDown={handleKeyDown}
       placeholder={placeholder}
-      disabled={disabled}
       rows={minRows}
       aria-label={placeholder}
       {...rest}
