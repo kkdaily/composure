@@ -8,6 +8,7 @@ import {
   ChatMessage,
   ChatMessageAvatar,
   ChatMessageContent,
+  ChatMessageLoading,
   ChatMessageActions,
 } from '../../components/ChatMessage/ChatMessage'
 import {
@@ -150,6 +151,7 @@ export function OverviewPage() {
   const [composerValue, setComposerValue] = useState('')
   const [streamingContent, setStreamingContent] = useState<string | null>(null)
   const [isStreaming, setIsStreaming] = useState(false)
+  const [isThinking, setIsThinking] = useState(false)
   // Track IDs of messages that came from streaming so we skip their entrance animation
   const streamedMsgIds = useRef(new Set<string>())
   const [files, setFiles] = useState<{ file: File; preview?: string }[]>([])
@@ -218,24 +220,15 @@ export function OverviewPage() {
       setMessages([INITIAL_MESSAGES[0]])
     }, 2000)
 
-    // Step 2: Stream first assistant response after 3.2s
+    // Step 2: Show thinking indicator after 3.2s
     const t2 = setTimeout(() => {
-      startStream(INITIAL_MESSAGES[1].content, () => {
-        // Step 3: After first stream completes, show second user message
-        const t3 = setTimeout(() => {
-          setMessages(prev => {
-            if (prev.some(m => m.id === AUTO_PLAY_USER_MSG.id)) return prev
-            return [...prev, AUTO_PLAY_USER_MSG]
-          })
-
-          // Step 4: Stream second assistant response
-          const t4 = setTimeout(() => {
-            startStream(AUTO_PLAY_RESPONSE)
-          }, 1200)
-          timersRef.current.push(t4)
-        }, 1000)
-        timersRef.current.push(t3)
-      })
+      setIsThinking(true)
+      // Step 2b: Start streaming after a brief thinking delay
+      const t2b = setTimeout(() => {
+        setIsThinking(false)
+        startStream(INITIAL_MESSAGES[1].content)
+      }, 1000)
+      timersRef.current.push(t2b)
     }, 3200)
 
     timersRef.current = [t1, t2]
@@ -257,10 +250,15 @@ export function OverviewPage() {
     setComposerValue('')
 
     const t = setTimeout(() => {
-      const response = CANNED_RESPONSES[responseIndexRef.current % CANNED_RESPONSES.length]
-      responseIndexRef.current++
-      startStream(response)
-    }, 800)
+      setIsThinking(true)
+      const t2 = setTimeout(() => {
+        setIsThinking(false)
+        const response = CANNED_RESPONSES[responseIndexRef.current % CANNED_RESPONSES.length]
+        responseIndexRef.current++
+        startStream(response)
+      }, 1000)
+      timersRef.current.push(t2)
+    }, 400)
 
     timersRef.current.push(t)
   }, [isStreaming, startStream])
@@ -376,6 +374,19 @@ export function OverviewPage() {
                   </ChatMessage>
                 </div>
               ))}
+
+              {isThinking && (
+                <div className="animate-[message-slide-in_220ms_cubic-bezier(0.16,1,0.3,1)_both] motion-reduce:animate-none">
+                  <ChatMessage role="assistant">
+                    <ChatMessageAvatar>
+                      <span className="flex items-center justify-center w-full h-full rounded-full bg-primary/15 text-primary">
+                        <Sparkles className="size-4" />
+                      </span>
+                    </ChatMessageAvatar>
+                    <ChatMessageLoading />
+                  </ChatMessage>
+                </div>
+              )}
 
               {streamingContent !== null && (
                 <div className="animate-[message-slide-in_220ms_cubic-bezier(0.16,1,0.3,1)_both] motion-reduce:animate-none">
