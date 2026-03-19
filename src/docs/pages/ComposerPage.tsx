@@ -47,11 +47,43 @@ export function ComposerPage() {
   const [demoFooter, setDemoFooter] = useState<DemoFooter>('borderless')
   const [demoSendPosition, setDemoSendPosition] = useState<DemoSendPosition>('footer')
   const [demoModel, setDemoModel] = useState('gpt-5.4')
+  const [demoFiles, setDemoFiles] = useState<{ file: File; preview?: string }[]>([])
+  const demoFileInputRef = useRef<HTMLInputElement>(null)
   const [messages, setMessages] = useState<DemoMessage[]>([])
   const [streamingText, setStreamingText] = useState('')
   const streamRef = useRef<number | null>(null)
   const responseIndexRef = useRef(0)
   const messageLogRef = useRef<HTMLDivElement>(null)
+
+  const handleDemoAddFile = useCallback(() => {
+    demoFileInputRef.current?.click()
+  }, [])
+
+  const handleDemoFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const selected = e.target.files
+    if (!selected) return
+    setDemoFiles(prev => {
+      const existing = new Set(prev.map(f => f.file.name))
+      const newFiles = Array.from(selected)
+        .filter(f => !existing.has(f.name))
+        .map(file => ({
+          file,
+          preview: file.type.startsWith('image/') ? URL.createObjectURL(file) : undefined,
+        }))
+      return [...prev, ...newFiles]
+    })
+    // Show header when files are added
+    setDemoHeader(prev => prev === 'none' ? 'plain' : prev)
+    e.target.value = ''
+  }, [])
+
+  const handleDemoRemoveFile = useCallback((name: string) => {
+    setDemoFiles(prev => {
+      const removed = prev.find(f => f.file.name === name)
+      if (removed?.preview) URL.revokeObjectURL(removed.preview)
+      return prev.filter(f => f.file.name !== name)
+    })
+  }, [])
 
   // Auto-scroll message log
   useEffect(() => {
@@ -161,6 +193,13 @@ export function ComposerPage() {
               </>
             )}
           </div>
+          <input
+            ref={demoFileInputRef}
+            type="file"
+            multiple
+            className="hidden"
+            onChange={handleDemoFileChange}
+          />
           <Composer
             value={demoValue}
             onChange={setDemoValue}
@@ -170,8 +209,23 @@ export function ComposerPage() {
             {demoHeader !== 'none' && (
               <ComposerHeader bordered={demoHeader === 'bordered'}>
                 <ComposerHeaderStart>
-                  <FilePreview name="screenshot.png" thumbnail="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=120&h=120&fit=crop" onRemove={() => {}} />
-                  <FilePreview name="report.pdf" onRemove={() => {}} />
+                  {demoFiles.length > 0
+                    ? demoFiles.map(({ file, preview }) => (
+                        <FilePreview
+                          key={file.name}
+                          name={file.name}
+                          size="sm"
+                          thumbnail={preview}
+                          onRemove={() => handleDemoRemoveFile(file.name)}
+                        />
+                      ))
+                    : (
+                      <>
+                        <FilePreview name="screenshot.png" thumbnail="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=120&h=120&fit=crop" onRemove={() => {}} />
+                        <FilePreview name="report.pdf" onRemove={() => {}} />
+                      </>
+                    )
+                  }
                 </ComposerHeaderStart>
               </ComposerHeader>
             )}
@@ -190,7 +244,7 @@ export function ComposerPage() {
             {demoFooter !== 'none' && (
               <ComposerFooter bordered={demoFooter === 'bordered'}>
                 <ComposerFooterStart>
-                  <Button variant="ghost" size="icon" aria-label="Add">
+                  <Button variant="ghost" size="icon" aria-label="Attach file" onClick={handleDemoAddFile}>
                     <Plus className="size-[1em]" />
                   </Button>
                 </ComposerFooterStart>

@@ -51,6 +51,12 @@ function detectFileType(filename: string): FileType {
   return extensionMap[ext] ?? 'generic'
 }
 
+/** Extract file extension in uppercase (e.g. "PDF", "PY") */
+function getExtensionLabel(filename: string): string | null {
+  const ext = filename.split('.').pop()?.toUpperCase()
+  return ext && ext.length <= 5 ? ext : null
+}
+
 const iconsByType: Record<FileType, typeof Image> = {
   image: Image,
   document: FileText,
@@ -93,6 +99,12 @@ const iconAreaSizeClasses = {
   lg: 'w-9 h-9 text-lg',
 } as const
 
+const textSizeClasses = {
+  sm: 'text-xs',
+  md: 'text-xs',
+  lg: 'text-sm',
+} as const
+
 /* ===========================
    FilePreview
    =========================== */
@@ -101,12 +113,16 @@ export interface FilePreviewProps
   extends Omit<HTMLAttributes<HTMLDivElement>, 'className'> {
   /** File name to display */
   name: string
-  /** Size of the component — matches Button heights */
+  /** Visual style — 'compact' is a single-row chip, 'card' is a square thumbnail card */
+  variant?: 'compact' | 'card'
+  /** Size of the component — matches Button heights (compact variant only) */
   size?: 'sm' | 'md' | 'lg'
   /** File type for icon selection — auto-detected from extension if omitted */
   type?: FileType
   /** Image thumbnail URL — shown as visual preview for image files */
   thumbnail?: string
+  /** Secondary info like file size (e.g. "12 KB", "3.2 MB") */
+  meta?: string
   /** Called when remove button is clicked — omit to hide the remove button */
   onRemove?: () => void
   /** Additional CSS class for external overrides */
@@ -115,15 +131,71 @@ export interface FilePreviewProps
 
 export function FilePreview({
   name,
+  variant = 'compact',
   size = 'md',
   type,
   thumbnail,
+  meta,
   onRemove,
   className,
   ...rest
 }: FilePreviewProps) {
   const resolvedType = type ?? detectFileType(name)
   const Icon = iconsByType[resolvedType]
+
+  if (variant === 'card') {
+    const extLabel = getExtensionLabel(name)
+
+    return (
+      <div
+        className={cn(
+          'group/file relative inline-flex flex-col w-20 cursor-default',
+          className
+        )}
+        {...rest}
+      >
+        <div
+          className={cn(
+            'flex items-center justify-center w-20 h-20 rounded-xl overflow-hidden',
+            fileTypeClasses[resolvedType]
+          )}
+        >
+          {thumbnail ? (
+            <img
+              src={thumbnail}
+              alt=""
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <div className="flex flex-col items-center gap-1">
+              <Icon className="size-6" />
+              {extLabel && (
+                <span className="text-[10px] font-bold leading-none opacity-80">
+                  {extLabel}
+                </span>
+              )}
+            </div>
+          )}
+        </div>
+        <span
+          className="mt-1 text-xs text-muted-foreground leading-tight whitespace-nowrap overflow-hidden text-ellipsis text-center w-full"
+          title={name}
+        >
+          {name}
+        </span>
+        {onRemove && (
+          <button
+            type="button"
+            className="absolute -top-1.5 -right-1.5 flex items-center justify-center w-[18px] h-[18px] p-0 border border-border rounded-full bg-card text-muted-foreground text-[10px] cursor-pointer opacity-0 transition-all duration-100 ease-out group-hover/file:opacity-100 hover:text-foreground hover:bg-muted focus-visible:opacity-100 focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2 motion-reduce:transition-none"
+            onClick={onRemove}
+            aria-label={`Remove ${name}`}
+          >
+            <X className="size-[1em]" />
+          </button>
+        )}
+      </div>
+    )
+  }
 
   return (
     <div
@@ -151,14 +223,25 @@ export function FilePreview({
           <Icon className="size-[1em]" />
         )}
       </div>
-      <span
-        className={cn(
-          'text-xs font-medium text-foreground leading-tight whitespace-nowrap overflow-hidden text-ellipsis min-w-0',
-          size === 'lg' && 'text-sm'
+      <div className="flex flex-col min-w-0">
+        <span
+          className={cn(
+            'font-medium text-foreground leading-tight whitespace-nowrap overflow-hidden text-ellipsis',
+            textSizeClasses[size]
+          )}
+          title={name}
+        >
+          {name}
+        </span>
+        {meta && (
+          <span className={cn(
+            'text-muted-foreground leading-tight',
+            size === 'lg' ? 'text-xs' : 'text-[10px]'
+          )}>
+            {meta}
+          </span>
         )}
-      >
-        {name}
-      </span>
+      </div>
       {onRemove && (
         <button
           type="button"

@@ -25,6 +25,7 @@ import {
 } from '../../components/ScrollArea/ScrollArea'
 import { MarkdownRenderer } from '../../components/MarkdownRenderer/MarkdownRenderer'
 import { Button } from '@/components/ui/button'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { FilePreview } from '../../components/FilePreview/FilePreview'
 import { CodeSnippet } from '../CodeSnippet'
 import { cn } from '@/lib/utils'
@@ -151,10 +152,9 @@ export function OverviewPage() {
   const [isStreaming, setIsStreaming] = useState(false)
   // Track IDs of messages that came from streaming so we skip their entrance animation
   const streamedMsgIds = useRef(new Set<string>())
-  const [files, setFiles] = useState<string[]>([])
-
-  const demoFiles = useRef(['schema.prisma', 'utils.ts', 'data.csv'])
-  const fileIndexRef = useRef(0)
+  const [files, setFiles] = useState<{ file: File; preview?: string }[]>([])
+  const [model, setModel] = useState('sonnet')
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   const responseIndexRef = useRef(0)
   const msgIdCounter = useRef(0)
@@ -266,13 +266,32 @@ export function OverviewPage() {
   }, [isStreaming, startStream])
 
   const handleAddFile = useCallback(() => {
-    const name = demoFiles.current[fileIndexRef.current % demoFiles.current.length]
-    fileIndexRef.current++
-    setFiles(prev => prev.includes(name) ? prev : [...prev, name])
+    fileInputRef.current?.click()
+  }, [])
+
+  const handleFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const selected = e.target.files
+    if (!selected) return
+    setFiles(prev => {
+      const existing = new Set(prev.map(f => f.file.name))
+      const newFiles = Array.from(selected)
+        .filter(f => !existing.has(f.name))
+        .map(file => ({
+          file,
+          preview: file.type.startsWith('image/') ? URL.createObjectURL(file) : undefined,
+        }))
+      return [...prev, ...newFiles]
+    })
+    // Reset so the same file can be re-selected after removal
+    e.target.value = ''
   }, [])
 
   const handleRemoveFile = useCallback((name: string) => {
-    setFiles(prev => prev.filter(f => f !== name))
+    setFiles(prev => {
+      const removed = prev.find(f => f.file.name === name)
+      if (removed?.preview) URL.revokeObjectURL(removed.preview)
+      return prev.filter(f => f.file.name !== name)
+    })
   }, [])
 
   return (
@@ -383,6 +402,13 @@ export function OverviewPage() {
             </ScrollAreaScrollToBottom>
           </ScrollArea>
 
+          <input
+            ref={fileInputRef}
+            type="file"
+            multiple
+            className="hidden"
+            onChange={handleFileChange}
+          />
           <div className="p-3 border-t border-border bg-card">
             <Composer
               value={composerValue}
@@ -392,12 +418,13 @@ export function OverviewPage() {
               {files.length > 0 && (
                 <ComposerHeader>
                   <ComposerHeaderStart>
-                    {files.map(name => (
+                    {files.map(({ file, preview }) => (
                       <FilePreview
-                        key={name}
-                        name={name}
+                        key={file.name}
+                        name={file.name}
                         size="sm"
-                        onRemove={() => handleRemoveFile(name)}
+                        thumbnail={preview}
+                        onRemove={() => handleRemoveFile(file.name)}
                       />
                     ))}
                   </ComposerHeaderStart>
@@ -408,7 +435,7 @@ export function OverviewPage() {
                 <ComposerFooterStart>
                   <Button
                     variant="ghost"
-                    size="icon-xs"
+                    size="icon-sm"
                     aria-label="Attach file"
                     onClick={handleAddFile}
                   >
@@ -416,19 +443,30 @@ export function OverviewPage() {
                   </Button>
                 </ComposerFooterStart>
                 <ComposerFooterEnd>
+                  <Select value={model} onValueChange={setModel}>
+                    <SelectTrigger className="h-8 border-none shadow-none text-sm gap-1 px-2 text-muted-foreground">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="sonnet">Claude 4 Sonnet</SelectItem>
+                      <SelectItem value="opus">Claude 4 Opus</SelectItem>
+                      <SelectItem value="haiku">Claude 4 Haiku</SelectItem>
+                      <SelectItem value="gpt-4o">GPT-4o</SelectItem>
+                    </SelectContent>
+                  </Select>
                   {isStreaming ? (
                     <Button
                       variant="default"
-                      size="icon-xs"
+                      size="icon-sm"
                       aria-label="Stop generating"
                       type="submit"
                     >
-                      <Square className="size-3 fill-current" />
+                      <Square className="size-3.5 fill-current" />
                     </Button>
                   ) : (
                     <Button
                       variant="default"
-                      size="icon-xs"
+                      size="icon-sm"
                       aria-label="Send"
                       type="submit"
                     >
