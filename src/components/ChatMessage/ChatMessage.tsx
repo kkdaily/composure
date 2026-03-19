@@ -58,7 +58,7 @@ export function ChatMessage({
             ? 'grid-cols-[1fr_auto]'
             : 'grid-cols-[auto_1fr]',
           showActionsOnHover &&
-            '[&_.chat-actions]:opacity-0 [&_.chat-actions]:transition-opacity [&_.chat-actions]:duration-150 [&_.chat-actions]:ease-linear hover:[&_.chat-actions]:opacity-100 focus-within:[&_.chat-actions]:opacity-100 [&_.chat-actions]:motion-reduce:transition-none',
+            '[&_.chat-actions]:opacity-0 [&_.chat-actions]:transition-opacity [&_.chat-actions]:duration-150 [&_.chat-actions]:ease-linear hover:[&_.chat-actions]:opacity-100 [&:has(:focus-visible)_.chat-actions]:opacity-100 [&_.chat-actions]:motion-reduce:transition-none',
           className
         )}
         {...rest}

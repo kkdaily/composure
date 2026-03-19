@@ -10,7 +10,6 @@ import {
   ComposerFooterEnd,
 } from '../../components/Composer/Composer'
 import { Button } from '@/components/ui/button'
-import { Select } from '../../components/Select/Select'
 import { FilePreview } from '../../components/FilePreview/FilePreview'
 import { CodeSnippet } from '../CodeSnippet'
 import { cn } from '@/lib/utils'
@@ -195,14 +194,16 @@ export function ComposerPage() {
                   </Button>
                 </ComposerFooterStart>
                 <ComposerFooterEnd>
-                  <Select
+                  <select
                     value={demoModel}
-                    onChange={setDemoModel}
-                    options={MODEL_OPTIONS}
-                    size="md"
-                    variant="ghost"
+                    onChange={(e) => setDemoModel(e.target.value)}
                     disabled={demoDisabled}
-                  />
+                    className="h-8 px-2 text-xs font-medium rounded-md bg-transparent border-none text-secondary-foreground cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    {MODEL_OPTIONS.map((opt) => (
+                      <option key={opt.value} value={opt.value}>{opt.label}</option>
+                    ))}
+                  </select>
                   {demoSendPosition === 'footer' && (
                     demoState === 'streaming' ? (
                       <Button variant="destructive" size="icon" aria-label="Stop generating" onClick={stopStreaming}>
