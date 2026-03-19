@@ -4,6 +4,7 @@ import {
   ChatMessage,
   ChatMessageAvatar,
   ChatMessageContent,
+  ChatMessageLoading,
   ChatMessageActions,
 } from '../../components/ChatMessage/ChatMessage'
 import { Button } from '@/components/ui/button'
@@ -29,6 +30,7 @@ export function ChatMessagePage() {
   const [demoAvatar, setDemoAvatar] = useState<DemoToggle>('show')
   const [demoActions, setDemoActions] = useState<DemoToggle>('show')
   const [demoHoverActions, setDemoHoverActions] = useState<DemoOnOff>('off')
+  const [demoLoading, setDemoLoading] = useState<DemoOnOff>('off')
 
   return (
     <div className="flex flex-col gap-10">
@@ -49,22 +51,28 @@ export function ChatMessagePage() {
                 {demoRole === 'assistant' ? <Sparkles className="size-[1em]" /> : <User className="size-[1em]" />}
               </ChatMessageAvatar>
             )}
-            <ChatMessageContent variant={demoVariant}>
-              {demoRole === 'assistant'
-                ? "Here's what I found — the key insight is that simplicity often wins over complexity in component design."
-                : 'Can you explain how React context works?'}
-            </ChatMessageContent>
-            {demoActions === 'show' && (
-              <ChatMessageActions>
-                <Button variant="ghost" size="icon-xs" aria-label="Copy"><Copy className="size-[1em]" /></Button>
-                {demoRole === 'assistant' && (
-                  <>
-                    <Button variant="ghost" size="icon-xs" aria-label="Regenerate"><RotateCw className="size-[1em]" /></Button>
-                    <Button variant="ghost" size="icon-xs" aria-label="Good response"><ThumbsUp className="size-[1em]" /></Button>
-                    <Button variant="ghost" size="icon-xs" aria-label="Bad response"><ThumbsDown className="size-[1em]" /></Button>
-                  </>
+            {demoLoading === 'on' && demoRole === 'assistant' ? (
+              <ChatMessageLoading />
+            ) : (
+              <>
+                <ChatMessageContent variant={demoVariant}>
+                  {demoRole === 'assistant'
+                    ? "Here's what I found — the key insight is that simplicity often wins over complexity in component design."
+                    : 'Can you explain how React context works?'}
+                </ChatMessageContent>
+                {demoActions === 'show' && (
+                  <ChatMessageActions>
+                    <Button variant="ghost" size="icon-xs" aria-label="Copy"><Copy className="size-[1em]" /></Button>
+                    {demoRole === 'assistant' && (
+                      <>
+                        <Button variant="ghost" size="icon-xs" aria-label="Regenerate"><RotateCw className="size-[1em]" /></Button>
+                        <Button variant="ghost" size="icon-xs" aria-label="Good response"><ThumbsUp className="size-[1em]" /></Button>
+                        <Button variant="ghost" size="icon-xs" aria-label="Bad response"><ThumbsDown className="size-[1em]" /></Button>
+                      </>
+                    )}
+                  </ChatMessageActions>
                 )}
-              </ChatMessageActions>
+              </>
             )}
           </ChatMessage>
         </div>
@@ -158,6 +166,25 @@ export function ChatMessagePage() {
                       : 'bg-transparent border-border text-secondary-foreground hover:bg-muted hover:text-foreground'
                   )}
                   onClick={() => setDemoHoverActions(t)}
+                >
+                  {t}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className="flex items-center gap-3">
+            <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground min-w-[80px]">Loading</span>
+            <div className="flex items-center gap-1.5 flex-wrap">
+              {(['on', 'off'] as DemoOnOff[]).map((t) => (
+                <button
+                  key={t}
+                  className={cn(
+                    'px-2.5 py-1 text-xs font-medium rounded-md border cursor-pointer transition-colors',
+                    demoLoading === t
+                      ? 'bg-primary text-primary-foreground border-primary'
+                      : 'bg-transparent border-border text-secondary-foreground hover:bg-muted hover:text-foreground'
+                  )}
+                  onClick={() => setDemoLoading(t)}
                 >
                   {t}
                 </button>
@@ -485,6 +512,44 @@ export function ChatMessagePage() {
     <Button variant="ghost" size="icon-xs" aria-label="Copy"><Copy className="size-[1em]" /></Button>
     <Button variant="ghost" size="icon-xs" aria-label="Regenerate"><RotateCw className="size-[1em]" /></Button>
   </ChatMessageActions>
+</ChatMessage>`}</CodeSnippet>
+      </section>
+
+      {/* Loading */}
+      <section className="flex flex-col gap-5">
+        <h2 className="text-xl font-semibold text-foreground tracking-tight">Loading</h2>
+        <p className="text-sm text-secondary-foreground leading-relaxed max-w-[600px]">
+          Use <code>ChatMessageLoading</code> as a thinking indicator while
+          waiting for an AI response. Swap it for <code>ChatMessageContent</code>{' '}
+          once the response starts streaming. The animated dots signal that the
+          model is processing without implying a specific wait time.
+        </p>
+        <div className="flex flex-col gap-4">
+          <ChatMessage role="user">
+            <ChatMessageAvatar>
+              <User className="size-[1em]" />
+            </ChatMessageAvatar>
+            <ChatMessageContent>
+              Can you explain how React context works?
+            </ChatMessageContent>
+          </ChatMessage>
+          <ChatMessage role="assistant">
+            <ChatMessageAvatar>
+              <Sparkles className="size-[1em]" />
+            </ChatMessageAvatar>
+            <ChatMessageLoading />
+          </ChatMessage>
+        </div>
+        <CodeSnippet>{`// Show loading indicator while waiting for response
+<ChatMessage role="assistant">
+  <ChatMessageAvatar>
+    <Sparkles className="size-[1em]" />
+  </ChatMessageAvatar>
+  {isLoading ? (
+    <ChatMessageLoading />
+  ) : (
+    <ChatMessageContent>{response}</ChatMessageContent>
+  )}
 </ChatMessage>`}</CodeSnippet>
       </section>
 

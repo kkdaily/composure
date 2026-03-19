@@ -144,6 +144,45 @@ export function ChatMessageContent({
 }
 
 /* ===========================
+   ChatMessageLoading
+   =========================== */
+
+export interface ChatMessageLoadingProps
+  extends Omit<HTMLAttributes<HTMLDivElement>, 'className'> {
+  /** Additional CSS class for external overrides */
+  className?: string
+}
+
+export function ChatMessageLoading({
+  className,
+  ...rest
+}: ChatMessageLoadingProps) {
+  return (
+    <div
+      className={cn(
+        'col-start-2 flex items-center gap-1.5 py-3 px-4 rounded-lg bg-composure-assistant-bubble w-fit',
+        className
+      )}
+      role="status"
+      aria-label="Thinking"
+      {...rest}
+    >
+      {[0, 1, 2].map((i) => (
+        <span
+          key={i}
+          className="thinking-dot block w-2 h-2 rounded-full bg-muted-foreground"
+          style={{
+            animation: 'thinking-dot 1.4s ease-in-out infinite',
+            animationDelay: `${i * 160}ms`,
+          }}
+          aria-hidden="true"
+        />
+      ))}
+    </div>
+  )
+}
+
+/* ===========================
    ChatMessageActions
    =========================== */
 

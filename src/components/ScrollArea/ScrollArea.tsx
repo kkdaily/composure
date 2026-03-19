@@ -227,7 +227,10 @@ export function ScrollArea({
         lerpToBottom()
         setIsAtBottom(true)
       } else if (modeRef.current === 'manual') {
-        // Manual mode: check for new elements with data-scroll-anchor="start"
+        // Only act on new scroll-anchor elements (user messages).
+        // Just scroll to the bottom — this positions the anchor as high
+        // as possible. The assistant response streams in immediately after,
+        // naturally pushing the anchor up toward the top.
         for (const mutation of mutations) {
           if (mutation.type !== 'childList') continue
           for (const node of mutation.addedNodes) {
@@ -236,13 +239,9 @@ export function ScrollArea({
               node.dataset?.scrollAnchor === 'start'
                 ? node
                 : node.querySelector?.('[data-scroll-anchor="start"]')
-            if (anchor && anchor instanceof HTMLElement) {
+            if (anchor) {
               hideScrollbarDuring(() => {
-                anchor.scrollIntoView({ block: 'start', behavior: 'smooth' })
-              })
-              // Add a small top offset so the message isn't flush against the edge
-              requestAnimationFrame(() => {
-                el.scrollTop = Math.max(0, el.scrollTop - 16)
+                el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' })
               })
               return
             }

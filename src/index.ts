@@ -3,6 +3,7 @@ export {
   ChatMessage,
   ChatMessageAvatar,
   ChatMessageContent,
+  ChatMessageLoading,
   ChatMessageActions,
 } from './components/ChatMessage/ChatMessage'
 export { CodeBlock, CodeBlockContent } from './components/CodeBlock/CodeBlock'
@@ -25,6 +26,7 @@ export type {
   ChatMessageProps,
   ChatMessageAvatarProps,
   ChatMessageContentProps,
+  ChatMessageLoadingProps,
   ChatMessageActionsProps,
 } from './components/ChatMessage/ChatMessage'
 export type { CodeBlockProps, CodeBlockContentProps } from './components/CodeBlock/CodeBlock'
