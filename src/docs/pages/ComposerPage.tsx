@@ -10,6 +10,7 @@ import {
   ComposerFooterEnd,
 } from '../../components/Composer/Composer'
 import { Button } from '@/components/ui/button'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { FilePreview } from '../../components/FilePreview/FilePreview'
 import { CodeSnippet } from '../CodeSnippet'
 import { cn } from '@/lib/utils'
@@ -194,16 +195,16 @@ export function ComposerPage() {
                   </Button>
                 </ComposerFooterStart>
                 <ComposerFooterEnd>
-                  <select
-                    value={demoModel}
-                    onChange={(e) => setDemoModel(e.target.value)}
-                    disabled={demoDisabled}
-                    className="h-8 px-2 text-xs font-medium rounded-md bg-transparent border-none text-secondary-foreground cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
-                  >
-                    {MODEL_OPTIONS.map((opt) => (
-                      <option key={opt.value} value={opt.value}>{opt.label}</option>
-                    ))}
-                  </select>
+                  <Select value={demoModel} onValueChange={setDemoModel} disabled={demoDisabled}>
+                    <SelectTrigger className="h-8 border-none shadow-none text-xs">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {MODEL_OPTIONS.map((opt) => (
+                        <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   {demoSendPosition === 'footer' && (
                     demoState === 'streaming' ? (
                       <Button variant="destructive" size="icon" aria-label="Stop generating" onClick={stopStreaming}>

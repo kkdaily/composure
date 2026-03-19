@@ -5,6 +5,8 @@ import {
   useState,
   useEffect,
   useCallback,
+  Children,
+  isValidElement,
   type ReactNode,
   type HTMLAttributes,
 } from 'react'
@@ -158,17 +160,32 @@ export function ScrollArea({
     return () => observer.disconnect()
   }, [checkIsAtBottom])
 
+  // Separate ScrollAreaScrollToBottom from scrollable content so it can be
+  // positioned absolutely on the outer wrapper, outside the overflow container.
+  const scrollContent: ReactNode[] = []
+  const overlayContent: ReactNode[] = []
+
+  Children.forEach(children, (child) => {
+    if (isValidElement(child) && child.type === ScrollAreaScrollToBottom) {
+      overlayContent.push(child)
+    } else {
+      scrollContent.push(child)
+    }
+  })
+
   return (
     <ScrollAreaContext.Provider value={{ isAtBottom, scrollToBottom }}>
       <div
-        className={cn(
-          'relative overflow-y-auto overflow-x-hidden [overflow-anchor:none]',
-          className
-        )}
-        ref={containerRef}
+        className={cn('relative', className)}
         {...rest}
       >
-        {children}
+        <div
+          className="h-full overflow-y-auto overflow-x-hidden [overflow-anchor:none]"
+          ref={containerRef}
+        >
+          {scrollContent}
+        </div>
+        {overlayContent}
       </div>
     </ScrollAreaContext.Provider>
   )
@@ -199,7 +216,7 @@ export function ScrollAreaScrollToBottom({
   return (
     <div
       className={cn(
-        'sticky bottom-3 flex justify-center pointer-events-none transition-opacity duration-200 ease-out motion-reduce:transition-none',
+        'absolute bottom-3 left-0 right-0 z-10 flex justify-center pointer-events-none transition-opacity duration-200 ease-out motion-reduce:transition-none',
         isAtBottom
           ? 'opacity-0 pointer-events-none'
           : 'opacity-100 [&>*]:pointer-events-auto',

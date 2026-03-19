@@ -28,6 +28,8 @@
   --color-input: var(--input);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
 
   /* AI-specific (composure) */
   --color-composure-assistant-bubble: var(--composure-assistant-bubble);
@@ -85,6 +87,8 @@
   --input: #e5e5e5;
   --accent: #f0f0f0;
   --accent-foreground: #111111;
+  --popover: #ffffff;
+  --popover-foreground: #111111;
 
   /* AI-specific */
   --composure-assistant-bubble: #f0f0f0;
@@ -131,6 +135,8 @@
   --input: #2a2a2a;
   --accent: #1e1e1e;
   --accent-foreground: #f0f0f0;
+  --popover: #1a1a1a;
+  --popover-foreground: #f0f0f0;
 
   /* AI-specific */
   --composure-assistant-bubble: #1e1e1e;
