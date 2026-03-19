@@ -1,34 +1,78 @@
 # Composure
 
-A React component library for building AI chat interfaces. Solves the UI patterns that every AI app rebuilds from scratch — chat bubbles, auto-scrolling, composers, streaming text, code blocks — so you can focus on your product instead.
+React components for building AI chat interfaces, purpose-built for streaming, auto-scroll, code highlighting, and file attachments. Installable via the shadcn CLI.
 
-[Live Demo](https://TODO) <!-- Replace with deployed URL -->
-
-![Composure docs site](./docs-screenshot.png) <!-- Replace with actual screenshot -->
+**[Live docs](https://composureui.com)** · **[GitHub](https://github.com/kkdaily/composure)**
 
 ## Components
 
-| Component | Description |
+| Component | What it does |
 |-----------|-------------|
-| **Avatar** | Image with fallback initials, composable with sub-components |
-| **Button** | Primary, secondary, ghost, and destructive variants with icon slots and loading state |
-| **ChatMessage** | Role-based message bubbles with avatar, content, and action slots |
-| **CodeBlock** | Syntax-highlighted code with Shiki, copy button, and line numbers |
-| **Composer** | Auto-resizing textarea with header/footer slots and keyboard submit |
-| **FilePreview** | File attachment chips with thumbnails, type icons, and remove actions |
-| **IconButton** | Icon-only button with required accessible label |
-| **ScrollArea** | Auto-scroll-to-bottom with user scroll intent detection |
-| **Select** | Dynamic-width select with label and ghost variant |
+| **ChatMessage** | Role-based message layout with avatar, content bubble, loading indicator, and hover-reveal actions |
+| **CodeBlock** | Syntax-highlighted code display with Shiki, copy button, line numbers, and streaming-safe rendering |
+| **Composer** | Auto-resizing textarea with composable header/footer slots, keyboard submit, and file attachment support |
+| **FilePreview** | File attachment preview with auto-detected type icons, thumbnails, and removable state |
+| **MarkdownRenderer** | GitHub Flavored Markdown with integrated CodeBlock highlighting and streaming support |
+| **ScrollArea** | Smart auto-scrolling container with scroll intent detection, lerp-based smooth scroll, and scroll-to-bottom indicator |
 
-## Why this exists
+Composure focuses on complex components that shadcn doesn't provide. For standard primitives (Button, Avatar, Select), use shadcn's built-in components alongside Composure.
 
-Every AI chat app — ChatGPT, Claude, Gemini, Cursor — solves the same frontend problems: auto-scrolling that respects user intent, composers that grow with input, message bubbles that handle streaming, code blocks with syntax highlighting. Developers building AI-powered interfaces end up reinventing these patterns from scratch every time.
+## Installation
 
-Composure extracts these into a set of composable, accessible, theme-aware React components. Every component uses design tokens for consistent theming (including dark mode and 8 accent color palettes), meets WCAG 2.1 AA standards, and respects `prefers-reduced-motion`. The API follows the shadcn/ui pattern — named exports, React context for shared state, and no hardcoded opinions about how you compose them.
+```bash
+pnpm dlx shadcn@latest add https://composureui.com/r/chat-message.json
+pnpm dlx shadcn@latest add https://composureui.com/r/composer.json
+pnpm dlx shadcn@latest add https://composureui.com/r/scroll-area.json
+pnpm dlx shadcn@latest add https://composureui.com/r/code-block.json
+pnpm dlx shadcn@latest add https://composureui.com/r/markdown-renderer.json
+pnpm dlx shadcn@latest add https://composureui.com/r/file-preview.json
+```
+
+## Quick example
+
+```tsx
+import { ScrollArea } from '@/components/ui/scroll-area'
+import { ChatMessage, ChatMessageContent } from '@/components/ui/chat-message'
+import { Composer, ComposerInput, ComposerFooter } from '@/components/ui/composer'
+import { MarkdownRenderer } from '@/components/ui/markdown-renderer'
+import { Button } from '@/components/ui/button'
+
+export function Chat() {
+  const [input, setInput] = useState('')
+  const [messages, setMessages] = useState([])
+
+  return (
+    <>
+      <ScrollArea>
+        {messages.map((m, i) => (
+          <ChatMessage key={i} role={m.role}>
+            <ChatMessageContent>
+              <MarkdownRenderer content={m.content} />
+            </ChatMessageContent>
+          </ChatMessage>
+        ))}
+      </ScrollArea>
+
+      <Composer value={input} onChange={setInput} onSubmit={handleSend}>
+        <ComposerInput placeholder="Message..." />
+        <ComposerFooter>
+          <Button size="sm" type="submit">Send</Button>
+        </ComposerFooter>
+      </Composer>
+    </>
+  )
+}
+```
 
 ## Built with
 
-- React 19 + TypeScript
-- CSS Modules + design tokens (no Tailwind, no runtime CSS-in-JS)
+- React 19 + TypeScript (strict mode)
+- Tailwind CSS 4 + shadcn/ui primitives
 - Shiki for syntax highlighting
-- Zero external UI dependencies
+- Vite 8
+- WCAG 2.1 AA accessible
+- Full `prefers-reduced-motion` support
+
+## License
+
+MIT
