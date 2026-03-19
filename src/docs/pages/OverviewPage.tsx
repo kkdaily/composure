@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import { NavLink } from 'react-router-dom'
 import {
   Sparkles, User, ArrowDown, ArrowUp, Copy, Plus, RotateCw,
-  ScrollText, Zap, Puzzle, Palette,
+  ScrollText, Zap, Puzzle, Palette, Square,
 } from 'lucide-react'
 import {
   ChatMessage,
@@ -145,53 +145,98 @@ This debounces the **function call** itself — useful for form saves or analyti
    =========================== */
 
 export function OverviewPage() {
-  const [messages, setMessages] = useState<DemoMessage[]>(INITIAL_MESSAGES)
+  const [messages, setMessages] = useState<DemoMessage[]>([])
   const [composerValue, setComposerValue] = useState('')
   const [streamingContent, setStreamingContent] = useState<string | null>(null)
   const [isStreaming, setIsStreaming] = useState(false)
+  // Track IDs of messages that came from streaming so we skip their entrance animation
+  const streamedMsgIds = useRef(new Set<string>())
   const [files, setFiles] = useState<string[]>([])
 
   const demoFiles = useRef(['schema.prisma', 'utils.ts', 'data.csv'])
   const fileIndexRef = useRef(0)
 
   const responseIndexRef = useRef(0)
+  const msgIdCounter = useRef(0)
   const streamIntervalRef = useRef<ReturnType<typeof setInterval>>()
+  const streamingContentRef = useRef<string>('')
   const timersRef = useRef<ReturnType<typeof setTimeout>[]>([])
 
-  const startStream = useCallback((content: string) => {
+  const startStream = useCallback((content: string, onComplete?: () => void) => {
+    // Clear any existing stream (guards against StrictMode double-calls)
+    if (streamIntervalRef.current) clearInterval(streamIntervalRef.current)
     setIsStreaming(true)
     setStreamingContent('')
+    streamingContentRef.current = ''
     let i = 0
 
     streamIntervalRef.current = setInterval(() => {
       i += 3
       if (i >= content.length) {
         clearInterval(streamIntervalRef.current)
+        const msgId = `msg-stream-${++msgIdCounter.current}`
+        streamedMsgIds.current.add(msgId)
         setStreamingContent(null)
+        streamingContentRef.current = ''
         setMessages(prev => [...prev, {
-          id: `msg-${Date.now()}`,
+          id: msgId,
           role: 'assistant',
           content,
         }])
         setIsStreaming(false)
+        onComplete?.()
       } else {
-        setStreamingContent(content.slice(0, i))
+        const partial = content.slice(0, i)
+        streamingContentRef.current = partial
+        setStreamingContent(partial)
       }
-    }, 18)
+    }, 24)
   }, [])
+
+  const handleStop = useCallback(() => {
+    if (!isStreaming) return
+    clearInterval(streamIntervalRef.current)
+    const partial = streamingContentRef.current
+    if (partial) {
+      const msgId = `msg-stream-${++msgIdCounter.current}`
+      streamedMsgIds.current.add(msgId)
+      setMessages(prev => [...prev, {
+        id: msgId,
+        role: 'assistant',
+        content: partial,
+      }])
+    }
+    setStreamingContent(null)
+    streamingContentRef.current = ''
+    setIsStreaming(false)
+  }, [isStreaming])
 
   // Auto-play demo on mount
   useEffect(() => {
+    // Step 1: Show first user message after 2s
     const t1 = setTimeout(() => {
-      setMessages(prev => {
-        if (prev.some(m => m.id === AUTO_PLAY_USER_MSG.id)) return prev
-        return [...prev, AUTO_PLAY_USER_MSG]
-      })
-    }, 1800)
+      setMessages([INITIAL_MESSAGES[0]])
+    }, 2000)
 
+    // Step 2: Stream first assistant response after 3.2s
     const t2 = setTimeout(() => {
-      startStream(AUTO_PLAY_RESPONSE)
-    }, 3000)
+      startStream(INITIAL_MESSAGES[1].content, () => {
+        // Step 3: After first stream completes, show second user message
+        const t3 = setTimeout(() => {
+          setMessages(prev => {
+            if (prev.some(m => m.id === AUTO_PLAY_USER_MSG.id)) return prev
+            return [...prev, AUTO_PLAY_USER_MSG]
+          })
+
+          // Step 4: Stream second assistant response
+          const t4 = setTimeout(() => {
+            startStream(AUTO_PLAY_RESPONSE)
+          }, 1200)
+          timersRef.current.push(t4)
+        }, 1000)
+        timersRef.current.push(t3)
+      })
+    }, 3200)
 
     timersRef.current = [t1, t2]
 
@@ -205,7 +250,7 @@ export function OverviewPage() {
     if (!value.trim() || isStreaming) return
 
     setMessages(prev => [...prev, {
-      id: `msg-${Date.now()}`,
+      id: `msg-user-${++msgIdCounter.current}`,
       role: 'user',
       content: value.trim(),
     }])
@@ -275,7 +320,7 @@ export function OverviewPage() {
               {messages.map(msg => (
                 <div
                   key={msg.id}
-                  className="animate-[message-slide-in_220ms_cubic-bezier(0.16,1,0.3,1)_both] motion-reduce:animate-none"
+                  className={streamedMsgIds.current.has(msg.id) ? '' : 'animate-[message-slide-in_220ms_cubic-bezier(0.16,1,0.3,1)_both] motion-reduce:animate-none'}
                 >
                   <ChatMessage
                     role={msg.role}
@@ -342,8 +387,7 @@ export function OverviewPage() {
             <Composer
               value={composerValue}
               onChange={setComposerValue}
-              onSubmit={handleSend}
-              disabled={isStreaming}
+              onSubmit={isStreaming ? handleStop : handleSend}
             >
               {files.length > 0 && (
                 <ComposerHeader>
@@ -372,15 +416,25 @@ export function OverviewPage() {
                   </Button>
                 </ComposerFooterStart>
                 <ComposerFooterEnd>
-                  <Button
-                    variant="default"
-                    size="icon-xs"
-                    aria-label="Send"
-                    type="submit"
-                    disabled={isStreaming || !composerValue.trim()}
-                  >
-                    <ArrowUp className="size-4" />
-                  </Button>
+                  {isStreaming ? (
+                    <Button
+                      variant="default"
+                      size="icon-xs"
+                      aria-label="Stop generating"
+                      type="submit"
+                    >
+                      <Square className="size-3 fill-current" />
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="default"
+                      size="icon-xs"
+                      aria-label="Send"
+                      type="submit"
+                    >
+                      <ArrowUp className="size-4" />
+                    </Button>
+                  )}
                 </ComposerFooterEnd>
               </ComposerFooter>
             </Composer>
@@ -469,12 +523,12 @@ export function OverviewPage() {
             <p className="text-sm text-secondary-foreground">
               Install the components you need:
             </p>
-            <CodeSnippet language="bash">{`pnpm dlx shadcn@latest add @composure/composer
-pnpm dlx shadcn@latest add @composure/chat-message
-pnpm dlx shadcn@latest add @composure/scroll-area
-pnpm dlx shadcn@latest add @composure/code-block
-pnpm dlx shadcn@latest add @composure/markdown-renderer
-pnpm dlx shadcn@latest add @composure/file-preview`}</CodeSnippet>
+            <CodeSnippet language="bash">{`pnpm dlx shadcn@latest add https://composureui.com/r/composer.json
+pnpm dlx shadcn@latest add https://composureui.com/r/chat-message.json
+pnpm dlx shadcn@latest add https://composureui.com/r/scroll-area.json
+pnpm dlx shadcn@latest add https://composureui.com/r/code-block.json
+pnpm dlx shadcn@latest add https://composureui.com/r/markdown-renderer.json
+pnpm dlx shadcn@latest add https://composureui.com/r/file-preview.json`}</CodeSnippet>
           </div>
 
           <div className="flex flex-col gap-2">

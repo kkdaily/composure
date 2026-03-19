@@ -118,6 +118,7 @@ export function MarkdownRenderer({
     <div
       className={cn(
         'prose dark:prose-invert max-w-none break-words',
+        'prose-code:before:content-none prose-code:after:content-none',
         'prose-headings:tracking-tight',
         'prose-a:text-primary prose-a:underline prose-a:underline-offset-2 prose-a:transition-colors prose-a:duration-100 prose-a:ease-out prose-a:motion-reduce:transition-none',
         'prose-blockquote:border-l-primary prose-blockquote:text-secondary-foreground',
