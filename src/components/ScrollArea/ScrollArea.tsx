@@ -86,6 +86,14 @@ export function ScrollArea({
     const el = containerRef.current
     if (!el) return
 
+    // Respect prefers-reduced-motion — snap instantly instead of animating
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (prefersReducedMotion) {
+      el.scrollTop = el.scrollHeight - el.clientHeight
+      setIsAtBottom(true)
+      return
+    }
+
     setIsAutoScrolling(true)
 
     const tick = () => {
@@ -295,6 +303,8 @@ export function ScrollArea({
         {...rest}
       >
         <div
+          aria-live="polite"
+          aria-relevant="additions"
           className={cn(
             'h-full overflow-y-auto overflow-x-hidden [overflow-anchor:none]',
             isAutoScrolling && '[scrollbar-width:none] [&::-webkit-scrollbar]:hidden'

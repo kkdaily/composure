@@ -168,7 +168,7 @@ export function FilePreview({
             />
           ) : (
             <div className="flex flex-col items-center gap-1">
-              <Icon className="size-6" />
+              <Icon className="size-6" aria-hidden="true" />
               {extLabel && (
                 <span className="text-[10px] font-bold leading-none opacity-80">
                   {extLabel}
@@ -220,7 +220,7 @@ export function FilePreview({
             className="w-full h-full object-cover"
           />
         ) : (
-          <Icon className="size-[1em]" />
+          <Icon className="size-[1em]" aria-hidden="true" />
         )}
       </div>
       <div className="flex flex-col min-w-0">

@@ -160,7 +160,7 @@ export function ComposerInput({
       onKeyDown={handleKeyDown}
       placeholder={placeholder}
       rows={minRows}
-      aria-label={placeholder}
+      aria-label="Message"
       {...rest}
     />
   )
@@ -182,7 +182,7 @@ export interface ComposerFooterProps
 
 export function ComposerFooter({ bordered = true, className, children, ...rest }: ComposerFooterProps) {
   return (
-    <div
+    <footer
       className={cn(
         'basis-full flex items-center gap-2 pt-2',
         bordered ? 'border-t border-border' : '',
@@ -191,7 +191,7 @@ export function ComposerFooter({ bordered = true, className, children, ...rest }
       {...rest}
     >
       {children}
-    </div>
+    </footer>
   )
 }
 
@@ -247,7 +247,7 @@ export interface ComposerHeaderProps
 
 export function ComposerHeader({ bordered = false, className, children, ...rest }: ComposerHeaderProps) {
   return (
-    <div
+    <header
       className={cn(
         'basis-full flex items-center gap-2 pb-2 -order-1',
         bordered && 'border-b border-border',
@@ -256,7 +256,7 @@ export function ComposerHeader({ bordered = false, className, children, ...rest 
       {...rest}
     >
       {children}
-    </div>
+    </header>
   )
 }
 

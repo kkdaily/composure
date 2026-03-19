@@ -89,6 +89,8 @@ export function CodeBlockContent({
         className
       )}
       tabIndex={0}
+      role="region"
+      aria-label={language ? `Code block, ${language}` : 'Code block'}
       {...rest}
     >
       <button
@@ -98,6 +100,7 @@ export function CodeBlockContent({
         )}
         onClick={handleCopy}
         aria-label={copied ? 'Copied!' : 'Copy code'}
+        aria-pressed={copied || undefined}
         title={copied ? 'Copied!' : 'Copy code'}
       >
         {copied ? <Check className="size-[1em]" /> : <Copy className="size-[1em]" />}

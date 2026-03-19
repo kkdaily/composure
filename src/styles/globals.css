@@ -230,9 +230,4 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .thinking-dot {
-    animation: none;
-    opacity: 0.5;
-  }
-}
+

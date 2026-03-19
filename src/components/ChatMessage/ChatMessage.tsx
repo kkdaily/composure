@@ -170,11 +170,8 @@ export function ChatMessageLoading({
       {[0, 1, 2].map((i) => (
         <span
           key={i}
-          className="thinking-dot block w-2 h-2 rounded-full bg-muted-foreground"
-          style={{
-            animation: 'thinking-dot 1.4s ease-in-out infinite',
-            animationDelay: `${i * 160}ms`,
-          }}
+          className="thinking-dot block w-2 h-2 rounded-full bg-muted-foreground animate-[thinking-dot_1.4s_ease-in-out_infinite] motion-reduce:animate-none motion-reduce:opacity-50"
+          style={{ animationDelay: `${i * 160}ms` }}
           aria-hidden="true"
         />
       ))}
