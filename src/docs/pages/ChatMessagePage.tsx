@@ -1,56 +1,14 @@
 import { useState } from 'react'
+import { Sparkles, User, Copy, RotateCw, ThumbsUp, ThumbsDown } from 'lucide-react'
 import {
   ChatMessage,
   ChatMessageAvatar,
   ChatMessageContent,
   ChatMessageActions,
 } from '../../components/ChatMessage/ChatMessage'
-import { IconButton } from '../../components/IconButton/IconButton'
+import { Button } from '@/components/ui/button'
 import { CodeSnippet } from '../CodeSnippet'
 import { cn } from '@/lib/utils'
-
-/* ===========================
-   Icons
-   =========================== */
-
-const SparkleIcon = () => (
-  <svg width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor">
-    <path d="M8 1l1.5 4.5L14 7l-4.5 1.5L8 13l-1.5-4.5L2 7l4.5-1.5z" />
-  </svg>
-)
-
-const UserIcon = () => (
-  <svg width="1em" height="1em" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="8" cy="5" r="3" />
-    <path d="M2 14c0-2.8 2.7-5 6-5s6 2.2 6 5" />
-  </svg>
-)
-
-const CopyIcon = () => (
-  <svg width="1em" height="1em" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <rect x="5" y="5" width="9" height="9" rx="1" />
-    <path d="M2 11V3a1 1 0 0 1 1-1h8" />
-  </svg>
-)
-
-const RefreshIcon = () => (
-  <svg width="1em" height="1em" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M2 8a6 6 0 0 1 10.3-4.2L14 2v4h-4" />
-    <path d="M14 8a6 6 0 0 1-10.3 4.2L2 14v-4h4" />
-  </svg>
-)
-
-const ThumbUpIcon = () => (
-  <svg width="1em" height="1em" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M5 9V14H2V9h3zm1-1l2.5-5a1.5 1.5 0 0 1 2.8.7L10.5 7H13a2 2 0 0 1 1.9 2.6l-1.5 5A2 2 0 0 1 11.5 16H6" />
-  </svg>
-)
-
-const ThumbDownIcon = () => (
-  <svg width="1em" height="1em" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M11 7V2h3v5h-3zm-1 1L7.5 13a1.5 1.5 0 0 1-2.8-.7L5.5 9H3a2 2 0 0 1-1.9-2.6l1.5-5A2 2 0 0 1 4.5 0H10" />
-  </svg>
-)
 
 /* ===========================
    Types
@@ -87,7 +45,7 @@ export function ChatMessagePage() {
           <ChatMessage role={demoRole} showActionsOnHover={demoHoverActions === 'on'}>
             {demoAvatar === 'show' && (
               <ChatMessageAvatar>
-                {demoRole === 'assistant' ? <SparkleIcon /> : <UserIcon />}
+                {demoRole === 'assistant' ? <Sparkles className="size-[1em]" /> : <User className="size-[1em]" />}
               </ChatMessageAvatar>
             )}
             <ChatMessageContent variant={demoVariant}>
@@ -97,12 +55,12 @@ export function ChatMessagePage() {
             </ChatMessageContent>
             {demoActions === 'show' && (
               <ChatMessageActions>
-                <IconButton label="Copy" size="sm"><CopyIcon /></IconButton>
+                <Button variant="ghost" size="icon-xs" aria-label="Copy"><Copy className="size-[1em]" /></Button>
                 {demoRole === 'assistant' && (
                   <>
-                    <IconButton label="Regenerate" size="sm"><RefreshIcon /></IconButton>
-                    <IconButton label="Good response" size="sm"><ThumbUpIcon /></IconButton>
-                    <IconButton label="Bad response" size="sm"><ThumbDownIcon /></IconButton>
+                    <Button variant="ghost" size="icon-xs" aria-label="Regenerate"><RotateCw className="size-[1em]" /></Button>
+                    <Button variant="ghost" size="icon-xs" aria-label="Good response"><ThumbsUp className="size-[1em]" /></Button>
+                    <Button variant="ghost" size="icon-xs" aria-label="Bad response"><ThumbsDown className="size-[1em]" /></Button>
                   </>
                 )}
               </ChatMessageActions>
@@ -241,7 +199,7 @@ export function ChatMessagePage() {
         <div className="flex flex-col gap-4">
           <ChatMessage role="assistant">
             <ChatMessageAvatar>
-              <SparkleIcon />
+              <Sparkles className="size-[1em]" />
             </ChatMessageAvatar>
             <ChatMessageContent>
               Based on my analysis, I'd recommend starting with the basics.
@@ -249,7 +207,7 @@ export function ChatMessagePage() {
           </ChatMessage>
           <ChatMessage role="user">
             <ChatMessageAvatar>
-              <UserIcon />
+              <User className="size-[1em]" />
             </ChatMessageAvatar>
             <ChatMessageContent>
               That makes sense. Can you show me an example?
@@ -258,7 +216,7 @@ export function ChatMessagePage() {
         </div>
         <CodeSnippet>{`<ChatMessage role="assistant">
   <ChatMessageAvatar>
-    <SparkleIcon />
+    <Sparkles className="size-[1em]" />
   </ChatMessageAvatar>
   <ChatMessageContent>
     Based on my analysis, I'd recommend starting with the basics.
@@ -267,7 +225,7 @@ export function ChatMessagePage() {
 
 <ChatMessage role="user">
   <ChatMessageAvatar>
-    <UserIcon />
+    <User className="size-[1em]" />
   </ChatMessageAvatar>
   <ChatMessageContent>
     That makes sense. Can you show me an example?
@@ -286,32 +244,32 @@ export function ChatMessagePage() {
         <div className="flex flex-col gap-4">
           <ChatMessage role="assistant">
             <ChatMessageAvatar>
-              <SparkleIcon />
+              <Sparkles className="size-[1em]" />
             </ChatMessageAvatar>
             <ChatMessageContent>
               Here's a quick summary of the key differences between server
               components and client components in React.
             </ChatMessageContent>
             <ChatMessageActions>
-              <IconButton label="Copy" size="sm"><CopyIcon /></IconButton>
-              <IconButton label="Regenerate" size="sm"><RefreshIcon /></IconButton>
-              <IconButton label="Good response" size="sm"><ThumbUpIcon /></IconButton>
-              <IconButton label="Bad response" size="sm"><ThumbDownIcon /></IconButton>
+              <Button variant="ghost" size="icon-xs" aria-label="Copy"><Copy className="size-[1em]" /></Button>
+              <Button variant="ghost" size="icon-xs" aria-label="Regenerate"><RotateCw className="size-[1em]" /></Button>
+              <Button variant="ghost" size="icon-xs" aria-label="Good response"><ThumbsUp className="size-[1em]" /></Button>
+              <Button variant="ghost" size="icon-xs" aria-label="Bad response"><ThumbsDown className="size-[1em]" /></Button>
             </ChatMessageActions>
           </ChatMessage>
         </div>
         <CodeSnippet>{`<ChatMessage role="assistant">
   <ChatMessageAvatar>
-    <SparkleIcon />
+    <Sparkles className="size-[1em]" />
   </ChatMessageAvatar>
   <ChatMessageContent>
     Here's a quick summary of the key differences...
   </ChatMessageContent>
   <ChatMessageActions>
-    <IconButton label="Copy" size="sm"><CopyIcon /></IconButton>
-    <IconButton label="Regenerate" size="sm"><RefreshIcon /></IconButton>
-    <IconButton label="Good response" size="sm"><ThumbUpIcon /></IconButton>
-    <IconButton label="Bad response" size="sm"><ThumbDownIcon /></IconButton>
+    <Button variant="ghost" size="icon-xs" aria-label="Copy"><Copy className="size-[1em]" /></Button>
+    <Button variant="ghost" size="icon-xs" aria-label="Regenerate"><RotateCw className="size-[1em]" /></Button>
+    <Button variant="ghost" size="icon-xs" aria-label="Good response"><ThumbsUp className="size-[1em]" /></Button>
+    <Button variant="ghost" size="icon-xs" aria-label="Bad response"><ThumbsDown className="size-[1em]" /></Button>
   </ChatMessageActions>
 </ChatMessage>`}</CodeSnippet>
       </section>
@@ -328,32 +286,32 @@ export function ChatMessagePage() {
         <div className="flex flex-col gap-4">
           <ChatMessage role="assistant" showActionsOnHover>
             <ChatMessageAvatar>
-              <SparkleIcon />
+              <Sparkles className="size-[1em]" />
             </ChatMessageAvatar>
             <ChatMessageContent>
               Here's a quick summary of the key differences between server
               components and client components in React.
             </ChatMessageContent>
             <ChatMessageActions>
-              <IconButton label="Copy" size="sm"><CopyIcon /></IconButton>
-              <IconButton label="Regenerate" size="sm"><RefreshIcon /></IconButton>
-              <IconButton label="Good response" size="sm"><ThumbUpIcon /></IconButton>
-              <IconButton label="Bad response" size="sm"><ThumbDownIcon /></IconButton>
+              <Button variant="ghost" size="icon-xs" aria-label="Copy"><Copy className="size-[1em]" /></Button>
+              <Button variant="ghost" size="icon-xs" aria-label="Regenerate"><RotateCw className="size-[1em]" /></Button>
+              <Button variant="ghost" size="icon-xs" aria-label="Good response"><ThumbsUp className="size-[1em]" /></Button>
+              <Button variant="ghost" size="icon-xs" aria-label="Bad response"><ThumbsDown className="size-[1em]" /></Button>
             </ChatMessageActions>
           </ChatMessage>
         </div>
         <CodeSnippet>{`<ChatMessage role="assistant" showActionsOnHover>
   <ChatMessageAvatar>
-    <SparkleIcon />
+    <Sparkles className="size-[1em]" />
   </ChatMessageAvatar>
   <ChatMessageContent>
     Here's a quick summary of the key differences...
   </ChatMessageContent>
   <ChatMessageActions>
-    <IconButton label="Copy" size="sm"><CopyIcon /></IconButton>
-    <IconButton label="Regenerate" size="sm"><RefreshIcon /></IconButton>
-    <IconButton label="Good response" size="sm"><ThumbUpIcon /></IconButton>
-    <IconButton label="Bad response" size="sm"><ThumbDownIcon /></IconButton>
+    <Button variant="ghost" size="icon-xs" aria-label="Copy"><Copy className="size-[1em]" /></Button>
+    <Button variant="ghost" size="icon-xs" aria-label="Regenerate"><RotateCw className="size-[1em]" /></Button>
+    <Button variant="ghost" size="icon-xs" aria-label="Good response"><ThumbsUp className="size-[1em]" /></Button>
+    <Button variant="ghost" size="icon-xs" aria-label="Bad response"><ThumbsDown className="size-[1em]" /></Button>
   </ChatMessageActions>
 </ChatMessage>`}</CodeSnippet>
       </section>
@@ -369,7 +327,7 @@ export function ChatMessagePage() {
         <div className="flex flex-col gap-4">
           <ChatMessage role="user">
             <ChatMessageAvatar>
-              <UserIcon />
+              <User className="size-[1em]" />
             </ChatMessageAvatar>
             <ChatMessageContent>
               How do I implement dark mode with CSS custom properties?
@@ -378,7 +336,7 @@ export function ChatMessagePage() {
         </div>
         <CodeSnippet>{`<ChatMessage role="user">
   <ChatMessageAvatar>
-    <UserIcon />
+    <User className="size-[1em]" />
   </ChatMessageAvatar>
   <ChatMessageContent>
     How do I implement dark mode with CSS custom properties?
@@ -397,7 +355,7 @@ export function ChatMessagePage() {
         <div className="flex flex-col gap-4">
           <ChatMessage role="user">
             <ChatMessageAvatar>
-              <UserIcon />
+              <User className="size-[1em]" />
             </ChatMessageAvatar>
             <ChatMessageContent>
               What's the difference between useEffect and useLayoutEffect?
@@ -405,7 +363,7 @@ export function ChatMessagePage() {
           </ChatMessage>
           <ChatMessage role="assistant">
             <ChatMessageAvatar>
-              <SparkleIcon />
+              <Sparkles className="size-[1em]" />
             </ChatMessageAvatar>
             <ChatMessageContent>
               Both run after render, but useLayoutEffect fires synchronously
@@ -413,13 +371,13 @@ export function ChatMessagePage() {
               measure DOM elements or prevent visual flicker.
             </ChatMessageContent>
             <ChatMessageActions>
-              <IconButton label="Copy" size="sm"><CopyIcon /></IconButton>
-              <IconButton label="Good response" size="sm"><ThumbUpIcon /></IconButton>
+              <Button variant="ghost" size="icon-xs" aria-label="Copy"><Copy className="size-[1em]" /></Button>
+              <Button variant="ghost" size="icon-xs" aria-label="Good response"><ThumbsUp className="size-[1em]" /></Button>
             </ChatMessageActions>
           </ChatMessage>
           <ChatMessage role="user">
             <ChatMessageAvatar>
-              <UserIcon />
+              <User className="size-[1em]" />
             </ChatMessageAvatar>
             <ChatMessageContent>
               Got it, thanks!
@@ -427,25 +385,25 @@ export function ChatMessagePage() {
           </ChatMessage>
         </div>
         <CodeSnippet>{`<ChatMessage role="user">
-  <ChatMessageAvatar><UserIcon /></ChatMessageAvatar>
+  <ChatMessageAvatar><User className="size-[1em]" /></ChatMessageAvatar>
   <ChatMessageContent>
     What's the difference between useEffect and useLayoutEffect?
   </ChatMessageContent>
 </ChatMessage>
 
 <ChatMessage role="assistant">
-  <ChatMessageAvatar><SparkleIcon /></ChatMessageAvatar>
+  <ChatMessageAvatar><Sparkles className="size-[1em]" /></ChatMessageAvatar>
   <ChatMessageContent>
     Both run after render, but useLayoutEffect fires synchronously...
   </ChatMessageContent>
   <ChatMessageActions>
-    <IconButton label="Copy" size="sm"><CopyIcon /></IconButton>
-    <IconButton label="Good response" size="sm"><ThumbUpIcon /></IconButton>
+    <Button variant="ghost" size="icon-xs" aria-label="Copy"><Copy className="size-[1em]" /></Button>
+    <Button variant="ghost" size="icon-xs" aria-label="Good response"><ThumbsUp className="size-[1em]" /></Button>
   </ChatMessageActions>
 </ChatMessage>
 
 <ChatMessage role="user">
-  <ChatMessageAvatar><UserIcon /></ChatMessageAvatar>
+  <ChatMessageAvatar><User className="size-[1em]" /></ChatMessageAvatar>
   <ChatMessageContent>Got it, thanks!</ChatMessageContent>
 </ChatMessage>`}</CodeSnippet>
       </section>
@@ -462,7 +420,7 @@ export function ChatMessagePage() {
         <div className="flex flex-col gap-4">
           <ChatMessage role="assistant">
             <ChatMessageAvatar>
-              <SparkleIcon />
+              <Sparkles className="size-[1em]" />
             </ChatMessageAvatar>
             <ChatMessageContent variant="plain">
               Here's a quick summary of the key differences between server
@@ -471,7 +429,7 @@ export function ChatMessagePage() {
           </ChatMessage>
           <ChatMessage role="user">
             <ChatMessageAvatar>
-              <UserIcon />
+              <User className="size-[1em]" />
             </ChatMessageAvatar>
             <ChatMessageContent>
               Can you give me a concrete example?
@@ -480,7 +438,7 @@ export function ChatMessagePage() {
         </div>
         <CodeSnippet>{`<ChatMessage role="assistant">
   <ChatMessageAvatar>
-    <SparkleIcon />
+    <Sparkles className="size-[1em]" />
   </ChatMessageAvatar>
   <ChatMessageContent variant="plain">
     Here's a quick summary of the key differences...
@@ -489,7 +447,7 @@ export function ChatMessagePage() {
 
 <ChatMessage role="user">
   <ChatMessageAvatar>
-    <UserIcon />
+    <User className="size-[1em]" />
   </ChatMessageAvatar>
   <ChatMessageContent>
     Can you give me a concrete example?
@@ -512,8 +470,8 @@ export function ChatMessagePage() {
               basics and building up from there.
             </ChatMessageContent>
             <ChatMessageActions>
-              <IconButton label="Copy" size="sm"><CopyIcon /></IconButton>
-              <IconButton label="Regenerate" size="sm"><RefreshIcon /></IconButton>
+              <Button variant="ghost" size="icon-xs" aria-label="Copy"><Copy className="size-[1em]" /></Button>
+              <Button variant="ghost" size="icon-xs" aria-label="Regenerate"><RotateCw className="size-[1em]" /></Button>
             </ChatMessageActions>
           </ChatMessage>
         </div>
@@ -523,8 +481,8 @@ export function ChatMessagePage() {
     basics and building up from there.
   </ChatMessageContent>
   <ChatMessageActions>
-    <IconButton label="Copy" size="sm"><CopyIcon /></IconButton>
-    <IconButton label="Regenerate" size="sm"><RefreshIcon /></IconButton>
+    <Button variant="ghost" size="icon-xs" aria-label="Copy"><Copy className="size-[1em]" /></Button>
+    <Button variant="ghost" size="icon-xs" aria-label="Regenerate"><RotateCw className="size-[1em]" /></Button>
   </ChatMessageActions>
 </ChatMessage>`}</CodeSnippet>
       </section>

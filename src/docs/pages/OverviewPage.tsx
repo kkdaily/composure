@@ -1,6 +1,10 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { NavLink } from 'react-router-dom'
 import {
+  Sparkles, User, ArrowDown, ArrowUp, Copy, Plus, RotateCw,
+  ScrollText, Zap, Puzzle, Palette,
+} from 'lucide-react'
+import {
   ChatMessage,
   ChatMessageAvatar,
   ChatMessageContent,
@@ -20,117 +24,10 @@ import {
   ScrollAreaScrollToBottom,
 } from '../../components/ScrollArea/ScrollArea'
 import { MarkdownRenderer } from '../../components/MarkdownRenderer/MarkdownRenderer'
-import { IconButton } from '../../components/IconButton/IconButton'
+import { Button } from '@/components/ui/button'
 import { FilePreview } from '../../components/FilePreview/FilePreview'
 import { CodeSnippet } from '../CodeSnippet'
 import { cn } from '@/lib/utils'
-
-/* ===========================
-   Icons
-   =========================== */
-
-function SparkleIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-      <path d="M8 1.25l1.4 4.35L13.75 7l-4.35 1.4L8 12.75l-1.4-4.35L2.25 7l4.35-1.4Z" />
-    </svg>
-  )
-}
-
-function UserIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <circle cx="8" cy="5.5" r="2.5" />
-      <path d="M3 14.5c0-2.5 2.2-4.5 5-4.5s5 2 5 4.5" />
-    </svg>
-  )
-}
-
-function ArrowDownIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M8 3v10M4 9l4 4 4-4" />
-    </svg>
-  )
-}
-
-function SendIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M8 14V2M3 7l5-5 5 5" />
-    </svg>
-  )
-}
-
-function CopyIcon() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <rect x="5" y="5" width="9" height="9" rx="1" />
-      <path d="M2 11V3a1 1 0 0 1 1-1h8" />
-    </svg>
-  )
-}
-
-function PlusIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
-      <path d="M8 3v10M3 8h10" />
-    </svg>
-  )
-}
-
-function RefreshIcon() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M1.5 4.5v4h4" />
-      <path d="M3 10a6 6 0 1 0 1.5-5.5L1.5 8.5" />
-    </svg>
-  )
-}
-
-/* ===========================
-   Highlight icons
-   =========================== */
-
-function ScrollHighlightIcon() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <rect x="3" y="2" width="14" height="16" rx="2" />
-      <path d="M10 6v4M8 8l2 2 2-2" />
-    </svg>
-  )
-}
-
-function StreamHighlightIcon() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <polyline points="4 6 8 6" />
-      <polyline points="4 10 12 10" />
-      <polyline points="4 14 10 14" />
-      <path d="M14 14l2-2-2-2" />
-    </svg>
-  )
-}
-
-function PuzzleHighlightIcon() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M8 2h4v2a2 2 0 1 1-4 0V2z" />
-      <rect x="3" y="6" width="14" height="12" rx="2" />
-    </svg>
-  )
-}
-
-function PaletteHighlightIcon() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <circle cx="10" cy="10" r="8" />
-      <circle cx="10" cy="6.5" r="1.5" fill="currentColor" stroke="none" />
-      <circle cx="6.5" cy="12" r="1.5" fill="currentColor" stroke="none" />
-      <circle cx="13.5" cy="12" r="1.5" fill="currentColor" stroke="none" />
-    </svg>
-  )
-}
 
 /* ===========================
    Demo data
@@ -393,7 +290,7 @@ export function OverviewPage() {
                             : 'bg-muted text-muted-foreground'
                         )}
                       >
-                        {msg.role === 'assistant' ? <SparkleIcon /> : <UserIcon />}
+                        {msg.role === 'assistant' ? <Sparkles className="size-4" /> : <User className="size-4" />}
                       </span>
                     </ChatMessageAvatar>
                     <ChatMessageContent variant={msg.role === 'assistant' ? 'plain' : 'filled'}>
@@ -404,12 +301,12 @@ export function OverviewPage() {
                     </ChatMessageContent>
                     {msg.role === 'assistant' && (
                       <ChatMessageActions>
-                        <IconButton label="Copy" size="sm">
-                          <CopyIcon />
-                        </IconButton>
-                        <IconButton label="Regenerate" size="sm">
-                          <RefreshIcon />
-                        </IconButton>
+                        <Button variant="ghost" size="icon-xs" aria-label="Copy">
+                          <Copy className="size-3.5" />
+                        </Button>
+                        <Button variant="ghost" size="icon-xs" aria-label="Regenerate">
+                          <RotateCw className="size-3.5" />
+                        </Button>
                       </ChatMessageActions>
                     )}
                   </ChatMessage>
@@ -421,7 +318,7 @@ export function OverviewPage() {
                   <ChatMessage role="assistant">
                     <ChatMessageAvatar>
                       <span className="flex items-center justify-center w-full h-full rounded-full bg-primary/15 text-primary">
-                        <SparkleIcon />
+                        <Sparkles className="size-4" />
                       </span>
                     </ChatMessageAvatar>
                     <ChatMessageContent variant="plain">
@@ -437,7 +334,7 @@ export function OverviewPage() {
             </div>
 
             <ScrollAreaScrollToBottom label="Scroll to bottom">
-              <ArrowDownIcon />
+              <ArrowDown className="size-4" />
             </ScrollAreaScrollToBottom>
           </ScrollArea>
 
@@ -465,24 +362,25 @@ export function OverviewPage() {
               <ComposerInput placeholder="Try sending a message…" />
               <ComposerFooter bordered={false}>
                 <ComposerFooterStart>
-                  <IconButton
-                    label="Attach file"
-                    size="sm"
+                  <Button
+                    variant="ghost"
+                    size="icon-xs"
+                    aria-label="Attach file"
                     onClick={handleAddFile}
                   >
-                    <PlusIcon />
-                  </IconButton>
+                    <Plus className="size-4" />
+                  </Button>
                 </ComposerFooterStart>
                 <ComposerFooterEnd>
-                  <IconButton
-                    label="Send"
-                    size="sm"
-                    variant="primary"
+                  <Button
+                    variant="default"
+                    size="icon-xs"
+                    aria-label="Send"
                     type="submit"
                     disabled={isStreaming || !composerValue.trim()}
                   >
-                    <SendIcon />
-                  </IconButton>
+                    <ArrowUp className="size-4" />
+                  </Button>
                 </ComposerFooterEnd>
               </ComposerFooter>
             </Composer>
@@ -509,7 +407,7 @@ export function OverviewPage() {
         <div className="grid grid-cols-2 gap-3 max-sm:grid-cols-1">
           <div className="flex flex-col gap-2 p-5 bg-card border border-border rounded-md">
             <span className="flex items-center justify-center size-9 rounded-md bg-primary/10 text-primary">
-              <ScrollHighlightIcon />
+              <ScrollText className="size-5" />
             </span>
             <h3 className="text-sm font-semibold text-foreground">Scroll intent detection</h3>
             <p className="text-sm text-secondary-foreground leading-relaxed">
@@ -520,7 +418,7 @@ export function OverviewPage() {
           </div>
           <div className="flex flex-col gap-2 p-5 bg-card border border-border rounded-md">
             <span className="flex items-center justify-center size-9 rounded-md bg-primary/10 text-primary">
-              <StreamHighlightIcon />
+              <Zap className="size-5" />
             </span>
             <h3 className="text-sm font-semibold text-foreground">Streaming-safe highlighting</h3>
             <p className="text-sm text-secondary-foreground leading-relaxed">
@@ -530,7 +428,7 @@ export function OverviewPage() {
           </div>
           <div className="flex flex-col gap-2 p-5 bg-card border border-border rounded-md">
             <span className="flex items-center justify-center size-9 rounded-md bg-primary/10 text-primary">
-              <PuzzleHighlightIcon />
+              <Puzzle className="size-5" />
             </span>
             <h3 className="text-sm font-semibold text-foreground">Composable primitives</h3>
             <p className="text-sm text-secondary-foreground leading-relaxed">
@@ -540,7 +438,7 @@ export function OverviewPage() {
           </div>
           <div className="flex flex-col gap-2 p-5 bg-card border border-border rounded-md">
             <span className="flex items-center justify-center size-9 rounded-md bg-primary/10 text-primary">
-              <PaletteHighlightIcon />
+              <Palette className="size-5" />
             </span>
             <h3 className="text-sm font-semibold text-foreground">Built for shadcn</h3>
             <p className="text-sm text-secondary-foreground leading-relaxed">
@@ -551,39 +449,68 @@ export function OverviewPage() {
         </div>
       </section>
 
-      {/* ---- What's included ---- */}
+      {/* ---- Installation ---- */}
       <section className="flex flex-col gap-5">
         <div className="flex flex-col gap-2">
           <h2 className="text-xl font-semibold text-foreground tracking-tight">
-            What's included
+            Installation
           </h2>
           <p className="text-base text-secondary-foreground leading-relaxed max-w-[600px]">
-            Six components purpose-built for AI chat interfaces: Composer,
-            ChatMessage, CodeBlock, ScrollArea, MarkdownRenderer, and
-            FilePreview. Designed for the shadcn registry — they work alongside
-            your existing shadcn primitives like Button and Avatar.
+            Composure components are available on the shadcn registry. Add them
+            to any project that has shadcn/ui set up.
           </p>
         </div>
-      </section>
 
-      {/* ---- Quick start ---- */}
-      <section className="flex flex-col gap-5">
-        <div className="flex flex-col gap-2">
-          <h2 className="text-xl font-semibold text-foreground tracking-tight">
-            Quick start
-          </h2>
-          <p className="text-base text-secondary-foreground leading-relaxed max-w-[600px]">
-            Import components as named exports. Complex components like Composer
-            expose sub-components as separate named exports so you can compose
-            them however your layout requires.
-          </p>
-        </div>
-        <CodeSnippet language="tsx">{`import {
-  ScrollArea,
-  ChatMessage, ChatMessageContent,
-  Composer, ComposerInput, ComposerFooter,
-  MarkdownRenderer,
-} from 'composure'
+        <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-2">
+            <span className="text-xs font-semibold uppercase tracking-widest text-primary">
+              Step 1
+            </span>
+            <p className="text-sm text-secondary-foreground">
+              Install the components you need:
+            </p>
+            <CodeSnippet language="bash">{`pnpm dlx shadcn@latest add @composure/composer
+pnpm dlx shadcn@latest add @composure/chat-message
+pnpm dlx shadcn@latest add @composure/scroll-area
+pnpm dlx shadcn@latest add @composure/code-block
+pnpm dlx shadcn@latest add @composure/markdown-renderer
+pnpm dlx shadcn@latest add @composure/file-preview`}</CodeSnippet>
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <span className="text-xs font-semibold uppercase tracking-widest text-primary">
+              Step 2
+            </span>
+            <p className="text-sm text-secondary-foreground">
+              Add the composure CSS variables to your globals.css for AI-specific
+              tokens (chat bubbles, file type colors):
+            </p>
+            <CodeSnippet language="css">{`:root {
+  --composure-assistant-bubble: #f0f0f0;
+  --composure-user-bubble: #7c3aed;
+  --composure-user-bubble-text: #ffffff;
+}
+
+.dark {
+  --composure-assistant-bubble: #1e1e1e;
+  --composure-user-bubble: #818cf8;
+  --composure-user-bubble-text: #111111;
+}`}</CodeSnippet>
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <span className="text-xs font-semibold uppercase tracking-widest text-primary">
+              Step 3
+            </span>
+            <p className="text-sm text-secondary-foreground">
+              Import and compose. Each component exports sub-components as
+              separate named exports — mix and match in any layout.
+            </p>
+            <CodeSnippet language="tsx">{`import { ScrollArea } from '@/components/ui/scroll-area'
+import { ChatMessage, ChatMessageContent } from '@/components/ui/chat-message'
+import { Composer, ComposerInput, ComposerFooter } from '@/components/ui/composer'
+import { MarkdownRenderer } from '@/components/ui/markdown-renderer'
+import { Button } from '@/components/ui/button'
 
 export function Chat() {
   const [input, setInput] = useState('')
@@ -610,6 +537,8 @@ export function Chat() {
     </>
   )
 }`}</CodeSnippet>
+          </div>
+        </div>
       </section>
 
     </div>

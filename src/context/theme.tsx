@@ -8,40 +8,16 @@ import {
 
 export type Theme = 'light' | 'dark' | 'system'
 export type ResolvedTheme = 'light' | 'dark'
-export type AccentColor =
-  | 'indigo'
-  | 'violet'
-  | 'blue'
-  | 'teal'
-  | 'green'
-  | 'orange'
-  | 'red'
-  | 'crimson'
-
-export const ACCENT_COLORS: AccentColor[] = [
-  'indigo',
-  'violet',
-  'blue',
-  'teal',
-  'green',
-  'orange',
-  'red',
-  'crimson',
-]
 
 interface ThemeContextValue {
   theme: Theme
   resolvedTheme: ResolvedTheme
   setTheme: (theme: Theme) => void
-  accentColor: AccentColor
-  setAccentColor: (color: AccentColor) => void
 }
 
 const ThemeContext = createContext<ThemeContextValue | null>(null)
 
 const STORAGE_KEY = 'composure-theme'
-const ACCENT_STORAGE_KEY = 'composure-accent'
-const DEFAULT_ACCENT: AccentColor = 'violet'
 
 function getSystemTheme(): ResolvedTheme {
   return window.matchMedia('(prefers-color-scheme: dark)').matches
@@ -56,7 +32,6 @@ function applyTheme(theme: Theme) {
   } else if (theme === 'light') {
     root.classList.remove('dark')
   } else {
-    // system — follow OS preference
     if (getSystemTheme() === 'dark') {
       root.classList.add('dark')
     } else {
@@ -75,29 +50,11 @@ function readStoredTheme(): Theme {
   return 'system'
 }
 
-function readStoredAccent(fallback: AccentColor): AccentColor {
-  try {
-    const stored = localStorage.getItem(ACCENT_STORAGE_KEY)
-    if (stored && ACCENT_COLORS.includes(stored as AccentColor)) {
-      return stored as AccentColor
-    }
-  } catch {}
-  return fallback
-}
-
-function applyAccent(color: AccentColor) {
-  document.documentElement.setAttribute('data-accent', color)
-}
-
 interface ThemeProviderProps {
   children: ReactNode
-  accentColor?: AccentColor
 }
 
-export function ThemeProvider({
-  children,
-  accentColor: accentColorProp = DEFAULT_ACCENT,
-}: ThemeProviderProps) {
+export function ThemeProvider({ children }: ThemeProviderProps) {
   const [theme, setThemeState] = useState<Theme>(readStoredTheme)
 
   const [resolvedTheme, setResolvedTheme] = useState<ResolvedTheme>(() => {
@@ -105,10 +62,6 @@ export function ThemeProvider({
     if (stored === 'light' || stored === 'dark') return stored
     return getSystemTheme()
   })
-
-  const [accentColor, setAccentColorState] = useState<AccentColor>(() =>
-    readStoredAccent(accentColorProp),
-  )
 
   useEffect(() => {
     applyTheme(theme)
@@ -134,10 +87,6 @@ export function ThemeProvider({
     return () => mq.removeEventListener('change', handler)
   }, [theme])
 
-  useEffect(() => {
-    applyAccent(accentColor)
-  }, [accentColor])
-
   function setTheme(next: Theme) {
     try {
       localStorage.setItem(STORAGE_KEY, next)
@@ -145,17 +94,8 @@ export function ThemeProvider({
     setThemeState(next)
   }
 
-  function setAccentColor(next: AccentColor) {
-    try {
-      localStorage.setItem(ACCENT_STORAGE_KEY, next)
-    } catch {}
-    setAccentColorState(next)
-  }
-
   return (
-    <ThemeContext.Provider
-      value={{ theme, resolvedTheme, setTheme, accentColor, setAccentColor }}
-    >
+    <ThemeContext.Provider value={{ theme, resolvedTheme, setTheme }}>
       {children}
     </ThemeContext.Provider>
   )

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { ArrowUp } from 'lucide-react'
 import { FilePreview } from '../../components/FilePreview/FilePreview'
 import {
   Composer,
@@ -8,19 +9,9 @@ import {
   ComposerFooter,
   ComposerFooterEnd,
 } from '../../components/Composer/Composer'
-import { IconButton } from '../../components/IconButton/IconButton'
+import { Button } from '@/components/ui/button'
 import { CodeSnippet } from '../CodeSnippet'
 import { cn } from '@/lib/utils'
-
-/* ===========================
-   Icons
-   =========================== */
-
-const SendIcon = () => (
-  <svg width="1em" height="1em" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M14 2L7 9M14 2l-4 12-3-7-7-3z" />
-  </svg>
-)
 
 /* ===========================
    Types
@@ -301,9 +292,9 @@ export function FilePreviewPage() {
           <ComposerInput placeholder="Ask about these files…" />
           <ComposerFooter bordered={false}>
             <ComposerFooterEnd>
-              <IconButton variant="primary" label="Send message" disabled={!composerValue.trim()}>
-                <SendIcon />
-              </IconButton>
+              <Button variant="default" size="icon" aria-label="Send message" disabled={!composerValue.trim()}>
+                <ArrowUp className="size-4" />
+              </Button>
             </ComposerFooterEnd>
           </ComposerFooter>
         </Composer>
@@ -322,9 +313,9 @@ export function FilePreviewPage() {
   <ComposerInput placeholder="Ask about these files…" />
   <ComposerFooter bordered={false}>
     <ComposerFooterEnd>
-      <IconButton variant="primary" label="Send">
+      <Button variant="default" size="icon" aria-label="Send">
         <SendIcon />
-      </IconButton>
+      </Button>
     </ComposerFooterEnd>
   </ComposerFooter>
 </Composer>`}</CodeSnippet>

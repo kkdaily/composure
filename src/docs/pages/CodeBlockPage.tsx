@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Sparkles } from 'lucide-react'
 import {
   CodeBlock,
   CodeBlockContent,
@@ -10,16 +11,6 @@ import {
 } from '../../components/ChatMessage/ChatMessage'
 import { CodeSnippet } from '../CodeSnippet'
 import { cn } from '@/lib/utils'
-
-/* ===========================
-   Icons
-   =========================== */
-
-const SparkleIcon = () => (
-  <svg width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor">
-    <path d="M8 1l1.5 4.5L14 7l-4.5 1.5L8 13l-1.5-4.5L2 7l4.5-1.5z" />
-  </svg>
-)
 
 /* ===========================
    Sample code strings
@@ -202,7 +193,7 @@ console.log(greeting)\`}
         </p>
         <ChatMessage role="assistant">
           <ChatMessageAvatar>
-            <SparkleIcon />
+            <Sparkles className="size-4" />
           </ChatMessageAvatar>
           <ChatMessageContent variant="plain">
             <p className="m-0 text-sm leading-relaxed">Here's how you can send a message to the API:</p>

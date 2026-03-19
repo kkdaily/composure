@@ -1,4 +1,7 @@
-import { type HTMLAttributes, type JSX } from 'react'
+import { type HTMLAttributes } from 'react'
+import {
+  Image, FileText, Table, Code, Archive, Video, Music, File, X,
+} from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 /* ===========================
@@ -48,112 +51,15 @@ function detectFileType(filename: string): FileType {
   return extensionMap[ext] ?? 'generic'
 }
 
-/* ===========================
-   Icons
-   =========================== */
-
-function ImageIcon() {
-  return (
-    <svg width="1em" height="1em" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <rect x="2" y="2" width="12" height="12" rx="1.5" />
-      <circle cx="5.5" cy="5.5" r="1" />
-      <path d="M14 10.5l-3-3-7 7" />
-    </svg>
-  )
-}
-
-function DocumentIcon() {
-  return (
-    <svg width="1em" height="1em" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M9 1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V5z" />
-      <path d="M9 1v4h4" />
-      <line x1="5.5" y1="8" x2="10.5" y2="8" />
-      <line x1="5.5" y1="10.5" x2="10.5" y2="10.5" />
-    </svg>
-  )
-}
-
-function SpreadsheetIcon() {
-  return (
-    <svg width="1em" height="1em" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <rect x="2" y="2" width="12" height="12" rx="1.5" />
-      <line x1="2" y1="6" x2="14" y2="6" />
-      <line x1="2" y1="10" x2="14" y2="10" />
-      <line x1="6" y1="2" x2="6" y2="14" />
-      <line x1="10" y1="2" x2="10" y2="14" />
-    </svg>
-  )
-}
-
-function CodeIcon() {
-  return (
-    <svg width="1em" height="1em" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <polyline points="5.5 4.5 2 8 5.5 11.5" />
-      <polyline points="10.5 4.5 14 8 10.5 11.5" />
-    </svg>
-  )
-}
-
-function ArchiveIcon() {
-  return (
-    <svg width="1em" height="1em" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <rect x="2" y="2" width="12" height="3" rx="1" />
-      <path d="M3 5v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V5" />
-      <line x1="6.5" y1="9" x2="9.5" y2="9" />
-    </svg>
-  )
-}
-
-function VideoIcon() {
-  return (
-    <svg width="1em" height="1em" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <rect x="1.5" y="3" width="10" height="10" rx="1.5" />
-      <polygon points="14.5 5.5 11.5 8 14.5 10.5" fill="currentColor" stroke="none" />
-    </svg>
-  )
-}
-
-function AudioIcon() {
-  return (
-    <svg width="1em" height="1em" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M6 3v10l-3-3H1.5V6H3z" />
-      <path d="M10 5.5a3.5 3.5 0 0 1 0 5" />
-      <path d="M12 3.5a6.5 6.5 0 0 1 0 9" />
-    </svg>
-  )
-}
-
-function GenericFileIcon() {
-  return (
-    <svg width="1em" height="1em" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M9 1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V5z" />
-      <path d="M9 1v4h4" />
-    </svg>
-  )
-}
-
-const iconsByType: Record<FileType, () => JSX.Element> = {
-  image: ImageIcon,
-  document: DocumentIcon,
-  spreadsheet: SpreadsheetIcon,
-  code: CodeIcon,
-  archive: ArchiveIcon,
-  video: VideoIcon,
-  audio: AudioIcon,
-  generic: GenericFileIcon,
-}
-
-/* ===========================
-   Remove button icon
-   =========================== */
-
-function CloseIcon() {
-  return (
-    <svg width="1em" height="1em" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
-      <line x1="4" y1="4" x2="12" y2="12" />
-      <line x1="12" y1="4" x2="4" y2="12" />
-    </svg>
-  )
+const iconsByType: Record<FileType, typeof Image> = {
+  image: Image,
+  document: FileText,
+  spreadsheet: Table,
+  code: Code,
+  archive: Archive,
+  video: Video,
+  audio: Music,
+  generic: File,
 }
 
 /* ===========================
@@ -242,7 +148,7 @@ export function FilePreview({
             className="w-full h-full object-cover"
           />
         ) : (
-          <Icon />
+          <Icon className="size-[1em]" />
         )}
       </div>
       <span
@@ -260,7 +166,7 @@ export function FilePreview({
           onClick={onRemove}
           aria-label={`Remove ${name}`}
         >
-          <CloseIcon />
+          <X className="size-[1em]" />
         </button>
       )}
     </div>

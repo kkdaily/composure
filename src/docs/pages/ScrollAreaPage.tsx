@@ -1,4 +1,5 @@
 import { useState, useRef, useCallback, useEffect } from 'react'
+import { ArrowDown } from 'lucide-react'
 import { ScrollArea, ScrollAreaScrollToBottom } from '../../components/ScrollArea/ScrollArea'
 import {
   ChatMessage,
@@ -6,17 +7,6 @@ import {
 } from '../../components/ChatMessage/ChatMessage'
 import { CodeSnippet } from '../CodeSnippet'
 import { cn } from '@/lib/utils'
-
-/* ===========================
-   Icons
-   =========================== */
-
-const ArrowDownIcon = () => (
-  <svg width="1em" height="1em" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    <path d="M8 3v10" />
-    <path d="M4 9l4 4 4-4" />
-  </svg>
-)
 
 /* ===========================
    Types
@@ -134,7 +124,7 @@ export function ScrollAreaPage() {
               )}
             </div>
             <ScrollAreaScrollToBottom label="Scroll to bottom">
-              <ArrowDownIcon />
+              <ArrowDown className="size-4" />
             </ScrollAreaScrollToBottom>
           </ScrollArea>
           <button

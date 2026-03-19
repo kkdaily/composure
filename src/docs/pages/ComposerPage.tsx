@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
+import { ArrowUp, Square, Sparkles, Plus } from 'lucide-react'
 import {
   Composer,
   ComposerInput,
@@ -8,36 +9,11 @@ import {
   ComposerFooterStart,
   ComposerFooterEnd,
 } from '../../components/Composer/Composer'
-import { IconButton } from '../../components/IconButton/IconButton'
+import { Button } from '@/components/ui/button'
 import { Select } from '../../components/Select/Select'
 import { FilePreview } from '../../components/FilePreview/FilePreview'
 import { CodeSnippet } from '../CodeSnippet'
 import { cn } from '@/lib/utils'
-
-const SendIcon = () => (
-  <svg width="1em" height="1em" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M14 2L7 9M14 2l-4 12-3-7-7-3z" />
-  </svg>
-)
-
-const StopIcon = () => (
-  <svg width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor">
-    <rect x="3" y="3" width="10" height="10" rx="1" />
-  </svg>
-)
-
-const SparkleIcon = () => (
-  <svg width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor">
-    <path d="M8 1l1.5 4.5L14 7l-4.5 1.5L8 13l-1.5-4.5L2 7l4.5-1.5z" />
-  </svg>
-)
-
-const PlusIcon = () => (
-  <svg width="1em" height="1em" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-    <line x1="8" y1="3" x2="8" y2="13" />
-    <line x1="3" y1="8" x2="13" y2="8" />
-  </svg>
-)
 
 
 type DemoState = 'idle' | 'streaming'
@@ -202,21 +178,21 @@ export function ComposerPage() {
             <ComposerInput placeholder="Ask anything…" />
             {demoSendPosition === 'inline' && (
               demoState === 'streaming' ? (
-                <IconButton variant="destructive" label="Stop generating" onClick={stopStreaming}>
-                  <StopIcon />
-                </IconButton>
+                <Button variant="destructive" size="icon" aria-label="Stop generating" onClick={stopStreaming}>
+                  <Square className="size-[1em]" />
+                </Button>
               ) : (
-                <IconButton variant="primary" label="Send message" disabled={!demoValue.trim()} onClick={() => handleDemoSubmit(demoValue)}>
-                  <SendIcon />
-                </IconButton>
+                <Button variant="default" size="icon" aria-label="Send message" disabled={!demoValue.trim()} onClick={() => handleDemoSubmit(demoValue)}>
+                  <ArrowUp className="size-[1em]" />
+                </Button>
               )
             )}
             {demoFooter !== 'none' && (
               <ComposerFooter bordered={demoFooter === 'bordered'}>
                 <ComposerFooterStart>
-                  <IconButton label="Add" size="md">
-                    <PlusIcon />
-                  </IconButton>
+                  <Button variant="ghost" size="icon" aria-label="Add">
+                    <Plus className="size-[1em]" />
+                  </Button>
                 </ComposerFooterStart>
                 <ComposerFooterEnd>
                   <Select
@@ -229,13 +205,13 @@ export function ComposerPage() {
                   />
                   {demoSendPosition === 'footer' && (
                     demoState === 'streaming' ? (
-                      <IconButton variant="destructive" label="Stop generating" onClick={stopStreaming}>
-                        <StopIcon />
-                      </IconButton>
+                      <Button variant="destructive" size="icon" aria-label="Stop generating" onClick={stopStreaming}>
+                        <Square className="size-[1em]" />
+                      </Button>
                     ) : (
-                      <IconButton variant="primary" label="Send message" disabled={!demoValue.trim()} onClick={() => handleDemoSubmit(demoValue)}>
-                        <SendIcon />
-                      </IconButton>
+                      <Button variant="default" size="icon" aria-label="Send message" disabled={!demoValue.trim()} onClick={() => handleDemoSubmit(demoValue)}>
+                        <ArrowUp className="size-[1em]" />
+                      </Button>
                     )
                   )}
                 </ComposerFooterEnd>
@@ -347,9 +323,9 @@ export function ComposerPage() {
           onSubmit={() => setBasicValue('')}
         >
           <ComposerInput />
-          <IconButton variant="primary" label="Send message" disabled={!basicValue.trim()}>
-            <SendIcon />
-          </IconButton>
+          <Button variant="default" size="icon" aria-label="Send message" disabled={!basicValue.trim()}>
+            <ArrowUp className="size-[1em]" />
+          </Button>
         </Composer>
         <CodeSnippet>{`const [value, setValue] = useState('')
 
@@ -362,9 +338,9 @@ export function ComposerPage() {
   }}
 >
   <ComposerInput placeholder="Send a message…" />
-  <IconButton variant="primary" label="Send message" disabled={!value.trim()}>
-    <SendIcon />
-  </IconButton>
+  <Button variant="default" size="icon" aria-label="Send message" disabled={!value.trim()}>
+    <ArrowUp className="size-[1em]" />
+  </Button>
 </Composer>`}</CodeSnippet>
       </section>
 
@@ -386,24 +362,24 @@ export function ComposerPage() {
         >
           <ComposerInput placeholder="Ask anything…" />
           {stopExampleStreaming ? (
-            <IconButton variant="destructive" label="Stop generating" onClick={() => setStopExampleStreaming(false)}>
-              <StopIcon />
-            </IconButton>
+            <Button variant="destructive" size="icon" aria-label="Stop generating" onClick={() => setStopExampleStreaming(false)}>
+              <Square className="size-[1em]" />
+            </Button>
           ) : (
-            <IconButton variant="primary" label="Send message" disabled={!stopValue.trim()}>
-              <SendIcon />
-            </IconButton>
+            <Button variant="default" size="icon" aria-label="Send message" disabled={!stopValue.trim()}>
+              <ArrowUp className="size-[1em]" />
+            </Button>
           )}
         </Composer>
         <CodeSnippet>{`<Composer value={value} onChange={setValue} onSubmit={handleSend}>
   <ComposerInput />
   {isStreaming
-    ? <IconButton variant="destructive" label="Stop generating" onClick={handleStop}>
-        <StopIcon />
-      </IconButton>
-    : <IconButton variant="primary" label="Send message" disabled={!value.trim()}>
-        <SendIcon />
-      </IconButton>
+    ? <Button variant="destructive" size="icon" aria-label="Stop generating" onClick={handleStop}>
+        <Square className="size-[1em]" />
+      </Button>
+    : <Button variant="default" size="icon" aria-label="Send message" disabled={!value.trim()}>
+        <ArrowUp className="size-[1em]" />
+      </Button>
   }
 </Composer>`}</CodeSnippet>
       </section>
@@ -423,9 +399,9 @@ export function ComposerPage() {
           onSubmit={() => setResizeValue('')}
         >
           <ComposerInput minRows={3} maxRows={6} placeholder="Try typing multiple lines…" />
-          <IconButton variant="primary" label="Send message" disabled={!resizeValue.trim()}>
-            <SendIcon />
-          </IconButton>
+          <Button variant="default" size="icon" aria-label="Send message" disabled={!resizeValue.trim()}>
+            <ArrowUp className="size-[1em]" />
+          </Button>
         </Composer>
         <CodeSnippet>{`<ComposerInput
   minRows={3}
@@ -448,15 +424,15 @@ export function ComposerPage() {
           onSubmit={() => setCustomValue('')}
         >
           <ComposerInput placeholder="Generate something…" />
-          <IconButton variant="primary" label="Generate" disabled={!customValue.trim()}>
-            <SparkleIcon />
-          </IconButton>
+          <Button variant="default" size="icon" aria-label="Generate" disabled={!customValue.trim()}>
+            <Sparkles className="size-[1em]" />
+          </Button>
         </Composer>
         <CodeSnippet>{`<Composer value={value} onChange={setValue} onSubmit={handleGenerate}>
   <ComposerInput placeholder="Generate something…" />
-  <IconButton variant="primary" label="Generate" disabled={!value.trim()}>
-    <SparkleIcon />
-  </IconButton>
+  <Button variant="default" size="icon" aria-label="Generate" disabled={!value.trim()}>
+    <Sparkles className="size-[1em]" />
+  </Button>
 </Composer>`}</CodeSnippet>
       </section>
 
@@ -476,14 +452,14 @@ export function ComposerPage() {
           onSubmit={() => setFooterValue('')}
         >
           <ComposerInput placeholder="Ask anything…" />
-          <IconButton variant="primary" label="Send message" disabled={!footerValue.trim()}>
-            <SendIcon />
-          </IconButton>
+          <Button variant="default" size="icon" aria-label="Send message" disabled={!footerValue.trim()}>
+            <ArrowUp className="size-[1em]" />
+          </Button>
           <ComposerFooter>
             <ComposerFooterStart>
-              <IconButton label="Add" size="md">
-                <PlusIcon />
-              </IconButton>
+              <Button variant="ghost" size="icon" aria-label="Add">
+                <Plus className="size-[1em]" />
+              </Button>
             </ComposerFooterStart>
             <ComposerFooterEnd>
               <span className="text-xs text-muted-foreground font-mono">0 / 4,096 tokens</span>
@@ -492,14 +468,14 @@ export function ComposerPage() {
         </Composer>
         <CodeSnippet>{`<Composer value={value} onChange={setValue} onSubmit={handleSend}>
   <ComposerInput placeholder="Ask anything…" />
-  <IconButton variant="primary" label="Send message" disabled={!value.trim()}>
-    <SendIcon />
-  </IconButton>
+  <Button variant="default" size="icon" aria-label="Send message" disabled={!value.trim()}>
+    <ArrowUp className="size-[1em]" />
+  </Button>
   <ComposerFooter>
     <ComposerFooterStart>
-      <IconButton label="Add" size="md">
-        <PlusIcon />
-      </IconButton>
+      <Button variant="ghost" size="icon" aria-label="Add">
+        <Plus className="size-[1em]" />
+      </Button>
     </ComposerFooterStart>
     <ComposerFooterEnd>
       <span>0 / 4,096 tokens</span>
@@ -523,27 +499,27 @@ export function ComposerPage() {
           onSubmit={() => setBorderlessValue('')}
         >
           <ComposerInput placeholder="Ask anything…" />
-          <IconButton variant="primary" label="Send message" disabled={!borderlessValue.trim()}>
-            <SendIcon />
-          </IconButton>
+          <Button variant="default" size="icon" aria-label="Send message" disabled={!borderlessValue.trim()}>
+            <ArrowUp className="size-[1em]" />
+          </Button>
           <ComposerFooter bordered={false}>
             <ComposerFooterStart>
-              <IconButton label="Add" size="md">
-                <PlusIcon />
-              </IconButton>
+              <Button variant="ghost" size="icon" aria-label="Add">
+                <Plus className="size-[1em]" />
+              </Button>
             </ComposerFooterStart>
           </ComposerFooter>
         </Composer>
         <CodeSnippet>{`<Composer value={value} onChange={setValue} onSubmit={handleSend}>
   <ComposerInput placeholder="Ask anything…" />
-  <IconButton variant="primary" label="Send message" disabled={!value.trim()}>
-    <SendIcon />
-  </IconButton>
+  <Button variant="default" size="icon" aria-label="Send message" disabled={!value.trim()}>
+    <ArrowUp className="size-[1em]" />
+  </Button>
   <ComposerFooter bordered={false}>
     <ComposerFooterStart>
-      <IconButton label="Add" size="md">
-        <PlusIcon />
-      </IconButton>
+      <Button variant="ghost" size="icon" aria-label="Add">
+        <Plus className="size-[1em]" />
+      </Button>
     </ComposerFooterStart>
   </ComposerFooter>
 </Composer>`}</CodeSnippet>
@@ -572,9 +548,9 @@ export function ComposerPage() {
             </ComposerHeaderStart>
           </ComposerHeader>
           <ComposerInput placeholder="Ask about these files…" />
-          <IconButton variant="primary" label="Send message" disabled={!headerValue.trim()}>
-            <SendIcon />
-          </IconButton>
+          <Button variant="default" size="icon" aria-label="Send message" disabled={!headerValue.trim()}>
+            <ArrowUp className="size-[1em]" />
+          </Button>
         </Composer>
         <CodeSnippet>{`<Composer value={value} onChange={setValue} onSubmit={handleSend}>
   <ComposerHeader>
@@ -584,9 +560,9 @@ export function ComposerPage() {
     </ComposerHeaderStart>
   </ComposerHeader>
   <ComposerInput placeholder="Ask about these files…" />
-  <IconButton variant="primary" label="Send message" disabled={!value.trim()}>
-    <SendIcon />
-  </IconButton>
+  <Button variant="default" size="icon" aria-label="Send message" disabled={!value.trim()}>
+    <ArrowUp className="size-[1em]" />
+  </Button>
 </Composer>`}</CodeSnippet>
       </section>
 
@@ -607,14 +583,14 @@ export function ComposerPage() {
           <ComposerInput placeholder="Message…" />
           <ComposerFooter>
             <ComposerFooterStart>
-              <IconButton label="Add" size="md">
-                <PlusIcon />
-              </IconButton>
+              <Button variant="ghost" size="icon" aria-label="Add">
+                <Plus className="size-[1em]" />
+              </Button>
             </ComposerFooterStart>
             <ComposerFooterEnd>
-              <IconButton variant="primary" label="Send message" disabled={!footerSendValue.trim()}>
-                <SendIcon />
-              </IconButton>
+              <Button variant="default" size="icon" aria-label="Send message" disabled={!footerSendValue.trim()}>
+                <ArrowUp className="size-[1em]" />
+              </Button>
             </ComposerFooterEnd>
           </ComposerFooter>
         </Composer>
@@ -622,14 +598,14 @@ export function ComposerPage() {
   <ComposerInput placeholder="Message…" />
   <ComposerFooter>
     <ComposerFooterStart>
-      <IconButton label="Add" size="md">
-        <PlusIcon />
-      </IconButton>
+      <Button variant="ghost" size="icon" aria-label="Add">
+        <Plus className="size-[1em]" />
+      </Button>
     </ComposerFooterStart>
     <ComposerFooterEnd>
-      <IconButton variant="primary" label="Send message" disabled={!value.trim()}>
-        <SendIcon />
-      </IconButton>
+      <Button variant="default" size="icon" aria-label="Send message" disabled={!value.trim()}>
+        <ArrowUp className="size-[1em]" />
+      </Button>
     </ComposerFooterEnd>
   </ComposerFooter>
 </Composer>`}</CodeSnippet>

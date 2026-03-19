@@ -1,24 +1,8 @@
 import { useState, useCallback, type ReactNode, type HTMLAttributes } from 'react'
+import { Copy, Check } from 'lucide-react'
 import { useHighlighter } from './useHighlighter'
 import { useTheme } from '../../context/theme'
 import { cn } from '@/lib/utils'
-
-/* ===========================
-   Icons
-   =========================== */
-
-const CopyIcon = () => (
-  <svg width="1em" height="1em" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    <rect x="5" y="5" width="9" height="9" rx="1" />
-    <path d="M2 11V3a1 1 0 0 1 1-1h8" />
-  </svg>
-)
-
-const CheckIcon = () => (
-  <svg width="1em" height="1em" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    <path d="M3 8.5l3.5 3.5 6.5-7" />
-  </svg>
-)
 
 /* ===========================
    CodeBlock (root)
@@ -116,7 +100,7 @@ export function CodeBlockContent({
         aria-label={copied ? 'Copied!' : 'Copy code'}
         title={copied ? 'Copied!' : 'Copy code'}
       >
-        {copied ? <CheckIcon /> : <CopyIcon />}
+        {copied ? <Check className="size-[1em]" /> : <Copy className="size-[1em]" />}
       </button>
       <code
         className={cn(
