@@ -89,7 +89,11 @@ export function ScrollArea({
     setIsAutoScrolling(true)
 
     const tick = () => {
-      if (!el) return
+      if (!el || isUserScrollingRef.current) {
+        // User took over — stop the lerp immediately
+        setIsAutoScrolling(false)
+        return
+      }
       const target = el.scrollHeight - el.clientHeight
       const distance = target - el.scrollTop
 
