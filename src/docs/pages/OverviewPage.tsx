@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { NavLink } from 'react-router-dom'
 import {
-  Sparkles, User, ArrowDown, ArrowUp, Copy, Plus, RotateCw,
+  Sparkles, User, ArrowDown, ArrowUp, Copy, Plus, RotateCw, ThumbsUp, ThumbsDown,
   ScrollText, Zap, Puzzle, Palette, Square,
 } from 'lucide-react'
 import {
@@ -332,7 +332,7 @@ export function OverviewPage() {
           Live demo
         </span>
         <div className="flex flex-col h-[540px] border border-border rounded-lg overflow-hidden bg-background shadow-sm dark:shadow-[0_4px_16px_rgba(0,0,0,0.2)] max-sm:h-[460px]">
-          <ScrollArea className="flex-1 min-h-0" mode="manual">
+          <ScrollArea className="flex-1 min-h-0" mode="auto">
             <div className="flex flex-col gap-5 p-5">
               {messages.map(msg => (
                 <div
@@ -369,40 +369,37 @@ export function OverviewPage() {
                         <Button variant="ghost" size="icon-xs" aria-label="Regenerate">
                           <RotateCw className="size-3.5" />
                         </Button>
+                        <Button variant="ghost" size="icon-xs" aria-label="Good response">
+                          <ThumbsUp className="size-3.5" />
+                        </Button>
+                        <Button variant="ghost" size="icon-xs" aria-label="Bad response">
+                          <ThumbsDown className="size-3.5" />
+                        </Button>
                       </ChatMessageActions>
                     )}
                   </ChatMessage>
                 </div>
               ))}
 
-              {isThinking && (
+              {(isThinking || streamingContent !== null) && (
                 <div className="animate-[message-slide-in_220ms_cubic-bezier(0.16,1,0.3,1)_both] motion-reduce:animate-none">
-                  <ChatMessage role="assistant">
+                  <ChatMessage role="assistant" showActionsOnHover>
                     <ChatMessageAvatar>
                       <span className="flex items-center justify-center w-full h-full rounded-full bg-primary/15 text-primary">
                         <Sparkles className="size-4" />
                       </span>
                     </ChatMessageAvatar>
-                    <ChatMessageLoading />
-                  </ChatMessage>
-                </div>
-              )}
-
-              {streamingContent !== null && (
-                <div className="animate-[message-slide-in_220ms_cubic-bezier(0.16,1,0.3,1)_both] motion-reduce:animate-none">
-                  <ChatMessage role="assistant">
-                    <ChatMessageAvatar>
-                      <span className="flex items-center justify-center w-full h-full rounded-full bg-primary/15 text-primary">
-                        <Sparkles className="size-4" />
-                      </span>
-                    </ChatMessageAvatar>
-                    <ChatMessageContent variant="plain">
-                      <MarkdownRenderer
-                        content={streamingContent || '\u200B'}
-                        streaming
-                        className="text-sm"
-                      />
-                    </ChatMessageContent>
+                    {isThinking ? (
+                      <ChatMessageLoading />
+                    ) : (
+                      <ChatMessageContent variant="plain">
+                        <MarkdownRenderer
+                          content={streamingContent || '\u200B'}
+                          streaming
+                          className="text-sm"
+                        />
+                      </ChatMessageContent>
+                    )}
                   </ChatMessage>
                 </div>
               )}

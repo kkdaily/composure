@@ -20,7 +20,7 @@ export function CodeBlock({ className, children, ...rest }: CodeBlockProps) {
   return (
     <div
       className={cn(
-        'group/code bg-muted border border-border rounded-md overflow-hidden',
+        'group/code relative bg-muted border border-border rounded-md overflow-hidden',
         className
       )}
       {...rest}
@@ -84,7 +84,7 @@ export function CodeBlockContent({
   return (
     <pre
       className={cn(
-        'relative m-0 p-3 px-4 overflow-x-auto font-mono text-sm leading-relaxed text-foreground bg-transparent',
+        'm-0 p-3 px-4 overflow-x-auto font-mono text-sm leading-relaxed text-foreground bg-transparent',
         'focus-visible:outline-2 focus-visible:outline-primary focus-visible:-outline-offset-2 focus-visible:rounded-sm',
         className
       )}

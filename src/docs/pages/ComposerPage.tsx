@@ -103,29 +103,8 @@ export function ComposerPage() {
     setDemoState('idle')
   }, [streamingText])
 
-  const handleDemoSubmit = useCallback((value: string) => {
-    setMessages((prev) => [...prev, { role: 'user', content: value }])
+  const handleDemoSubmit = useCallback((_value: string) => {
     setDemoValue('')
-    setDemoState('streaming')
-
-    const response = AI_RESPONSES[responseIndexRef.current % AI_RESPONSES.length]
-    responseIndexRef.current++
-
-    let charIndex = 0
-    setStreamingText('')
-
-    streamRef.current = window.setInterval(() => {
-      charIndex++
-      if (charIndex <= response.length) {
-        setStreamingText(response.slice(0, charIndex))
-      } else {
-        clearInterval(streamRef.current!)
-        streamRef.current = null
-        setMessages((prev) => [...prev, { role: 'assistant', content: response }])
-        setStreamingText('')
-        setDemoState('idle')
-      }
-    }, 30)
   }, [])
 
   // Section examples
@@ -152,34 +131,6 @@ export function ComposerPage() {
       <section className="flex flex-col gap-5">
         <h2 className="text-xl font-semibold text-foreground tracking-tight">Demo</h2>
         <div className="flex flex-col gap-4 p-6 bg-card border border-border rounded-lg">
-          <div className="flex flex-col gap-2 min-h-[48px] max-h-[200px] overflow-y-auto" ref={messageLogRef}>
-            {messages.length === 0 && !streamingText ? (
-              <span className="text-sm text-muted-foreground italic">
-                Type a message and press send…
-              </span>
-            ) : (
-              <>
-                {messages.map((msg, i) => (
-                  <div
-                    key={i}
-                    className={cn(
-                      'text-sm px-3 py-2 rounded-md max-w-[80%] leading-relaxed',
-                      msg.role === 'user'
-                        ? 'text-[var(--color-composure-user-bubble-text)] bg-[var(--color-composure-user-bubble)] self-end'
-                        : 'text-foreground bg-[var(--color-composure-assistant-bubble)] self-start'
-                    )}
-                  >
-                    {msg.content}
-                  </div>
-                ))}
-                {streamingText && (
-                  <div className="text-sm px-3 py-2 rounded-md max-w-[80%] leading-relaxed text-foreground bg-[var(--color-composure-assistant-bubble)] self-start">
-                    {streamingText}
-                  </div>
-                )}
-              </>
-            )}
-          </div>
           <input
             ref={demoFileInputRef}
             type="file"

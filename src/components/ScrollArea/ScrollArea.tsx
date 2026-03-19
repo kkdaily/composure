@@ -227,25 +227,38 @@ export function ScrollArea({
         lerpToBottom()
         setIsAtBottom(true)
       } else if (modeRef.current === 'manual') {
-        // Only act on new scroll-anchor elements (user messages).
-        // Just scroll to the bottom — this positions the anchor as high
-        // as possible. The assistant response streams in immediately after,
-        // naturally pushing the anchor up toward the top.
+        // Only scroll when there's a net new child added to the scroll
+        // container (or its first child wrapper). If nodes were both added
+        // and removed across the mutation batch (e.g. streaming content
+        // finalizing into a permanent message), treat it as a replacement.
+        // React may split adds and removes into separate mutation records
+        // even when they're part of the same state update.
+        let addedCount = 0
+        let removedCount = 0
+        let hasNewElement = false
+
         for (const mutation of mutations) {
           if (mutation.type !== 'childList') continue
-          for (const node of mutation.addedNodes) {
-            if (!(node instanceof HTMLElement)) continue
-            const anchor =
-              node.dataset?.scrollAnchor === 'start'
-                ? node
-                : node.querySelector?.('[data-scroll-anchor="start"]')
-            if (anchor) {
-              hideScrollbarDuring(() => {
-                el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' })
-              })
-              return
+          // Only count additions/removals on the scroll container or its first child
+          if (mutation.target !== el && mutation.target.parentElement !== el) continue
+          addedCount += mutation.addedNodes.length
+          removedCount += mutation.removedNodes.length
+          if (!hasNewElement) {
+            for (const node of mutation.addedNodes) {
+              if (node instanceof HTMLElement) {
+                hasNewElement = true
+                break
+              }
             }
           }
+        }
+
+        // Only scroll if there are net new elements (not replacements)
+        if (hasNewElement && addedCount > removedCount) {
+          hideScrollbarDuring(() => {
+            el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' })
+          })
+          return
         }
         setIsAtBottom(checkIsAtBottom())
       } else {

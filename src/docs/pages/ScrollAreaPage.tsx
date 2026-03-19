@@ -4,6 +4,7 @@ import { ScrollArea, ScrollAreaScrollToBottom } from '../../components/ScrollAre
 import {
   ChatMessage,
   ChatMessageContent,
+  ChatMessageLoading,
 } from '../../components/ChatMessage/ChatMessage'
 import { CodeSnippet } from '../CodeSnippet'
 import { cn } from '@/lib/utils'
@@ -45,21 +46,33 @@ function useStreamingDemo(fullText: string, speed = 12) {
   const [messages, setMessages] = useState<Message[]>(initialMessages)
   const [streamedText, setStreamedText] = useState('')
   const [isStreaming, setIsStreaming] = useState(false)
+  const [isThinking, setIsThinking] = useState(false)
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const thinkingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const indexRef = useRef(0)
 
   const startStreaming = useCallback(() => {
     // Reset first if already streaming or has previous results
     if (intervalRef.current) clearInterval(intervalRef.current)
+    if (thinkingTimerRef.current) clearTimeout(thinkingTimerRef.current)
     setStreamedText('')
     indexRef.current = 0
 
-    // Add the user follow-up question, then start streaming
+    // Add the user follow-up question
     setMessages([
       ...initialMessages,
       { id: 3, role: 'user', text: 'What about performance? Any tips to optimize context?' },
     ])
-    setIsStreaming(true)
+
+    // Brief pause before showing thinking indicator
+    thinkingTimerRef.current = setTimeout(() => {
+      setIsThinking(true)
+
+      thinkingTimerRef.current = setTimeout(() => {
+        setIsThinking(false)
+        setIsStreaming(true)
+      }, 1000)
+    }, 400)
   }, [])
 
   useEffect(() => {
@@ -81,7 +94,7 @@ function useStreamingDemo(fullText: string, speed = 12) {
     }
   }, [isStreaming, fullText, speed])
 
-  return { messages, streamedText, isStreaming, startStreaming }
+  return { messages, streamedText, isStreaming, isThinking, startStreaming }
 }
 
 /* ===========================
@@ -118,6 +131,11 @@ export function ScrollAreaPage() {
                   <ChatMessageContent>{msg.text}</ChatMessageContent>
                 </ChatMessage>
               ))}
+              {demo.isThinking && (
+                <ChatMessage role="assistant">
+                  <ChatMessageLoading />
+                </ChatMessage>
+              )}
               {demo.streamedText && (
                 <ChatMessage role="assistant">
                   <ChatMessageContent>{demo.streamedText}</ChatMessageContent>
@@ -134,9 +152,9 @@ export function ScrollAreaPage() {
               'bg-transparent border-border text-secondary-foreground hover:bg-muted hover:text-foreground'
             )}
             onClick={demo.startStreaming}
-            disabled={demo.isStreaming}
+            disabled={demo.isStreaming || demo.isThinking}
           >
-            {demo.isStreaming ? 'Streaming…' : 'Stream response'}
+            {demo.isThinking ? 'Thinking…' : demo.isStreaming ? 'Streaming…' : 'Stream response'}
           </button>
         </div>
         <div className="flex flex-col gap-3">
